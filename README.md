@@ -37,14 +37,3 @@ To run the ASP .NET Web API project locally, follow these steps:
 
 7. Test the API using a tool like Postman or by accessing the endpoints directly from a client application.
 
-## Contributing
-
-Contributions to the project are welcome! If you find any issues, have suggestions for improvements, or would like to add new features, please follow the standard GitHub workflow for submitting pull requests. Be sure to include clear descriptions and any necessary supporting documentation.
-
-## License
-
-The project is available under the [MIT License](https://opensource.org/licenses/MIT). Please review the license file for more details.
-
-## Contact
-
-For any questions or inquiries about the project, please contact the project maintainers at [email@example.com](mailto:email@example.com).
