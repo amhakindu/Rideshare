@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rideshare.WebApi", "Rideshare.WebApi\Rideshare.WebApi.csproj", "{5B75378C-30E1-4DF4-BA6A-9ED5CF059113}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rideshare.Application", "Rideshare.Application\Rideshare.Application.csproj", "{224136C8-52E8-4C3E-A1DE-2B15D4EDF46F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rideshare.Domain", "Rideshare.Domain\Rideshare.Domain.csproj", "{F200FB58-3EE0-4ECB-BCD8-978C167E055D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rideshare.Persistence", "Rideshare.Persistence\Rideshare.Persistence.csproj", "{AAF7FAA6-D2DF-447A-ABC2-6A5E7128CD87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rideshare.Infrastructure", "Rideshare.Infrastructure\Rideshare.Infrastructure.csproj", "{D1ED0474-61E7-41B9-B4B4-6E12E930624C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rideshare.UnitTests", "Rideshare.UnitTests\Rideshare.UnitTests.csproj", "{5693CE57-7200-438A-B35C-5EA3CDB37A71}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5B75378C-30E1-4DF4-BA6A-9ED5CF059113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B75378C-30E1-4DF4-BA6A-9ED5CF059113}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B75378C-30E1-4DF4-BA6A-9ED5CF059113}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B75378C-30E1-4DF4-BA6A-9ED5CF059113}.Release|Any CPU.Build.0 = Release|Any CPU
+		{224136C8-52E8-4C3E-A1DE-2B15D4EDF46F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{224136C8-52E8-4C3E-A1DE-2B15D4EDF46F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{224136C8-52E8-4C3E-A1DE-2B15D4EDF46F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{224136C8-52E8-4C3E-A1DE-2B15D4EDF46F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F200FB58-3EE0-4ECB-BCD8-978C167E055D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F200FB58-3EE0-4ECB-BCD8-978C167E055D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F200FB58-3EE0-4ECB-BCD8-978C167E055D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F200FB58-3EE0-4ECB-BCD8-978C167E055D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAF7FAA6-D2DF-447A-ABC2-6A5E7128CD87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAF7FAA6-D2DF-447A-ABC2-6A5E7128CD87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAF7FAA6-D2DF-447A-ABC2-6A5E7128CD87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAF7FAA6-D2DF-447A-ABC2-6A5E7128CD87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1ED0474-61E7-41B9-B4B4-6E12E930624C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1ED0474-61E7-41B9-B4B4-6E12E930624C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1ED0474-61E7-41B9-B4B4-6E12E930624C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1ED0474-61E7-41B9-B4B4-6E12E930624C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5693CE57-7200-438A-B35C-5EA3CDB37A71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5693CE57-7200-438A-B35C-5EA3CDB37A71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5693CE57-7200-438A-B35C-5EA3CDB37A71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5693CE57-7200-438A-B35C-5EA3CDB37A71}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
