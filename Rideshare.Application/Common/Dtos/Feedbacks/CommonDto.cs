@@ -1,15 +1,14 @@
-﻿using Rideshare.Domain.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rideshare.Domain.Entities
+namespace Rideshare.Application.Common.Dtos.Feedbacks
 {
-    public class Feedback: BaseEntity
+    public class CommonDto
     {
-        public int UserId { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public float Rating { get; set; }
