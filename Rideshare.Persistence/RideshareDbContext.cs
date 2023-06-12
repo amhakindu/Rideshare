@@ -10,6 +10,9 @@ public class RideshareDbContext: IdentityDbContext<User>
 {
 
     public DbSet<TestEntity> TestEntities{ get; set; }
+    public DbSet<RideRequest> RideRequests{ get; set; }
+
+
     public RideshareDbContext(DbContextOptions<RideshareDbContext> options)
         : base(options)
     {
@@ -20,6 +23,7 @@ public class RideshareDbContext: IdentityDbContext<User>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.HasPostgresExtension("postgis");
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(RideshareDbContext).Assembly);
     }
 
