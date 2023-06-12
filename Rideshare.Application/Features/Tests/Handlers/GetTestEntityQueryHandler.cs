@@ -4,6 +4,7 @@ using Rideshare.Application.Features.Tests.Queries;
 using Rideshare.Application.Responses;
 using MediatR;
 using Rideshare.Application.Common.Dtos.Tests;
+using Rideshare.Application.Exceptions;
 
 namespace Rideshare.Application.Features.Movies.CQRS.Handlers
 {
@@ -20,11 +21,15 @@ namespace Rideshare.Application.Features.Movies.CQRS.Handlers
         public async Task<BaseResponse<TestEntityDto>> Handle(GetTestEntityQuery query, CancellationToken cancellationToken)
         {
             var response = new BaseResponse<TestEntityDto>();
-            var movie = await _unitOfWork.TestEntityRepository.Get(query.TestEntityID);
-            response.Success = true;
-            response.Message = "Movie retrieval Successful";
-            response.Value = _mapper.Map<TestEntityDto>(movie);
-            return response;
+            var testEntity = await _unitOfWork.TestEntityRepository.Get(query.TestEntityID);
+            if(testEntity == null)
+                throw new NotFoundException($"TestEntity with ID {query.TestEntityID} does not exist");
+
+            return new BaseResponse<TestEntityDto>{
+                Success = true,
+                Message = "TestEntity Retrieval Successful",
+                Value = _mapper.Map<TestEntityDto>(testEntity)
+            };
         }
     }
 }
