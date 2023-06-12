@@ -25,6 +25,17 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
+    private IVehicleRepository? _VehicleRepository;
+    public IVehicleRepository VehicleRepository
+    {
+        get
+        {
+            if (_VehicleRepository == null)
+                _VehicleRepository = new VehicleRepository(_context);
+            return _VehicleRepository;
+        }
+    }
+
     public void Dispose()
     {
         _context.Dispose();
