@@ -2,8 +2,10 @@
 using MediatR;
 using Rideshare.Application.Common.Dtos.Vehicles;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Vehicles.Queries;
 using Rideshare.Application.Responses;
+using Rideshare.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,18 +27,10 @@ public class GetVehicleQueryHandler : IRequestHandler<GetVehicleQuery, BaseRespo
 
     public async Task<BaseResponse<VehicleDto>> Handle(GetVehicleQuery request, CancellationToken cancellationToken)
     {
-        bool exists = await _unitOfWork.VehicleRepository.Exists(request.VehicleId);
-        if (exists == false)
-        {
-            var error = $"Vehicle with id={request.VehicleId} was not found";
-            return new BaseResponse<VehicleDto>
-            {
-                Success = false,
-                Message = "Vehicle Fetch Failed",
-                Errors = new List<string>() { error }
-            };
-        }
         var vehicle = await _unitOfWork.VehicleRepository.Get(request.VehicleId);
+        if (vehicle == null)
+            throw new NotFoundException($"Vehicle with ID {request.VehicleId} does not exist");
+
         return new BaseResponse<VehicleDto>
         {
             Success = true,

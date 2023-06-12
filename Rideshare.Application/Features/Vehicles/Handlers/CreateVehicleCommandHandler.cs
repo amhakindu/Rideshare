@@ -31,14 +31,7 @@ public class CreateVehicleCommandHandler : IRequestHandler<CreateVehicleCommand,
         var validationResult = await validator.ValidateAsync(request.VehicleDto);
 
         if (validationResult.IsValid == false)
-        {
-            return new BaseResponse<Nullable<int>>
-            {
-                Success = false,
-                Message = "Vehicle Creation Failed",
-                Errors = validationResult.Errors.Select(error => error.ErrorMessage).ToList()
-            };
-        }
+            throw new ValidationException(validationResult.Errors.Select(e => e.ErrorMessage).ToList().First());
 
         Vehicle newVehicle = _mapper.Map<Vehicle>(request.VehicleDto);
 

@@ -29,26 +29,14 @@ public class UpdateVehicleCommandHandler : IRequestHandler<UpdateVehicleCommand,
         var validator = new UpdateVehicleDtoValidator();
         var validationResult = await validator.ValidateAsync(request.VehicleDto);
 
-        var vehicle = await _unitOfWork.VehicleRepository.Get(request.VehicleDto.Id);
+        if (validationResult.IsValid == false)
+            throw new ValidationException(validationResult.Errors.Select(e => e.ErrorMessage).ToList().First());
 
-        if (validationResult.IsValid == false || vehicle == null)
-        {
-            var response = new BaseResponse<Unit>
-            {
-                Success = false,
-                Message = "Vehicle Update Failed"
-            };
-            if (vehicle == null)
-            {
-                var error = $"Vehicle with id={request.VehicleDto.Id} not found";
-                response.Errors.Add(error);
-            }
-            else
-            {
-                response.Errors = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
-            }
-            return response;
-        }
+
+        var vehicle = await _unitOfWork.VehicleRepository.Get(request.VehicleDto.Id);
+        if (vehicle == null)
+            throw new NotFoundException($"Vehicle with ID {request.VehicleDto.Id} does not exist");
+        
 
         vehicle.PlateNumber = request.VehicleDto.PlateNumber ?? vehicle.PlateNumber;
         vehicle.Libre = request.VehicleDto.Libre ?? vehicle.Libre;

@@ -4,11 +4,13 @@ using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Vehicles.Commands;
 using Rideshare.Application.Responses;
+using Rideshare.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Rideshare.Application.Features.Vehicles.Handlers;
 public class DeleteVehicleCommandHandler : IRequestHandler<DeleteVehicleCommand, BaseResponse<Unit>>
@@ -24,19 +26,11 @@ public class DeleteVehicleCommandHandler : IRequestHandler<DeleteVehicleCommand,
 
     public async Task<BaseResponse<Unit>> Handle(DeleteVehicleCommand request, CancellationToken cancellationToken)
     {
-        var Vehicle = await _unitOfWork.VehicleRepository.Get(request.VehicleId);
-        if (Vehicle == null)
-        {
-            var error = $"Vehicle with id={request.VehicleId} was not found";
-            var response = new BaseResponse<Unit>
-            {
-                Success = false,
-                Message = "Vehicle Deletion Failed",
-            };
-            response.Errors.Add(error);
-            return response;
-        }
-        var operations = await _unitOfWork.VehicleRepository.Delete(Vehicle);
+        var vehicle = await _unitOfWork.VehicleRepository.Get(request.VehicleId);
+        if (vehicle == null)
+            throw new NotFoundException($"Vehicle with ID {request.VehicleId} does not exist");
+
+        var operations = await _unitOfWork.VehicleRepository.Delete(vehicle);
 
         if (operations < 1)
         {
