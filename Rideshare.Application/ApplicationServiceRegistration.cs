@@ -16,7 +16,6 @@ public static class ApplicationServicesRegistration
             .WriteTo.File("Log/RideshareErrorLog.txt", rollingInterval: RollingInterval.Day)
             .WriteTo.Console()
             .CreateLogger();
-
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddMediatR(Assembly.GetExecutingAssembly());
         return services;

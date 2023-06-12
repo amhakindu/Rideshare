@@ -1,21 +1,18 @@
-using MediatR;
-using System.Net;
 using Rideshare.Persistence;
 using Rideshare.Application;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Diagnostics;
-using Rideshare.Application.Exceptions;
-using Rideshare.Application.Responses;
 using Serilog;
+using Rideshare.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services
 builder.Services.ConfigureApplicationService();
 builder.Services.ConfigurePersistenceService(builder.Configuration);
+builder.Services.AddTransient<ExceptionHandler>();
+builder.Services.AddHttpContextAccessor();
 builder.Host.UseSerilog();
 
-builder.Services.AddHttpContextAccessor();
 AddSwaggerDoc(builder.Services);
 builder.Services.AddControllers();
 
@@ -46,59 +43,7 @@ app.UseAuthorization();
 
 // Use Serilog for logging
 app.UseSerilogRequestLogging();
-app.UseExceptionHandler(errorApp =>
-{
-    errorApp.Run(async context =>
-    {
-        context.Response.ContentType = "application/json";
-        // Get the exception that occurred
-        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
-
-        // Log the exception
-        Log.Error(exception, "An unhandled exception occurred: ");
-
-        // Return a proper response to client
-        if(exception is ValidationException){
-            context.Response.StatusCode = (int)HttpStatusCode.NotAcceptable;
-            await context.Response.WriteAsJsonAsync<BaseResponse<Unit>>(
-                new BaseResponse<Unit>{
-                    Success=false,
-                    Message="Request Data Validation Failed",
-                    Errors=new List<string>{exception.Message}
-                }
-            );
-            return;
-        }else if(exception is NotFoundException){
-            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-            await context.Response.WriteAsJsonAsync<BaseResponse<Unit>>(
-                new BaseResponse<Unit>{
-                    Success=false,
-                    Message="Resource Not Found",
-                    Errors=new List<string>{exception.Message}
-                }
-            );
-            return;
-        }else if(exception is InternalServerErrorException){
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            await context.Response.WriteAsJsonAsync<BaseResponse<Unit>>(
-                new BaseResponse<Unit>{
-                    Success=false,
-                    Message="Failed to Process Request",
-                    Errors=new List<string>{exception.Message}
-                }
-            );
-            return;
-        }
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        await context.Response.WriteAsJsonAsync<BaseResponse<Unit>>(
-            new BaseResponse<Unit>{
-                Success=false,
-                Message="Failed To Process Request",
-                Errors=new List<string>{exception.Message}
-            }
-        );
-    });
-});
+app.UseMiddleware<ExceptionHandler>();
 
 app.MapControllers();
 
