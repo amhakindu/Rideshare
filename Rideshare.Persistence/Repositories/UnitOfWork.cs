@@ -21,6 +21,8 @@ public class UnitOfWork : IUnitOfWork
 	private IDriverRepository _DriverRepository;
 	private IRateRepository? _RateRepository;
 	
+    private IFeedbackRepository? _FeedbackRepository;
+	
 	
 	public ITestEntityRepository TestEntityRepository
 	{
@@ -60,6 +62,16 @@ public class UnitOfWork : IUnitOfWork
 			return _RateRepository;
 		}
 	}
+    
+    public IFeedbackRepository FeedbackRepository
+    {
+        get
+        {
+            if (_FeedbackRepository == null)
+                _FeedbackRepository = new FeedbackRepository(_context);
+            return _FeedbackRepository;
+        }
+    }
 
 	public void Dispose()
 	{
