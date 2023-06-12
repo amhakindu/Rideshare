@@ -26,7 +26,7 @@ namespace Rideshare.WebApi.Controllers
         {
             var result = await _mediator.Send(new GetFeedbackListQuery {  });
             var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
-            return getResponse<BaseResponse<List<FeedbackDto>>>(status, result);
+            return getResponse(status, result);
         }
 
         [HttpGet("{id}")]
@@ -34,7 +34,7 @@ namespace Rideshare.WebApi.Controllers
         {
             var result = await _mediator.Send(new GetFeedbackDetailQuery { Id = id });
             var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
-            return getResponse<BaseResponse<FeedbackDto>>(status, result);
+            return getResponse(status, result);
         }
 
         [HttpPost]
@@ -43,7 +43,7 @@ namespace Rideshare.WebApi.Controllers
             var result = await _mediator.Send(new CreateFeedBackCommand { feedbackDto = feedbackDto });
 
             var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
-            return getResponse<BaseResponse<Unit>>(status, result);
+            return getResponse(status, result);
         }
 
         [HttpPut]
@@ -52,7 +52,7 @@ namespace Rideshare.WebApi.Controllers
             var result = await _mediator.Send(new UpdateFeedbackCommand { feedbackDto = feedbackDto });
 
             var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
-            return getResponse<BaseResponse<Unit>>(status, result);
+            return getResponse(status, result);
         }
 
         [HttpDelete]
@@ -60,7 +60,8 @@ namespace Rideshare.WebApi.Controllers
         {
             var result = await _mediator.Send(new DeleteFeedbackCommand { Id = id });
             var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
-            return getResponse<BaseResponse<Unit>>(status, result);
+            return getResponse(status, result);
         }
+
     }
 }
