@@ -13,7 +13,7 @@ namespace Rideshare.WebApi.Controllers;
 [Route("api/[controller]")]
 public class TestController : BaseApiController
 {
-    public TestController(IMediator mediator, IUnitOfWork unitOfWork) : base(mediator, unitOfWork)
+    public TestController(IMediator mediator) : base(mediator)
     {
     }
 

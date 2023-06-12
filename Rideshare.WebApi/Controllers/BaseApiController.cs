@@ -8,12 +8,10 @@ namespace Rideshare.WebApi.Controllers;
 public class BaseApiController : ControllerBase
 {
     protected readonly IMediator _mediator;
-    private readonly IUnitOfWork _unitOfWork;
 
-    public BaseApiController(IMediator mediator, IUnitOfWork unitOfWork)
+    public BaseApiController(IMediator mediator)
     {
         _mediator = mediator;
-        _unitOfWork = unitOfWork;
     }
 
     public ActionResult getResponse<T>(HttpStatusCode status, T? payload){
