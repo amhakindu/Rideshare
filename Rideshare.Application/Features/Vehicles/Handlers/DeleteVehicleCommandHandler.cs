@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Vehicles.Commands;
 using Rideshare.Application.Responses;
 using System;
@@ -37,14 +38,9 @@ public class DeleteVehicleCommandHandler : IRequestHandler<DeleteVehicleCommand,
         }
         var operations = await _unitOfWork.VehicleRepository.Delete(Vehicle);
 
-        if (operations > 0)
+        if (operations < 1)
         {
-            return new BaseResponse<Unit>
-            {
-                Success = false,
-                Message = "Vehicle Deletion Failed",
-                Errors = new List<string>() { "Failed to save to database" }
-            };
+            throw new InternalServerErrorException("Unable to Save to Database");
         }
 
         return new BaseResponse<Unit>()

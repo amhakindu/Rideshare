@@ -2,6 +2,7 @@
 using MediatR;
 using Rideshare.Application.Common.Dtos.Vehicles.Validators;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Vehicles.Commands;
 using Rideshare.Application.Responses;
 using Rideshare.Domain.Entities;
@@ -43,14 +44,9 @@ public class CreateVehicleCommandHandler : IRequestHandler<CreateVehicleCommand,
 
         int operations = await _unitOfWork.VehicleRepository.Add(newVehicle);
 
-        if (operations > 0)
+        if (operations < 1)
         {
-            return new BaseResponse<Nullable<int>>
-            {
-                Success = false,
-                Message = "Vehicle Creation Failed",
-                Errors = new List<string>() { "Failed to save to database" }
-            };
+            throw new InternalServerErrorException("Unable to Save to Database");
         }
 
         return new BaseResponse<Nullable<int>>

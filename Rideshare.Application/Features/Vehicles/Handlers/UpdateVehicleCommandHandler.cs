@@ -2,6 +2,7 @@
 using MediatR;
 using Rideshare.Application.Common.Dtos.Vehicles.Validators;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Vehicles.Commands;
 using Rideshare.Application.Responses;
 using System;
@@ -55,14 +56,9 @@ public class UpdateVehicleCommandHandler : IRequestHandler<UpdateVehicleCommand,
 
         int operations = await _unitOfWork.VehicleRepository.Update(vehicle);
 
-        if (operations > 0)
+        if (operations < 1)
         {
-            return new BaseResponse<Unit>
-            {
-                Success = false,
-                Message = "Vehicle Update Failed",
-                Errors = new List<string>() { "Failed to save to database" }
-            };
+            throw new InternalServerErrorException("Unable to Save to Database");
         }
 
         return new BaseResponse<Unit>
