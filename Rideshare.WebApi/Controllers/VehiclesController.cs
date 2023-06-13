@@ -49,8 +49,8 @@ public class VehiclesController : BaseApiController
         return getResponse(status, result);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Put([FromBody] UpdateVehicleDto updateVehicleDto)
+    [HttpPatch]
+    public async Task<IActionResult> Patch([FromBody] UpdateVehicleDto updateVehicleDto)
     {
         var result = await _mediator.Send(new UpdateVehicleCommand { VehicleDto = updateVehicleDto });
 

@@ -10,6 +10,9 @@ internal class UpdateVehicleDtoValidator : AbstractValidator<UpdateVehicleDto>
 {
     public UpdateVehicleDtoValidator()
     {
+        RuleFor(vehicle => vehicle.Id)
+            .NotNull().WithMessage("{PropertyName} is required")
+            .NotEmpty().WithMessage("{PropertyName} cannot be empty");
     }
 }
 
