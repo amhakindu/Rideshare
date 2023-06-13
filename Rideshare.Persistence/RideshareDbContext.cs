@@ -28,22 +28,23 @@ public class RideshareDbContext: IdentityDbContext<User>
         
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(RideshareDbContext).Assembly);
     }
-     
+
+	public DbSet<RateEntity> RateEntities{ get; set; }
 
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
+	public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+	{
 
-        foreach (var entry in ChangeTracker.Entries<BaseEntity>())
-        {
-            entry.Entity.LastModifiedDate = DateTime.Now;
+		foreach (var entry in ChangeTracker.Entries<BaseEntity>())
+		{
+			entry.Entity.LastModifiedDate = DateTime.Now;
 
-            if (entry.State == EntityState.Added)
-            {
-                entry.Entity.DateCreated = DateTime.Now;
-            }
-        }
+			if (entry.State == EntityState.Added)
+			{
+				entry.Entity.DateCreated = DateTime.Now;
+			}
+		}
 
-        return base.SaveChangesAsync(cancellationToken);
-    }
+		return base.SaveChangesAsync(cancellationToken);
+	}
 }
