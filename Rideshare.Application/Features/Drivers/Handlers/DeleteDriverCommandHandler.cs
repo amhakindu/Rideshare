@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Drivers.Commands;
 using Rideshare.Application.Responses;
 using System;
@@ -26,35 +27,26 @@ namespace Rideshare.Application.Features.Drivers.Handlers
         }
 
 
-        public async  Task<BaseResponse<Unit>> Handle(DeleteDriverCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<Unit>> Handle(DeleteDriverCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseResponse<Unit>();
 
             var driver = await _unitOfWork.DriverRepository.Get(request.Id);
-            
-            if(driver == null)
-            {
-                response.Success = false;
-                response.Message = "Deletion Failed";
 
-            }
-            else
-            {
-                if (await _unitOfWork.DriverRepository.Delete(driver) > 0)
-                {
-                    response.Success = true;
-                    response.Message = "Deletion Succeeded";
-                    response.Value = Unit.Value;
-                }
-                else
-                {
-                    response.Success = false;
-                    response.Message = "Deletion Failed";
-                }
-            }
+            if (driver == null)
+                throw new NotFoundException("Resource Not Found");
+
+
+            if (await _unitOfWork.DriverRepository.Delete(driver) == 0)
+                throw new InternalServerErrorException("Database Error: Unable To Save");
+
+            response.Success = true;
+            response.Message = "Deletion Succeeded";
+            response.Value = Unit.Value;
+
 
             return response;
-            
+
         }
     }
 }

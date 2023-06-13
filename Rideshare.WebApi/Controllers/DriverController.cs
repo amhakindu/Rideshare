@@ -18,11 +18,9 @@ namespace Rideshare.WebApi.Controllers
     {
 
         private readonly IMediator _mediator;
-        private readonly IUnitOfWork _unitOfWork;
-        public DriverController(IMediator mediator, IUnitOfWork unitOfWork) : base(mediator, unitOfWork)
+        public DriverController(IMediator mediator) : base(mediator)
         {
             _mediator = mediator;
-            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]

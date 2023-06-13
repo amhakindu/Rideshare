@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Rideshare.Application.Common.Dtos.Drivers;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Drivers.Queries;
 using Rideshare.Application.Responses;
 using Rideshare.Domain.Entities;
@@ -31,14 +32,17 @@ namespace Rideshare.Application.Features.Drivers.Handlers
 
             var driver = await _unitOfWork.DriverRepository.Get(request.Id);
 
+            if (driver == null)
+                throw new NotFoundException("Resource Not Found");
 
-            
-                response.Success = true;
-                response.Message = "Fetch Successful";
-                response.Value = _mapper.Map<DriverDetailDto>(driver);
 
-            
-            
+
+            response.Success = true;
+            response.Message = "Fetch Successful";
+            response.Value = _mapper.Map<DriverDetailDto>(driver);
+
+
+
 
             return response;
         }

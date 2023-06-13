@@ -2,6 +2,7 @@
 using MediatR;
 using Rideshare.Application.Common.Dtos.Drivers.Validators;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Drivers.Commands;
 using Rideshare.Application.Responses;
 using Rideshare.Domain.Entities;
@@ -23,7 +24,7 @@ namespace Rideshare.Application.Features.Drivers.Handlers
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            
+
         }
 
         public async Task<BaseResponse<int>> Handle(CreateDriverCommand request, CancellationToken cancellationToken)
@@ -34,30 +35,20 @@ namespace Rideshare.Application.Features.Drivers.Handlers
             var validationResult = await validator.ValidateAsync(request.CreateDriverDto);
 
             if (!validationResult.IsValid)
-            {
-                response.Success = false;
-                response.Message = "Creation Failed";
-                response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
+                throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());
 
-            }
-            else
-            {
-                var driver = _mapper.Map<Driver>(request.CreateDriverDto);
 
-                if (await _unitOfWork.DriverRepository.Add(driver) > 0)
-                {
-                    response.Success = true;
-                    response.Message = "Creation Succesful";
-                    response.Value = driver.Id;
-                }
-                else
-                {
+            var driver = _mapper.Map<Driver>(request.CreateDriverDto);
 
-                    response.Success = false;
-                    response.Message = "Creation Failed";
-                }
+            if (await _unitOfWork.DriverRepository.Add(driver) == 0)
+                throw new InternalServerErrorException("Database Error: Unable To Save");
 
-            }
+            response.Success = true;
+            response.Message = "Creation Succesful";
+            response.Value = driver.Id;
+
+
+
             return response;
 
 

@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Rideshare.Application.Common.Dtos.Drivers.Validators;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Drivers.Commands;
 using Rideshare.Application.Responses;
 using System;
@@ -22,7 +23,7 @@ namespace Rideshare.Application.Features.Drivers.Handlers
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            
+
         }
 
         public async Task<BaseResponse<Unit>> Handle(UpdateDriverCommand request, CancellationToken cancellationToken)
@@ -32,43 +33,27 @@ namespace Rideshare.Application.Features.Drivers.Handlers
 
             var validationResult = await validator.ValidateAsync(request.UpdateDriverDto);
 
+
             if (!validationResult.IsValid)
-            {
-                response.Success = false;
-                response.Message = "Update Failed";
-                response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
-            }
-            else
-            {
-                var driver = await _unitOfWork.DriverRepository.Get(request.UpdateDriverDto.Id);
+                throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());
 
-                if (driver != null )
-                {
-                    _mapper.Map(request.UpdateDriverDto, driver);
-                    if (await _unitOfWork.DriverRepository.Update(driver) > 0)
-                    {
-                        response.Success = true;
-                        response.Message = "Update Successful";
-                        response.Value = Unit.Value;
+            var driver = await _unitOfWork.DriverRepository.Get(request.UpdateDriverDto.Id);
 
-                    }
-                    else
-                    {
-                        response.Success = false;
-                        response.Message = "Update Failed";
-                    }
+            if (driver == null)
+                throw new NotFoundException("Resource Not Found");
+
+            _mapper.Map(request.UpdateDriverDto, driver);
+
+            if (await _unitOfWork.DriverRepository.Update(driver) == 0)
+                throw new InternalServerErrorException("Database Error: Unable To Save");
+
+
+            response.Success = true;
+            response.Message = "Update Successful";
+            response.Value = Unit.Value;
 
 
 
-                }
-                else
-                {
-                    response.Success = false;
-                    response.Message = "Update Failed";
-                    response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
-
-                }
-            }
             return response;
 
 
