@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
 namespace Rideshare.Persistence;
 
-public class RideshareDbContextFactory
+public class RideshareDbContextFactory : IDesignTimeDbContextFactory<RideshareDbContext>
 {
-    public RideshareDbContext CreateDbContext(string[] args)
+    public RideshareDbContext CreateDbContext(string[] args) 
     {
         IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory()+"../Rideshare.WebApi/")
