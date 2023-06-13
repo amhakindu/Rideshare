@@ -35,7 +35,7 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
             {
                
                 response.Message = "Creation Successful";
-                response.Value = value ;
+                response.Value = rideRequest.Id ;
             }
             else
             {

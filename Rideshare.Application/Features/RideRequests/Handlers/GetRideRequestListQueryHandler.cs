@@ -4,6 +4,7 @@ using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.RideRequests.Queries;
 using Rideshare.Application.Responses;
+using Rideshare.Domain.Entities;
 
 namespace Rideshare.Application.Features.RideRequests.Handlers;
 
@@ -21,9 +22,9 @@ public class GetRideRequestListQueryHandler : IRequestHandler<GetRideRequestList
     {
         var response = new BaseResponse<List<RideRequestDto>>();
 
-        var rideRequests = await _unitOfWork.RideRequestRepository.GetAll();
+        var rideRequests = (List<RideRequest>)await _unitOfWork.RideRequestRepository.GetAll();
 
-        var  rides =  rideRequests.Select(rideRequest => _mapper.Map<RideRequestDto>(rideRequest)).ToList();
+        var  rides = _mapper.Map<List<RideRequest>, List<RideRequestDto>>(rideRequests);
         response.Message = "Get Successful";
         response.Value = rides;
 
