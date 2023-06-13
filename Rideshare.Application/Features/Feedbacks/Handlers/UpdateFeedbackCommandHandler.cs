@@ -2,6 +2,7 @@
 using MediatR;
 using Rideshare.Application.Common.Dtos.Feedbacks.Validators;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Feedbacks.Commands;
 using Rideshare.Application.Responses;
 using Rideshare.Domain.Entities;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Rideshare.Application.Features.Feedbacks.Handlers
 {
-    public class UpdateFeedbackCommandHandler: IRequestHandler<UpdateFeedbackCommand, BaseResponse<Unit>>
+    public class UpdateFeedbackCommandHandler: IRequestHandler<UpdateFeedbackCommand, BaseResponse<int>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -24,27 +25,26 @@ namespace Rideshare.Application.Features.Feedbacks.Handlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<BaseResponse<Unit>> Handle(UpdateFeedbackCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<int>> Handle(UpdateFeedbackCommand request, CancellationToken cancellationToken)
         {
             var validator = new UpdateFeedbackValidator(_unitOfWork);
             var validatorResult = await validator.ValidateAsync(request.feedbackDto);
-            var resultResponse = new ResultReponse();
 
             if (!validatorResult.IsValid)
             {
-                return resultResponse.ValidationErrorReponse(validatorResult.Errors.Select(q => q.ErrorMessage).ToList());
+                throw new ValidationException(validatorResult.Errors.Select(e => e.ErrorMessage).ToList().First());
             }
-
             var feedback = _mapper.Map<Feedback>(request.feedbackDto);
             var noOperations = await _unitOfWork.FeedbackRepository.Add(feedback);
-            if (noOperations > 0)
+            if (noOperations == 0)
             {
-                return resultResponse.SuccessReponse();
+                throw new InternalServerErrorException("Unable to Save to Database");
             }
-            else
-            {
-                return resultResponse.FailureReponse();
-            }
+            return new BaseResponse<int> {
+                Success = true,
+                Message = "Feedback Creation Successful",
+                Value = request.feedbackDto.Id,
+            };
         }
 
     }

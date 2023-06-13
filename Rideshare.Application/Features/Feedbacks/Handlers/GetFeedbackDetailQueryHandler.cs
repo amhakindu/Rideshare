@@ -2,6 +2,7 @@
 using MediatR;
 using Rideshare.Application.Common.Dtos.Feedbacks;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Feedbacks.Queries;
 using Rideshare.Application.Responses;
 using Rideshare.Domain.Entities;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Rideshare.Application.Features.Feedbacks.Handlers
 {
@@ -30,8 +32,7 @@ namespace Rideshare.Application.Features.Feedbacks.Handlers
 
             if (feedback == null)
             {
-                response.Success = false;
-                response.Message = "feedback not found!";
+                throw new NotFoundException($"Feedback with ID {request.Id} does not exist");
             }
             else
             {

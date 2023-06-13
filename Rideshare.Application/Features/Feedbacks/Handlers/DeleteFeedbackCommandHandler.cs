@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rideshare.Application.Features.Feedbacks.Handlers
 {
-    internal class DeleteFeedbackCommandHandler
+    public class DeleteFeedbackCommandHandler
     {
     }
 }

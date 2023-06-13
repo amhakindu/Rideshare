@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Rideshare.Application.Features.Feedbacks.Commands
 {
-    public class UpdateFeedbackCommand: IRequest<BaseResponse<Unit>>
+    public class UpdateFeedbackCommand: IRequest<BaseResponse<int>>
     {
         public UpdateFeedbackDto feedbackDto { get; set; }
     }

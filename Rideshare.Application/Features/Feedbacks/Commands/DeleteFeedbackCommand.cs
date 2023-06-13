@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Rideshare.Application.Features.Feedbacks.Commands
 {
-    public class DeleteFeedbackCommand: IRequest<BaseResponse<Unit>>
+    public class DeleteFeedbackCommand: IRequest<BaseResponse<int>>
     {
         public int Id { get; set; }
     }

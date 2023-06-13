@@ -17,7 +17,7 @@ namespace Rideshare.WebApi.Controllers
     [Route("api/[controller]")]
     public class Feedback: BaseApiController
     {
-        public Feedback(IMediator mediator, IUnitOfWork unitOfWork) : base(mediator, unitOfWork)
+        public Feedback(IMediator mediator, IUnitOfWork unitOfWork) : base(mediator)
         {
         }
 
