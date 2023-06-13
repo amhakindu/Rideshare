@@ -15,12 +15,12 @@ using System.Threading.Tasks;
 
 namespace Rideshare.Application.Features.Drivers.Handlers
 {
-    public class GetDriverCommandHandler : IRequestHandler<GetDriverRequest, BaseResponse<DriverDetailDto>>
+    public class GetDriverRequestHandler : IRequestHandler<GetDriverRequest, BaseResponse<DriverDetailDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetDriverCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
+        public GetDriverRequestHandler(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;

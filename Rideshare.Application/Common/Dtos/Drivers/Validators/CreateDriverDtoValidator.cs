@@ -11,11 +11,7 @@ namespace Rideshare.Application.Common.Dtos.Drivers.Validators
     {
         public CreateDriverDtoValidator()
         {
-            RuleFor(entity => entity.Name)
-            .NotEmpty().WithMessage("Name is required.");
 
-            RuleFor(entity => entity.Rate)
-                .GreaterThan(0).WithMessage("Rate must be greater than zero.").LessThan(11).WithMessage("Rate must be less than 11");
 
             RuleFor(entity => entity.Experience)
                 .GreaterThanOrEqualTo(0).WithMessage("Experience must be a non-negative value.");

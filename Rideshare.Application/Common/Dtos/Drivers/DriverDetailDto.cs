@@ -13,8 +13,8 @@ namespace Rideshare.Application.Common.Dtos.Drivers
         public User User { get; set; } = new User();
         public int Rate { get; set; }
         public double Experience { get; set; }
-        public string Address { get; set; } = string.Empty;
-        public string LicenseNumber { get; set; } = string.Empty;
-        public string License { get; set; } = string.Empty;
+        public string Address { get; set; } 
+        public string LicenseNumber { get; set; }
+        public string License { get; set; }
     }
 }
