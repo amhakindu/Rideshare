@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
 namespace Rideshare.Persistence;
 
-public class RideshareDbContextFactory
+public class RideshareDbContextFactory : IDesignTimeDbContextFactory<RideshareDbContext> 
 {
     public RideshareDbContext CreateDbContext(string[] args)
     {
