@@ -29,7 +29,7 @@ namespace Rideshare.Application.Features.Feedbacks.Handlers
 
         public async Task<BaseResponse<int>> Handle(CreateFeedBackCommand request, CancellationToken cancellationToken)
         {
-            var validator = new CreateFeedbackValidator();
+            var validator = new CreateFeedbackValidator(_unitOfWork);
 
             var validatorResult = await validator.ValidateAsync(request.feedbackDto);
 
