@@ -16,14 +16,16 @@ namespace Rideshare.WebApi.Controllers;
 [Route("api/[controller]")]
 public class VehiclesController : BaseApiController
 {
-    public VehiclesController(IMediator mediator, IUnitOfWork unitOfWork) : base(mediator, unitOfWork)
+    public IUnitOfWork _unitOfWork { get; set; }
+    public VehiclesController(IMediator mediator, IUnitOfWork unitOfWork) : base(mediator)
     {
+        _unitOfWork = unitOfWork;
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
-        var result = await _mediator.Send(new GetVehicleQuery { VehicleID = id });
+        var result = await _mediator.Send(new GetVehicleQuery { VehicleId = id });
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);
@@ -59,7 +61,7 @@ public class VehiclesController : BaseApiController
     [HttpDelete]
     public async Task<IActionResult> Delete(int id)
     {
-        var result = await _mediator.Send(new UpdateVehicleCommand { VehicleId = id });
+        var result = await _mediator.Send(new DeleteVehicleCommand { VehicleId = id });
 
         var status = result.Success ? HttpStatusCode.NoContent : HttpStatusCode.NotFound;
         return getResponse(status, result);
