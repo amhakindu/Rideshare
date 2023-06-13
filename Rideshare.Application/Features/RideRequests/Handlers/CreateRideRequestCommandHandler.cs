@@ -39,7 +39,7 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
             }
             else
             {
-                throw new InternalServerErrorException("Unable to create the ride request");
+                throw new InternalServerErrorException($"{value}Unable to create the ride request");
             }
         }
         else

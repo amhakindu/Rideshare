@@ -19,12 +19,7 @@ public class RideshareDbContext: IdentityDbContext<User>
         AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder builder)
-{
-    builder.UseNpgsql("User ID=postgres;Password=1234;Server=localhost;Port=5432;Database=ridesharedb;Integrated Security=true;Pooling=true;",
-        o => o.UseNetTopologySuite());
-}
-
+ 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasPostgresExtension("postgis");
