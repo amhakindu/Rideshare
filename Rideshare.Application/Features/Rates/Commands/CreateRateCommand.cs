@@ -4,7 +4,7 @@ using Rideshare.Application.Responses;
 
 namespace Rideshare.Application.Features.Rates.Commands
 {
-	public class CreateRateCommand :  IRequest<BaseResponse<Nullable<int>>>
+	public class CreateRateCommand :  IRequest<BaseResponse<int>>
 	{
 		public CreateRateDto RateDto { get; set; }
 	}

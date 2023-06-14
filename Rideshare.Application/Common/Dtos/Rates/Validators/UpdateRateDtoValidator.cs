@@ -1,10 +1,11 @@
 using FluentValidation;
+using Rideshare.Application.Contracts.Persistence;
 
 namespace Rideshare.Application.Common.Dtos.Rates.Validators
 {
 	public class UpdateRateDtoValidator : AbstractValidator<UpdateRateDto>
 	{
-		public UpdateRateDtoValidator()
+		public UpdateRateDtoValidator(IUnitOfWork unitOfWork)
 		{
 			RuleFor(p => p.Rate)
 				.NotNull().WithMessage("{PropertyName} is required.")
@@ -13,8 +14,11 @@ namespace Rideshare.Application.Common.Dtos.Rates.Validators
 			RuleFor(p => p.Description)
 				.NotNull().WithMessage("{PropertyName} is required.")
 				.NotEmpty().WithMessage("{PropertyName} cannot be empty.")
-				.Length(5, 400).WithMessage("{PropertyName} must be between 5 and 400 characters long.")
-				.Matches("^[A-Za-z0-9 ,.-]+$").WithMessage("{PropertyName} must only contain letters, numbers, spaces, commas, dots, or hyphens.");
+				.Length(5, 400).WithMessage("{PropertyName} must be between 5 and 400 characters long.");
+			
+			RuleFor(p => p.Id)
+				.MustAsync(async (id, token) => 
+					await unitOfWork.RateRepository.Exists(id)).WithMessage("Rate With The Given {PropertyName} Does not exist!");
 		}
 	}
 }

@@ -7,7 +7,7 @@ using Rideshare.Application.Responses;
 using Rideshare.Domain.Entities;
 
 namespace Rideshare.Application.Features.Rates.Handlers;
-public class GetRateListQueryHandler : IRequestHandler<GetRateListQuery, BaseResponse<IList<RateDto>>>
+public class GetRateListQueryHandler : IRequestHandler<GetRateListQuery, BaseResponse<List<RateDto>>>
 {
 	private readonly IMapper _mapper;
 	private readonly IUnitOfWork _unitOfWork;
@@ -18,15 +18,18 @@ public class GetRateListQueryHandler : IRequestHandler<GetRateListQuery, BaseRes
 		_unitOfWork = work;
 	}
 
-	public async Task<BaseResponse<IList<RateDto>>> Handle(GetRateListQuery request, CancellationToken cancellationToken)
+	public async Task<BaseResponse<List<RateDto>>> Handle(GetRateListQuery request, CancellationToken cancellationToken)
 	{
 		IReadOnlyList<RateEntity> rates = await _unitOfWork.RateRepository.GetAll();
-
-		var rateDtos = rates.Select(rate => _mapper.Map<RateDto>(rate)).ToList();
-		return new BaseResponse<IList<RateDto>>()
+		
+		
+		// var rateDtos = rates.Select(rate => _mapper.Map<RateDto>(rate)).ToList();
+		var rateDtos = (List<RateDto>)_mapper.Map<IReadOnlyList<RateEntity>, IReadOnlyList<RateDto>>(rates);
+		return new BaseResponse<List<RateDto>>()
 		{
 			Success = true,
-			Value = rateDtos
+			Value = rateDtos,
+			Message = "Rates Fetched Successfully!"
 		};
 	}
 }

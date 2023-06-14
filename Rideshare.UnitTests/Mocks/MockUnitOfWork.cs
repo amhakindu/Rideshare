@@ -1,8 +1,9 @@
 using Moq;
-using Rideshare.Application;
 using Rideshare.Application.Contracts.Persistence;
 
-namespace Rideshare.UnitTests.Mocks
+namespace Rideshare.UnitTests.Mocks;
+
+public class MockUnitOfWork
 {
 	public static class UnitOfWorkMockFactory
 	{

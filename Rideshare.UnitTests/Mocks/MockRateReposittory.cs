@@ -4,13 +4,13 @@ using Rideshare.Domain.Entities;
 
 namespace Rideshare.UnitTests.Mocks
 {
-    public static class MockRateRepository
+	public static class MockRateRepository
 	{
 		public static Mock<IRateRepository> GetRateRepository()
 		{
 			var rates = new List<RateEntity>
 			{
-			   new RateEntity
+			   new ()
 				{
 					Id = 1,
 					Rate = 5.4,
@@ -19,7 +19,7 @@ namespace Rideshare.UnitTests.Mocks
 					Description = "Description 2",
 				},
 
-				 new RateEntity
+				 new ()
 				{
 					Id = 2,
 					Rate = 2.4,
@@ -29,7 +29,7 @@ namespace Rideshare.UnitTests.Mocks
 				},
 
 				
-				new RateEntity
+				new ()
 				{
 					Id = 3,
 					Rate = 4.4,
@@ -71,9 +71,12 @@ namespace Rideshare.UnitTests.Mocks
 
             });
 
+            mockRepo.Setup(r => r.Get(It.IsAny<int>())).ReturnsAsync((int id) =>
+            {
+                return rates.FirstOrDefault((r) => r.Id == id);
+            });
 
             return mockRepo;
-
         }
     }
 }

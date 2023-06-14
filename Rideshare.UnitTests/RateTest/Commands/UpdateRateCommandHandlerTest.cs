@@ -1,58 +1,72 @@
 using AutoMapper;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Profiles;
-using MediatR;
 using Moq;
-using Shouldly;
-using Rideshare.Application.Features.Rates.Commands;
-using Rideshare.UnitTests.Mocks;
 using Rideshare.Application.Common.Dtos.Rates;
+using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
+using Rideshare.Application.Features.Rates.Commands;
 using Rideshare.Application.Features.Rates.Handlers;
-using Rideshare.Application.Responses;
+using Rideshare.Application.Features.Rates.Queries;
+using Rideshare.Application.Profiles;
+using Rideshare.UnitTests.Mocks;
+using Shouldly;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Xunit;
 
-namespace Rideshare.UnitTests.RateTest.Commands
+namespace Rideshare.UnitTests.RateTest
 {
-    public class UpdateRateCommandHandlerTest
-    {
-        private readonly IMapper _mapper;
-        private readonly Mock<IUnitOfWork> _mockRepo;
-        private readonly UpdateRateDto _rateDto;
-        private readonly UpdateRateCommandHandler _handler;
-        public UpdateRateCommandHandlerTest()
-        {
-            _mockRepo = MockUnitOfWork.GetUnitOfWork();
-            var mapperConfig = new MapperConfiguration(c =>
-            {
-                c.AddProfile<MappingProfile>();
-            });
-            _mapper = mapperConfig.CreateMapper();
+	public class UpdateRateCommandHandlerTest
+	{
+		private IMapper _mapper { get; set; }
+		private Mock<IUnitOfWork> _mockUnitOfWork { get; set; }
+		private UpdateRateCommandHandler _handler { get; set; }
 
-            _rateDto = new UpdateRateDto
-            {
-                Id = 1,
-                Rate = 4.5,
-                Description = "Some description"      };
+		public UpdateRateCommandHandlerTest()
+		{
+			_mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
+			_mapper = new MapperConfiguration(c =>
+			{
+				c.AddProfile<MappingProfile>();
+			}).CreateMapper();
 
-            _handler = new UpdateRateCommandHandler(_mapper, _mockRepo.Object);
+			_handler = new UpdateRateCommandHandler(_mockUnitOfWork.Object, _mapper);
+		}
 
-        }
+		[Fact]
+		public async Task UpdateRateValid()
+		{
+
+			var rateDto = new UpdateRateDto()
+			{
+				Id = 1,
+				Rate = 3.7,
+				Description = "Description 1 Edited!"
+			};
+			await _handler.Handle(new UpdateRateCommand() { RateDto = rateDto }, CancellationToken.None);
+			var rate = await _mockUnitOfWork.Object.RateRepository.Get(rateDto.Id);
+			rate.Description.ShouldBe(rateDto.Description);
+			rate.Rate.ShouldBe(rateDto.Rate);
 
 
-        [Fact]
-        public async Task Update_With_Invalid_RateDescription()
-        {
+		}
 
-            _rateDto.Description = "";
-            var result = await _handler.Handle(new UpdateRateCommand() { RateDto = _rateDto }, CancellationToken.None);
-            result.ShouldBeOfType<BaseResponse<Unit>>();
-            result.Success.ShouldBeFalse();
+		[Fact]
+		public async Task UpdateRateInvalid()
+		{
+			// mising required values while updating.
+			var rateDto = new UpdateRateDto()
+			{
+				Id = 10,
+				Description = "description 10.",
+			};
 
-            result.Errors.ShouldNotBeEmpty();
-            var rates = await _mockRepo.Object.RateRepository.GetAll();
-            rates.Count.ShouldBe(2);
-
-        }
-
-    }
+			ValidationException ex = await Should.ThrowAsync<ValidationException>(async () =>
+			{
+				var result = await _handler.Handle(new UpdateRateCommand() { RateDto = rateDto }, CancellationToken.None);
+			});
+		}
+	}
 }
-

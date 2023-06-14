@@ -5,7 +5,7 @@ using Rideshare.Application.Responses;
 
 namespace Rideshare.Application.Features.Rates.Commands
 {
-	public class UpdateRateCommand : IRequest<BaseResponse<Unit>>
+	public class UpdateRateCommand : IRequest<BaseResponse<int>>
 	{
 		public UpdateRateDto RateDto { get; set; }
 	}

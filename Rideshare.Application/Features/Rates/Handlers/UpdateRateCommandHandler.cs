@@ -2,66 +2,45 @@ using AutoMapper;
 using MediatR;
 using Rideshare.Application.Common.Dtos.Rates.Validators;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Rates.Commands;
 using Rideshare.Application.Responses;
+using Rideshare.Domain.Entities;
 
-namespace Rideshare.Application.Features.Rates.Handlers;
-public class UpdateRateCommandHandler : IRequestHandler<UpdateRateCommand, BaseResponse<Unit>>
+namespace Rideshare.Application.Features.Rates.Handlers
 {
-    private readonly IMapper _mapper;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public UpdateRateCommandHandler(IMapper mapper, IUnitOfWork work)
+    public class UpdateRateCommandHandler: IRequestHandler<UpdateRateCommand, BaseResponse<int>>
     {
-        _mapper = mapper;
-        _unitOfWork = work;
-    }
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-    public async Task<BaseResponse<Unit>> Handle(UpdateRateCommand request, CancellationToken cancellationToken)
-    {
-        var validator = new UpdateRateDtoValidator();
-        var validationResult = await validator.ValidateAsync(request.RateDto);
-
-        var rate = await _unitOfWork.RateRepository.Get(request.RateDto.Id);
-
-        if (validationResult.IsValid == false || rate == null)
+        public UpdateRateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            var response = new BaseResponse<Unit>
-            {
-                Success = false,
-                Message = "Rate Update Failed"
-            };
-            if (rate == null)
-            {
-                var error = $"Rate with id={request.RateDto.Id} does not found";
-                response.Errors.Add(error);
-            }
-            else
-            {
-                response.Errors = validationResult.Errors.Select(error => error.ErrorMessage).ToList();
-            }
-            return response;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
-        rate.Rate = request.RateDto.Rate;
-        rate.Id = request.RateDto.Id;
-        rate.Description = request.RateDto.Description ?? rate.Description;
-
-        int operations = await _unitOfWork.RateRepository.Update(rate);
-
-        if (operations > 0)
+        public async Task<BaseResponse<int>> Handle(UpdateRateCommand request, CancellationToken cancellationToken)
         {
-            return new BaseResponse<Unit>
+            var validator = new UpdateRateDtoValidator(_unitOfWork);
+            var validatorResult = await validator.ValidateAsync(request.RateDto);
+
+            if (!validatorResult.IsValid)
             {
+                throw new ValidationException(validatorResult.Errors.Select(e => e.ErrorMessage).ToList().First());
+            }
+            var rate = _mapper.Map<RateEntity>(request.RateDto);
+            var noOperations = await _unitOfWork.RateRepository.Update(rate);
+            if (noOperations == 0)
+            {
+                throw new InternalServerErrorException("Unable to Save to Database");
+            }
+            return new BaseResponse<int> {
                 Success = true,
-                Message = "Rate Updated Successfully",
+                Message = "Rate Creation Successful",
+                Value = request.RateDto.Id,
             };
         }
 
-        return new BaseResponse<Unit>
-        {
-            Success = true,
-            Message = "Rate Updated Successfully",
-        };
     }
 }

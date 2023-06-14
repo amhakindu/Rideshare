@@ -1,50 +1,55 @@
 using AutoMapper;
 using MediatR;
+using Rideshare.Application.Common.Dtos.Rates.Validators;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Rates.Commands;
 using Rideshare.Application.Responses;
+using Rideshare.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Rideshare.Application.Features.Rates.Handlers;
-public class DeleteRateCommandHandler : IRequestHandler<DeleteRateCommand, BaseResponse<Unit>>
+namespace Rideshare.Application.Features.Rates.Handlers
 {
-    private readonly IMapper _mapper;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public DeleteRateCommandHandler(IMapper mapper, IUnitOfWork work)
+    public class DeleteRateCommandHandler : IRequestHandler<DeleteRateCommand, BaseResponse<int>>
     {
-        _mapper = mapper;
-        _unitOfWork = work;
-    }
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-    public async Task<BaseResponse<Unit>> Handle(DeleteRateCommand request, CancellationToken cancellationToken)
-    {
-        var Rate = await _unitOfWork.RateRepository.Get(request.RateId);
-        if (Rate == null)
+        public DeleteRateCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            var error = $"Rate with id={request.RateId} does not found";
-            var response = new BaseResponse<Unit>
-            {
-                Success = false,
-                Message = "Rate Deletion Failed",
-            };
-            response.Errors.Add(error);
-            return response;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
-        var operations = await _unitOfWork.RateRepository.Delete(Rate);
-
-        if (operations > 0)
+        public async Task<BaseResponse<int>> Handle(DeleteRateCommand request, CancellationToken cancellationToken)
         {
-            return new BaseResponse<Unit>
+            var validator = new DeleteRateValidator(_unitOfWork);
+            var validatorResult = await validator.ValidateAsync(request.RateId);
+
+            if (!validatorResult.IsValid)
+            {
+                throw new ValidationException(validatorResult.Errors.Select(e => e.ErrorMessage).ToList().First());
+            }
+
+            var rate = await _unitOfWork.RateRepository.Get(request.RateId);
+            if (rate == null)
+            {
+                throw new NotFoundException($"Rate With ID {request.RateId} does not exist");
+            }
+            var operations =  await _unitOfWork.RateRepository.Delete(rate);
+            if (operations == 0)
+            {
+                throw new InternalServerErrorException("Unable to Save to Database");
+            }
+            return new BaseResponse<int>
             {
                 Success = true,
-                Message = "Rate Deleted Successfully",
+                Message = $"Rate With Id {request.RateId} Deleted Successfully",
+                Value = request.RateId,
             };
         }
-
-        return new BaseResponse<Unit>()
-        {
-            Success = true,
-            Message = "Rate Deleted Successfully",
-        };
     }
 }
