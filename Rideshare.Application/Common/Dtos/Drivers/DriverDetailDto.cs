@@ -16,5 +16,6 @@ namespace Rideshare.Application.Common.Dtos.Drivers
         public string Address { get; set; } 
         public string LicenseNumber { get; set; }
         public string License { get; set; }
+        public bool Verified { get; set; }
     }
 }

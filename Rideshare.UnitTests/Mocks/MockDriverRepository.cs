@@ -16,6 +16,7 @@ namespace Rideshare.UnitTests.Mocks
                 Id = 1,
                 License = "abebe_bekele_license",
                 LicenseNumber = "ab343lt",
+                Verified = true,
                 Experience = 4.5,
                 Address = "ShiroMeda",
                 Rate = 3.4,
@@ -27,6 +28,7 @@ namespace Rideshare.UnitTests.Mocks
                 License = "abebe_bekele_license",
                 LicenseNumber = "ab343lt",
                 Experience = 4.5,
+                Verified = false,
                 Address = "ShiroMeda",
                 Rate = 3.4,
             }

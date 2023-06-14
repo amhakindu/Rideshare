@@ -14,6 +14,7 @@ namespace Rideshare.Domain.Entities
         public User User { get; set; } = new User();
         public double Rate { get; set; } = 0;
         public double Experience { get; set; }
+        public bool Verified { get; set; } = false;
         public string Address { get; set; } 
         public string LicenseNumber { get; set; } 
         public string License { get; set; } 
