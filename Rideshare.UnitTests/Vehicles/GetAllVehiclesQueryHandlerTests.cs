@@ -37,6 +37,7 @@ public class GetAllVehiclesQueryHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         result.Value.ShouldNotBe(null);
-        result.Value.Count.ShouldBe(2);
+        var expected = await _mockUnitOfWork.Object.VehicleRepository.GetAll();
+        result.Value.Count.ShouldBe(expected.Count);
     }
 }
