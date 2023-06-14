@@ -40,12 +40,12 @@ public class UpdateRideRequestCommandHandlerTests
         {
             Id=1,
             Origin = new LocationDto(){
-                    x = 20,
-                    y = 20
+                    latitude = 20,
+                    longitude = 20
                 },
                 Destination = new LocationDto(){
-                    x = 10,
-                    y = 10
+                    latitude = 10,
+                    longitude = 10
                 },
             Status =  0,
             CurrentFare = 100

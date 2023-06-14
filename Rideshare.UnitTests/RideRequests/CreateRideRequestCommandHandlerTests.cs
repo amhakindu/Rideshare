@@ -41,12 +41,12 @@ public class CreateRideRequestCommandHandlerTests
               CreateRideRequestDto rideRequestDto = new()
               {
                   Origin = new LocationDto(){
-                    x = 20,
-                    y = 20
+                    latitude = 20,
+                    longitude = 20
                 },
                 Destination = new LocationDto(){
-                    x = 20,
-                    y = 20
+                    latitude = 20,
+                    longitude = 20
                 },
                 Status =  0,
                 CurrentFare = 65,
@@ -67,12 +67,12 @@ public class CreateRideRequestCommandHandlerTests
               CreateRideRequestDto rideRequestDto = new()
               {
                 Origin = new LocationDto(){
-                    x = 20,
-                    y = 20
+                    latitude = 20,
+                    longitude = 20
                 },
                 Destination = new LocationDto(){
-                    x = 20,
-                    y = 20
+                    latitude = 20,
+                    longitude = 20
                 },
                 Status =  0,
                 CurrentFare = 65,

@@ -3,6 +3,6 @@ namespace Rideshare.Application.Common.Dtos.RideRequests;
 public class LocationDto
 {
 
-    public double x { get; set; }
-    public double y {get;set;}
+    public double latitude{ get; set; }
+    public double longitude {get;set;}
 }

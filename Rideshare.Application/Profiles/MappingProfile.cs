@@ -21,7 +21,11 @@ public class MappingProfile: Profile
             CreateMap<RideRequest, RideRequestDto>().ReverseMap();
             CreateMap<RideRequest, CreateRideRequestDto>().ReverseMap();
             CreateMap<RideRequest, UpdateRideRequestDto>().ReverseMap();
-            CreateMap<Point , LocationDto>().ReverseMap();
+            CreateMap<Point , LocationDto>()
+                .ConstructUsing(point => new LocationDto(){latitude=point.Y, longitude=point.X})
+                .ReverseMap()
+                .ConstructUsing(dto => new Point(dto.latitude, dto.longitude));
+
              
             
             #endregion rideRequest

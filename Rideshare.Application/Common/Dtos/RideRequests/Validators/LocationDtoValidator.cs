@@ -6,9 +6,9 @@ public class LocationDtoValidator : AbstractValidator<LocationDto>
 {
     public LocationDtoValidator()
     {
-        RuleFor(point => point.x)
+        RuleFor(point => point.longitude)
             .InclusiveBetween(-180, 180).WithMessage("Invalid {PropertyName} coordinate");
-        RuleFor(point => point.y)
+        RuleFor(point => point.latitude)
             .InclusiveBetween(-90, 90).WithMessage("Invalid {PropertyName} coordinate");
    
     }
