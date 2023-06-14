@@ -22,10 +22,12 @@ public class RideshareDbContext: IdentityDbContext<User>
  
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
         modelBuilder.HasPostgresExtension("postgis");
         base.OnModelCreating(modelBuilder);
-        base.OnModelCreating(modelBuilder);
+        
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(RideshareDbContext).Assembly);
+    }
      
 
 
