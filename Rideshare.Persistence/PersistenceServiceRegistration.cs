@@ -11,8 +11,11 @@ public static class PersistenceServiceRegistration
     public static IServiceCollection ConfigurePersistenceService(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<RideshareDbContext>(opt =>
-        opt.UseNpgsql(configuration.GetConnectionString("RideshareConnectionString")));
+        opt.UseNpgsql(configuration.GetConnectionString("RideshareConnectionString"),o => o.UseNetTopologySuite()
+        .EnableRetryOnFailure()));
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        
 
         return services;
     }

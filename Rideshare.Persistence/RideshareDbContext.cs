@@ -11,18 +11,25 @@ public class RideshareDbContext: IdentityDbContext<User>
 
     public DbSet<TestEntity> TestEntities{ get; set; }
     public DbSet<Driver> Drivers { get; set; }
-    public RideshareDbContext(DbContextOptions<RideshareDbContext> options)
-        : base(options)
+    public DbSet<RideRequest> RideRequests{ get; set; }
+
+
+    public RideshareDbContext(DbContextOptions<RideshareDbContext> options) : base(options)
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
     }
+ 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasPostgresExtension("postgis");
         base.OnModelCreating(modelBuilder);
+        
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(RideshareDbContext).Assembly);
     }
+     
+
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

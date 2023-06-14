@@ -9,8 +9,12 @@ public class MockUnitOfWork
     {
         var mockUow = new Mock<IUnitOfWork>();
         var mockTestEntityRepository = MockTestEntityRepository.GetTestEntityRepository();
+        var mockRideRequestRepository = MockRideRequestRepository.GetRideRequestRepository();
         var mockDriverRepository = MockDriverRepository.GetDriverRepository();
 
+
+        mockUow.Setup(r => r.TestEntityRepository).Returns(mockTestEntityRepository.Object);
+        mockUow.Setup(r => r.RideRequestRepository).Returns(mockRideRequestRepository.Object);
         mockUow.Setup(r => r.TestEntityRepository).Returns(mockTestEntityRepository.Object);
         mockUow.Setup(r => r.DriverRepository).Returns(mockDriverRepository.Object);
 

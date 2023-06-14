@@ -8,6 +8,8 @@ public class UnitOfWork : IUnitOfWork
     private readonly RideshareDbContext _context;
     private readonly IConfiguration _configuration;
 
+    
+
     public UnitOfWork(RideshareDbContext context, IConfiguration configuration)
     {
         _context = context;
@@ -15,6 +17,7 @@ public class UnitOfWork : IUnitOfWork
     }
 
     private ITestEntityRepository? _TestEntityRepository;
+    private IRideRequestRepository? _RideRequestRepository;
 
     private IDriverRepository _DriverRepository;
     public ITestEntityRepository TestEntityRepository
@@ -33,6 +36,16 @@ public class UnitOfWork : IUnitOfWork
             if (_DriverRepository == null)
                 _DriverRepository = new DriverRepository(_context);
             return _DriverRepository;
+        }
+    }
+
+    public IRideRequestRepository RideRequestRepository  
+      {
+        get
+        {
+            if (_RideRequestRepository == null)
+                _RideRequestRepository = new RideRequestRepository(_context);
+            return _RideRequestRepository;
         }
     }
 

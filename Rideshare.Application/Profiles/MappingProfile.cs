@@ -1,4 +1,6 @@
 using AutoMapper;
+using NetTopologySuite.Geometries;
+using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Common.Dtos.Drivers;
 using Rideshare.Application.Common.Dtos.Tests;
 using Rideshare.Domain.Entities;
@@ -21,5 +23,22 @@ public class MappingProfile: Profile
         CreateMap<Driver, CreateDriverDto>().ReverseMap();  
         CreateMap<Driver, UpdateDriverDto>().ReverseMap();
         #endregion Driver Mappings
+        
+
+            #region rideRequest Mappings
+
+            CreateMap<RideRequest, RideRequestDto>().ReverseMap();
+            CreateMap<RideRequest, CreateRideRequestDto>().ReverseMap();
+            CreateMap<RideRequest, UpdateRideRequestDto>().ReverseMap();
+            CreateMap<Point , LocationDto>()
+                .ConstructUsing(point => new LocationDto(){latitude=point.Y, longitude=point.X})
+                .ReverseMap()
+                .ConstructUsing(dto => new Point(dto.latitude, dto.longitude));
+
+             
+            
+            #endregion rideRequest
+
+
     }
 }
