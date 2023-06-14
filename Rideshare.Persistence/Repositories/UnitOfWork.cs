@@ -18,6 +18,8 @@ public class UnitOfWork : IUnitOfWork
 
     private ITestEntityRepository? _TestEntityRepository;
     private IRideRequestRepository? _RideRequestRepository;
+
+    private IDriverRepository _DriverRepository;
     public ITestEntityRepository TestEntityRepository
     {
         get
@@ -25,6 +27,15 @@ public class UnitOfWork : IUnitOfWork
             if (_TestEntityRepository == null)
                 _TestEntityRepository = new TestEntityRepository(_context);
             return _TestEntityRepository;
+        }
+    }
+    public IDriverRepository DriverRepository
+    {
+        get
+        {
+            if (_DriverRepository == null)
+                _DriverRepository = new DriverRepository(_context);
+            return _DriverRepository;
         }
     }
 
