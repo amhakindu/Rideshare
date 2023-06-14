@@ -31,11 +31,6 @@ namespace Rideshare.UnitTests.RateTest.Commands
 			
 			_rateDto = new CreateRateDto();
 
-		}
-
-		[Fact]
-		public async Task CreateRate()
-		{
 			_rateDto = new CreateRateDto
 			{
 				Id = 4,
@@ -45,6 +40,11 @@ namespace Rideshare.UnitTests.RateTest.Commands
 				Description = "Description 1",
 			};
 			
+		}
+
+		[Fact]
+		public async Task CreateRate()
+		{
 			
 			await _handler.Handle(new CreateRateCommand() { RateDto = _rateDto }, CancellationToken.None);
 			// The current rate.
@@ -55,19 +55,33 @@ namespace Rideshare.UnitTests.RateTest.Commands
 
 		}
 
-		// [Fact]
-		// public async Task InvalidRate_Added()
-		// {
-		// 	_rateDto.Rate = 11.0; // Set an invalid rate value
-		// 	var result = await _handler.Handle(new CreateRateCommand() { RateDto = _rateDto }, CancellationToken.None);
-		// 	result.ShouldBeOfType<BaseResponse<int>>();
-		// 	result.Errors.ShouldNotBeNull();
-		// 	var rates = await _mockRepo.Object.RateRepository.GetAll();
-		// 	rates.Count.ShouldBe(2);
-		// }
+		 [Fact]
+        public async Task CreateFeedbackInvalid()
+        {
+            // mising required values
+            var rateDto = new CreateRateDto()
+            {
+                Id = 4,
+				Rate = 12.4,
+				RaterId = 1,
+				DriverId = 3,
+				Description = "Description 1",
 
-	}
+            };
+
+            try
+            {
+                var result = await _handler.Handle(new CreateRateCommand() { RateDto = rateDto }, CancellationToken.None);
+            }
+            catch (Exception ex)
+            {
+                var rate = await _mockRepo.Object.RateRepository.Get(5);
+                rate.ShouldBeNull();
+
+                // count = 3
+                var rates = await _mockRepo.Object.RateRepository.GetAll();
+                rates.Count.ShouldBe(3);
+            }
+        }
+    }
 }
-
-
-
