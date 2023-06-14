@@ -22,5 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rideshare.Application\Rideshare.Application.csproj" />
+    <ProjectReference Include="..\Rideshare.Domain\Rideshare.Domain.csproj" />
   </ItemGroup>
 </Project>
