@@ -5,20 +5,14 @@ using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Rates.Commands;
 using Rideshare.Application.Features.Rates.Handlers;
-using Rideshare.Application.Features.Rates.Queries;
 using Rideshare.Application.Profiles;
 using Rideshare.UnitTests.Mocks;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Rideshare.UnitTests.RateTest
 {
-	public class UpdateRateCommandHandlerTest
+    public class UpdateRateCommandHandlerTest
 	{
 		private IMapper _mapper { get; set; }
 		private Mock<IUnitOfWork> _mockUnitOfWork { get; set; }
@@ -54,7 +48,7 @@ namespace Rideshare.UnitTests.RateTest
 		}
 
 		[Fact]
-		public async Task UpdateRateInvalid()
+		public async Task UpdateRate_Missing_Required_Fields()
 		{
 			// mising required values while updating.
 			var rateDto = new UpdateRateDto()
@@ -68,5 +62,41 @@ namespace Rideshare.UnitTests.RateTest
 				var result = await _handler.Handle(new UpdateRateCommand() { RateDto = rateDto }, CancellationToken.None);
 			});
 		}
+		
+		[Fact]
+		public async Task UpdateRate_InvalidDescriptionLength_ThrowsValidationException()
+		{
+			var rateDto = new UpdateRateDto()
+			{
+				Id = 1,
+				Rate = 4.2,
+				Description = new string('A', 401) // 401 characters is an invalid description length
+			};
+
+			ValidationException ex = await Should.ThrowAsync<ValidationException>(async () =>
+			{
+				await _handler.Handle(new UpdateRateCommand() { RateDto = rateDto }, CancellationToken.None);
+			});
+
+			// Assert the exception message or perform further assertions if needed
+		}
+
+		[Fact]
+		public async Task UpdateRate_Negative_Rate_Value()
+		{
+			var rateDto = new UpdateRateDto()
+			{
+				Id = 1,
+				Rate = -2, //=> -2 is an invalid rate value
+				Description = "New description"
+			};
+
+			ValidationException ex = await Should.ThrowAsync<ValidationException>(async () =>
+			{
+				await _handler.Handle(new UpdateRateCommand() { RateDto = rateDto }, CancellationToken.None);
+			});
+
+		}
+
 	}
 }

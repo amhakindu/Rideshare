@@ -1,19 +1,17 @@
 using AutoMapper;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Profiles;
-using MediatR;
 using Moq;
 using Shouldly;
 using Rideshare.Application.Features.Rates.Handlers;
 using Rideshare.Application.Common.Dtos.Rates;
 using Rideshare.UnitTests.Mocks;
-using Rideshare.Application.Responses;
 using Rideshare.Application.Features.Rates.Commands;
 using Xunit;
 
 namespace Rideshare.UnitTests.RateTest.Commands
 {
-	public class DeleteRateCommandHandlerTest
+    public class DeleteRateCommandHandlerTest
 	{
 
 		private readonly IMapper _mapper;
@@ -29,13 +27,7 @@ namespace Rideshare.UnitTests.RateTest.Commands
 				c.AddProfile<MappingProfile>();
 			});
 			_mapper = mapperConfig.CreateMapper();
-			// _rateDto = new CreateRateDto 
-			// {
-			// 	Rate = 2.4,
-			// 	RaterId = 1,
-			// 	DriverId = 3,
-			// 	Description = "Description 1",
-			// };
+			
 			_id = 1;
 
 			_handler = new DeleteRateCommandHandler(_mockRepo.Object, _mapper);
@@ -58,19 +50,20 @@ namespace Rideshare.UnitTests.RateTest.Commands
 			rates.Count.ShouldBe(2);
 		}
 
-		   [Fact]
-        public async Task DeleteRateInvalid()
-        {
+		
+		[Fact]
+		public async Task DeleteRate_Invalid_Id()
+		{
 
-            var Id = 10;
-            try
-            {
-                var result = await _handler.Handle(new DeleteRateCommand() { RateId = Id }, CancellationToken.None);
-            }
-            catch (Exception ex) {
-                var rates = await _mockRepo.Object.RateRepository.GetAll();
-                rates.Count.ShouldBe(3);
-            }
+			var Id = 0;
+			try
+			{
+				var result = await _handler.Handle(new DeleteRateCommand() { RateId = Id }, CancellationToken.None);
+			}
+			catch (Exception ex) {
+				var rates = await _mockRepo.Object.RateRepository.GetAll();
+				rates.Count.ShouldBe(3);
+			}
 		}
 	}
 }

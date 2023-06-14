@@ -6,7 +6,6 @@ using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Rate.Handlers;
 using Rideshare.Application.Features.Rates.Queries;
 using Rideshare.Application.Profiles;
-using Rideshare.Application.Responses;
 using Rideshare.UnitTests.Mocks;
 using Shouldly;
 using Xunit;
@@ -38,19 +37,25 @@ namespace Rideshare.UnitTests.RateTest.Queries
 
 
 		[Fact]
-        public async Task GetRateDetailValid()
-        {
-            var result = await _handler.Handle(new GetRateDetailQuery() { RateId = 1 }, CancellationToken.None);
-            result.Success.ShouldBeTrue();
-        }
+		public async Task GetRateDetailValid()
+		{
+			var result = await _handler.Handle(new GetRateDetailQuery() { RateId = 1 }, CancellationToken.None);
+			result.Success.ShouldBeTrue();
+			result.Value.ShouldBeOfType<RateDto>();
+			
+		}
 
 		[Fact]
-        public async Task GetRateDetailInvalid()
-        {
-            NotFoundException ex = await Should.ThrowAsync<NotFoundException>(async () =>
-            {
-                var result = await _handler.Handle(new GetRateDetailQuery() { RateId = -1 }, CancellationToken.None);
-            });
-        }
-    }
+		public async Task GetRateDetail_IdNotExist()
+		{
+			Id = -1;
+			NotFoundException ex = await Should.ThrowAsync<NotFoundException>(async () =>
+			{
+				var result = await _handler.Handle(new GetRateDetailQuery() { RateId = Id }, CancellationToken.None);
+			});
+
+			// Add additional assertions to validate the exception
+			ex.Message.ShouldContain($"Rate With ID = {Id} Was Not Found");
+		}
+	}
 }

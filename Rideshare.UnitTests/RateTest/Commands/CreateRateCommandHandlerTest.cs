@@ -5,10 +5,10 @@ using Moq;
 using Rideshare.Application.Common.Dtos.Rates;
 using Rideshare.Application.Features.Rates.Handlers;
 using Rideshare.UnitTests.Mocks;
-using Rideshare.Application.Responses;
 using Rideshare.Application.Features.Rates.Commands;
 using Shouldly;
 using Xunit;
+using Rideshare.Application.Exceptions;
 
 namespace Rideshare.UnitTests.RateTest.Commands
 {
@@ -56,32 +56,70 @@ namespace Rideshare.UnitTests.RateTest.Commands
 		}
 
 		 [Fact]
-        public async Task CreateFeedbackInvalid()
-        {
-            // mising required values
-            var rateDto = new CreateRateDto()
-            {
-                Id = 4,
-				Rate = 12.4,
+		public async Task CreateRate_InvalidRateValue()
+		   {
+			
+			var rateDto = new CreateRateDto()
+			{
+				Id = 4,
+				Rate = 12.4, //Rate must be between 1 and 10.
 				RaterId = 1,
 				DriverId = 3,
 				Description = "Description 1",
 
-            };
+			};
 
-            try
-            {
-                var result = await _handler.Handle(new CreateRateCommand() { RateDto = rateDto }, CancellationToken.None);
-            }
-            catch (Exception ex)
-            {
-                var rate = await _mockRepo.Object.RateRepository.Get(5);
-                rate.ShouldBeNull();
+			try
+			{
+				var result = await _handler.Handle(new CreateRateCommand() { RateDto = rateDto }, CancellationToken.None);
+			}
+			catch (Exception ex)
+			{
+				var rate = await _mockRepo.Object.RateRepository.Get(5);
+				rate.ShouldBeNull();
 
-                // count = 3
-                var rates = await _mockRepo.Object.RateRepository.GetAll();
-                rates.Count.ShouldBe(3);
-            }
-        }
-    }
+				// count = 3
+				var rates = await _mockRepo.Object.RateRepository.GetAll();
+				rates.Count.ShouldBe(3);
+			}
+		}
+		
+		[Fact]
+		public async Task CreateRate_MissingRequiredFields()
+			{
+			var rateDto = new CreateRateDto
+			{
+				// Missing or null values for required properties
+				Id = 4,
+				RaterId = 1,
+				// DriverId is intentionally left as null
+				Rate = 12.4, //Invalid Rate value (>10).
+				Description = "Description 1"
+			};
+
+			try
+			{
+				await _handler.Handle(new CreateRateCommand { RateDto = rateDto }, CancellationToken.None);
+			}
+			catch (ValidationException ex)
+			{
+				// Assert that a validation exception is thrown
+				ex.ShouldNotBeNull();
+
+				// Verify that the rate is not added to the repository
+				var rate = await _mockRepo.Object.RateRepository.Get(4);
+				rate.ShouldBeNull();
+
+				// Verify that the count of rates remains unchanged
+				var rates = await _mockRepo.Object.RateRepository.GetAll();
+				rates.Count.ShouldBe(3);
+				return;
+			}
+
+			// If no exception is thrown, the test should fail
+			Assert.True(false, "ValidationException was expected but not thrown.");
+		
+		}
+
+	}
 }
