@@ -30,7 +30,7 @@ namespace Rideshare.UnitTests.RateTest.Queries
 			_mapper = mapperConfig.CreateMapper();
 			_handler = new GetRateDetailQueryHandler( _mapper, _mockRepo.Object);
 
-			Id = 1;
+			// Id = 2;
 
 
 		}
@@ -54,8 +54,7 @@ namespace Rideshare.UnitTests.RateTest.Queries
 				var result = await _handler.Handle(new GetRateDetailQuery() { RateId = Id }, CancellationToken.None);
 			});
 
-			// Add additional assertions to validate the exception
-			ex.Message.ShouldContain($"Rate With ID = {Id} Was Not Found");
+			ex.Message.ShouldContain($"Rate with {Id} not found");
 		}
 	}
 }

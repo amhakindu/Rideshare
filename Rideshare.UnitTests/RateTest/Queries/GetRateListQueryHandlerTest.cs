@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Rideshare.UnitTests.RateTest.Queries
 {
-    public class GetRateListQueryHandlerTest
+	public class GetRateListQueryHandlerTest
 	{
 
 
@@ -33,11 +33,13 @@ namespace Rideshare.UnitTests.RateTest.Queries
 
 
 		 [Fact]
-        public async Task GetRateListValid()
-        {
-            var result = await _handler.Handle(new GetRateListQuery() { }, CancellationToken.None);
-            result.Success.ShouldBeTrue();
-        }
+		public async Task GetRateListValid()
+		{
+			var result = await _handler.Handle(new GetRateListQuery() { }, CancellationToken.None);
+			result.Success.ShouldBeTrue();
+			result.Value?.Count.ShouldBe(3);
+
+		}
 	}
 }
 

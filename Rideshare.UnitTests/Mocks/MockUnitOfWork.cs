@@ -15,7 +15,7 @@ public class MockUnitOfWork
 
 		mockUow.Setup(r => r.TestEntityRepository).Returns(mockTestEntityRepository.Object);
 		mockUow.Setup(r => r.RideRequestRepository).Returns(mockRideRequestRepository.Object);
-		mockUow.Setup(r => r.TestEntityRepository).Returns(mockTestEntityRepository.Object);
+		// mockUow.Setup(r => r.TestEntityRepository).Returns(mockTestEntityRepository.Object);
 		mockUow.Setup(r => r.DriverRepository).Returns(mockDriverRepository.Object);
 		mockUow.Setup(r => r.RateRepository).Returns(mockRateRepository.Object);
 		

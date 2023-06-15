@@ -5,7 +5,7 @@ namespace Rideshare.Application.Common.Dtos.Rates.Validators
 {
 	public class UpdateRateDtoValidator : AbstractValidator<UpdateRateDto>
 	{
-		public UpdateRateDtoValidator(IUnitOfWork unitOfWork)
+		public UpdateRateDtoValidator()
 		{
 			RuleFor(p => p.Rate)
 				.NotNull().WithMessage("{PropertyName} is required.")
@@ -16,9 +16,9 @@ namespace Rideshare.Application.Common.Dtos.Rates.Validators
 				.NotEmpty().WithMessage("{PropertyName} cannot be empty.")
 				.Length(5, 400).WithMessage("{PropertyName} must be between 5 and 400 characters long.");
 			
-			RuleFor(p => p.Id)
-				.MustAsync(async (id, token) => 
-					await unitOfWork.RateRepository.Exists(id)).WithMessage("Rate With The Given {PropertyName} Does not exist!");
+			// RuleFor(p => p.Id)
+			// 	.MustAsync(async (Id, token) => 
+			// 		await unitOfWork.RateRepository.Exists(Id)).WithMessage("Rate With The Given Id {PropertyValue} Does not exist!");
 		}
 	}
 }

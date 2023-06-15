@@ -21,20 +21,18 @@ public class GetRateDetailQueryHandler : IRequestHandler<GetRateDetailQuery, Bas
 
 	public async Task<BaseResponse<RateDto>> Handle(GetRateDetailQuery request, CancellationToken cancellationToken)
 	{
-		bool exists = await _unitOfWork.RateRepository.Exists(request.RateId);
-		if (!exists)
-		{
-			var error = $"Rate With ID = {request.RateId} Was Not Found";
-			
-			throw new NotFoundException(error);
-			
-		}
-		var rate = await _unitOfWork.RateRepository.Get(request.RateId);
-		return new BaseResponse<RateDto>
-		{
-			Success = true,
-			Message = "Rate Fetch Success",
-			Value = _mapper.Map<RateDto>(rate)
-		};
+		
+	    var response = new BaseResponse<RateDto>();
+        var rate = await _unitOfWork.RateRepository.Get(request.RateId);
+        if (rate != null){
+            response.Message = "Get Successful";
+            response.Value = _mapper.Map<RateDto>(rate);
+
+        }
+        else{
+            throw new NotFoundException($"Rate with {request.RateId} not found");
+        }
+
+        return response;
 	}
 }
