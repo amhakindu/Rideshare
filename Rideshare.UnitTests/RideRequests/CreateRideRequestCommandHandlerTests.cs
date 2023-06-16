@@ -1,7 +1,9 @@
 using AutoMapper;
 using Moq;
+using Rideshare.Application.Common.Dtos;
 using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Tests.Commands;
 using Rideshare.Application.Features.Tests.Handlers;
 using Rideshare.Application.Profiles;
@@ -41,12 +43,12 @@ public class CreateRideRequestCommandHandlerTests
               CreateRideRequestDto rideRequestDto = new()
               {
                   Origin = new LocationDto(){
-                    latitude = 20,
-                    longitude = 20
+                    Latitude = 20,
+                    Longitude = 80
                 },
                 Destination = new LocationDto(){
-                    latitude = 20,
-                    longitude = 20
+                    Latitude = 10,
+                    Longitude = 20
                 },
                 Status =  0,
                 CurrentFare = 65,
@@ -67,20 +69,21 @@ public class CreateRideRequestCommandHandlerTests
               CreateRideRequestDto rideRequestDto = new()
               {
                 Origin = new LocationDto(){
-                    latitude = 20,
-                    longitude = 20
+                    Latitude = 20,
+                    Longitude = 20
                 },
                 Destination = new LocationDto(){
-                    latitude = 20,
-                    longitude = 20
+                    Latitude = 20,
+                    Longitude = 20
                 },
                 Status =  0,
                 CurrentFare = 65,
 
               };
-              
-              var result = await _handler.Handle(new CreateRideRequestCommand() { RideRequestDto = rideRequestDto }, CancellationToken.None);
-              
-              result.Value.ShouldBe(3);
+
+             await Should.ThrowAsync<ValidationException>(async () =>
+    {
+           var result = await _handler.Handle(new CreateRideRequestCommand() { RideRequestDto = rideRequestDto }, CancellationToken.None);
+    });   
        }
 }

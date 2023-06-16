@@ -40,7 +40,6 @@ public class ExceptionHandler : IMiddleware
                     Errors=new List<string>{exception.Message}
                 }
             );
-            return;
         }else if(exception is NotFoundException){
             context.Response.StatusCode = (int)HttpStatusCode.NotFound;
             await context.Response.WriteAsJsonAsync<BaseResponse<Unit>>(
@@ -50,8 +49,7 @@ public class ExceptionHandler : IMiddleware
                     Errors=new List<string>{exception.Message}
                 }
             );
-            return;
-        }else if(exception is InternalServerErrorException){
+        }else{
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             await context.Response.WriteAsJsonAsync<BaseResponse<Unit>>(
                 new BaseResponse<Unit>{
@@ -60,15 +58,6 @@ public class ExceptionHandler : IMiddleware
                     Errors=new List<string>{exception.Message}
                 }
             );
-            return;
         }
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        await context.Response.WriteAsJsonAsync<BaseResponse<Unit>>(
-            new BaseResponse<Unit>{
-                Success=false,
-                Message="Failed To Process Request",
-                Errors=new List<string>{exception.Message}
-            }
-        );
     }
 }

@@ -3,14 +3,6 @@ using Rideshare.Domain.Common;
 
 namespace Rideshare.Domain.Entities;
 
- 
-public enum Status
-{
-    Pending,
-    OnRoute,
-    Completed
-}
-
 public class RideRequest : BaseEntity
 {
     public Point Origin { get; set; }

@@ -1,8 +1,10 @@
 using AutoMapper;
 using Moq;
 using NetTopologySuite.Geometries;
+using Rideshare.Application.Common.Dtos;
 using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.RideRequests.Handlers;
 using Rideshare.Application.Features.Tests.Commands;
 using Rideshare.Application.Profiles;
@@ -40,12 +42,13 @@ public class UpdateRideRequestCommandHandlerTests
         {
             Id=1,
             Origin = new LocationDto(){
-                    latitude = 20,
-                    longitude = 20
+                   
+                    Latitude = 24,
+                    Longitude = 20
                 },
                 Destination = new LocationDto(){
-                    latitude = 10,
-                    longitude = 10
+                    Latitude = 10,
+                    Longitude = 10
                 },
             Status =  0,
             CurrentFare = 100
@@ -60,5 +63,32 @@ public class UpdateRideRequestCommandHandlerTests
     
 
         (await _mockUnitOfWork.Object.RideRequestRepository.GetAll()).Count.ShouldBe(2);
+    }
+
+      [Fact]
+    public async Task UpdateCommentInValid()
+    {
+
+        UpdateRideRequestDto rideRequestDto = new()
+        {
+            Id=1,
+            Origin = new LocationDto(){
+                    Latitude = 20,
+                    Longitude = 20
+                },
+                Destination = new LocationDto(){
+                    Latitude = 20,
+                    Longitude = 20
+                },
+            Status =  0,
+            CurrentFare = 100
+            
+                   };
+
+         await Should.ThrowAsync<ValidationException>(async () =>
+    {
+           var result = await _handler.Handle(new UpdateRideRequestCommand() { RideRequestDto = rideRequestDto }, CancellationToken.None);
+    });    
+        
     }
 }
