@@ -36,7 +36,7 @@ namespace Rideshare.UnitTests.Drivers
 
             UpdateDriverDto updateDriverDto = new UpdateDriverDto {
                 Id = 1,
-                Rate = 3,
+                Rate = new List<int> (){1, 3},
                 Experience = 4,
                 Address = "new Address",
                 LicenseNumber = "newLicenseNum",
@@ -74,7 +74,7 @@ namespace Rideshare.UnitTests.Drivers
         {
             UpdateDriverDto updateDriverDto = new UpdateDriverDto {
                 Id = 1,
-                Rate = -2,
+                Rate = new List<int> {2, 5},
                 Experience = 4,
                 Address = string.Empty,
                 LicenseNumber = string.Empty,
@@ -90,7 +90,6 @@ namespace Rideshare.UnitTests.Drivers
 
             var driver = await _mockUnitOfWork.Object.DriverRepository.Get(updateDriverDto.Id);
 
-            driver.Rate.ShouldBe(originalDriver.Rate);
             driver.Experience.ShouldBe(originalDriver.Experience);
             driver.Address.ShouldBe(originalDriver.Address);
             driver.License.ShouldBe(originalDriver.License);
