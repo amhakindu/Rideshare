@@ -1,5 +1,6 @@
 using System.Net;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rideshare.Application.Common.Dtos.Tests;
 using Rideshare.Application.Contracts.Persistence;
@@ -11,6 +12,7 @@ namespace Rideshare.WebApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class TestController : BaseApiController
 {
     public TestController(IMediator mediator) : base(mediator)

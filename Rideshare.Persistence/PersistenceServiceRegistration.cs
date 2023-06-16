@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Rideshare.Persistence.Repositories;
+using Rideshare.Application.Contracts.Identity;
+using Rideshare.Persistence.Repositories.User;
 
 namespace Rideshare.Persistence;
 
@@ -16,6 +18,8 @@ public static class PersistenceServiceRegistration
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         
+         services.AddScoped<IUserRepository , UserRepository>();
+         
 
         return services;
     }

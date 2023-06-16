@@ -2,6 +2,7 @@ using AutoMapper;
 using NetTopologySuite.Geometries;
 using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Common.Dtos.Drivers;
+using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Common.Dtos.Rates;
 using Rideshare.Application.Common.Dtos.Feedbacks;
 using NetTopologySuite.Geometries;
@@ -9,6 +10,7 @@ using Rideshare.Application.Common.Dtos.RideOffers;
 using Rideshare.Application.Common.Dtos.Tests;
 using Rideshare.Application.Common.Dtos.Vehicles;
 using Rideshare.Domain.Entities;
+using Rideshare.Domain.Models;
 using Rideshare.Application.Common.Dtos;
 
 namespace Rideshare.Application.Profiles;
@@ -52,6 +54,17 @@ public class MappingProfile: Profile
 
         #endregion rideRequest
 
+            #region User Mappings
+CreateMap<ApplicationRole, RoleDto>()
+            .ReverseMap();
+             CreateMap<ApplicationUser, UserCreationDto>()
+            .ReverseMap();
+             CreateMap<ApplicationUser, UserCreationDto>()
+            .ReverseMap();
+            CreateMap<ApplicationUser, UserUpdatingDto>()
+            .ReverseMap();
+
+            #endregion User
         #region Rate Mappings
 
         CreateMap<RateEntity, RateDto>().ReverseMap();
