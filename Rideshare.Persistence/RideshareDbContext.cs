@@ -6,7 +6,7 @@ using Rideshare.Domain.Models;
 
 namespace Rideshare.Persistence;
 
-public class RideshareDbContext: IdentityDbContext<User>
+public class RideshareDbContext: IdentityDbContext<ApplicationUser,ApplicationRole,string>
 {
 
     public DbSet<TestEntity> TestEntities{ get; set; }

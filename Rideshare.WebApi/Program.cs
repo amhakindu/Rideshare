@@ -3,6 +3,10 @@ using Rideshare.Application;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Rideshare.WebApi.Middlewares;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using Rideshare.WebApi;
+using Rideshare.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureApplicationService();
 builder.Services.ConfigurePersistenceService(builder.Configuration);
 builder.Services.AddTransient<ExceptionHandler>();
+builder.Services.AddAuthentication(builder.Configuration);
+builder.Services.ConfigureInfrastructureService(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 builder.Host.UseSerilog();
 
@@ -51,6 +57,7 @@ app.Run();
 
 void AddSwaggerDoc(IServiceCollection services)
 {
+    
     services.AddSwaggerGen(c => {
         c.SwaggerDoc("v1", new OpenApiInfo
         {
@@ -66,7 +73,7 @@ void AddSwaggerDoc(IServiceCollection services)
         c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
             Name = "Authorization",
-            Type = SecuritySchemeType.ApiKey,
+            Type = SecuritySchemeType.Http,
             Scheme = "Bearer",
             BearerFormat = "JWT",
             In = ParameterLocation.Header,

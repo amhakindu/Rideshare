@@ -17,5 +17,6 @@
     <ProjectReference Include="..\Rideshare.Application\Rideshare.Application.csproj" />
     <ProjectReference Include="..\Rideshare.Domain\Rideshare.Domain.csproj" />
     <ProjectReference Include="..\Rideshare.Persistence\Rideshare.Persistence.csproj" />
+    <ProjectReference Include="..\Rideshare.Infrastructure\Rideshare.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
