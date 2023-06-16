@@ -1,13 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Rideshare.Application.Common.Dtos.Rates;
-using Rideshare.Application.Common.Dtos.Rates;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Rates.Commands;
 using Rideshare.Application.Features.Rates.Queries;
-using Rideshare.Application.Features.Rates.Commands;
-using Rideshare.Application.Features.Rates.Queries;
-using Rideshare.Application.Responses;
 using System.Net;
 
 namespace Rideshare.WebApi.Controllers;

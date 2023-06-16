@@ -9,5 +9,6 @@ public interface IUnitOfWork : IDisposable
 	IRateRepository RateRepository { get; }
     IFeedbackRepository FeedbackRepository { get; }
     IVehicleRepository VehicleRepository { get; }
+    IRideOfferRepository RideOfferRepository { get; }
     Task<int> Save(); 
 }

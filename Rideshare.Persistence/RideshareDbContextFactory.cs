@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Rideshare.Persistence;
 
-public class RideshareDbContextFactory : IDesignTimeDbContextFactory<RideshareDbContext>
+public class RideshareDbContextFactory: IDesignTimeDbContextFactory<RideshareDbContext>
 {
     public RideshareDbContext CreateDbContext(string[] args) 
     {
@@ -16,7 +16,7 @@ public class RideshareDbContextFactory : IDesignTimeDbContextFactory<RideshareDb
         var builder = new DbContextOptionsBuilder<RideshareDbContext>();
         var connectionString = configuration.GetConnectionString("RideshareConnectionString");
 
-        builder.UseNpgsql(connectionString,o => o.UseNetTopologySuite());
+        builder.UseNpgsql(connectionString, o => o.UseNetTopologySuite());
 
         return new RideshareDbContext(builder.Options);
     }
