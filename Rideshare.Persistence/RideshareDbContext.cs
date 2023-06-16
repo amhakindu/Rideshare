@@ -14,7 +14,9 @@ public class RideshareDbContext: IdentityDbContext<User>
     public DbSet<RideRequest> RideRequests{ get; set; }
 
 
-    public RideshareDbContext(DbContextOptions<RideshareDbContext> options) : base(options)
+    public DbSet<Feedback> FeedBackEntities { get; set; }
+    public RideshareDbContext(DbContextOptions<RideshareDbContext> options)
+        : base(options)
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);

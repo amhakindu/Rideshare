@@ -7,6 +7,6 @@ public interface IUnitOfWork : IDisposable
 	IRideRequestRepository RideRequestRepository { get;}
 	IDriverRepository DriverRepository { get; }
 	IRateRepository RateRepository { get; }
-
-	Task<int> Save(); 
+    IFeedbackRepository FeedbackRepository { get; }
+    Task<int> Save(); 
 }
