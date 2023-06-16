@@ -12,6 +12,7 @@ using Rideshare.Application.Common.Dtos.RideOffers;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.RideOffers.Commands;
 using Rideshare.Application.Features.testEntitys.CQRS.Handlers;
+using Rideshare.Application.Common.Dtos;
 
 namespace Rideshare.UnitTests.RideOffers;
 

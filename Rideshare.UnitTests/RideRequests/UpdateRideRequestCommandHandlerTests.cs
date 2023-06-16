@@ -1,6 +1,7 @@
 using AutoMapper;
 using Moq;
 using NetTopologySuite.Geometries;
+using Rideshare.Application.Common.Dtos;
 using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.RideRequests.Handlers;
