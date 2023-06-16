@@ -12,7 +12,7 @@ namespace Rideshare.Domain.Entities
     public class Driver : BaseEntity
     {
         public ApplicationUser User { get; set; } = new ApplicationUser();
-        public double Rate { get; set; } = 0;
+        public List<int>  Rate { get; set; } = new List<int> (){0, 0};
         public double Experience { get; set; }
         public bool Verified { get; set; } = false;
         public string Address { get; set; } 
