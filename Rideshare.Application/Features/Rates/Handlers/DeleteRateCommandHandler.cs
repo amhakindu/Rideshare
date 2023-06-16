@@ -26,49 +26,30 @@ namespace Rideshare.Application.Features.Rates.Handlers
 		}
 		public async Task<BaseResponse<Unit>> Handle(DeleteRateCommand request, CancellationToken cancellationToken)
 		{
-			// var validator = new DeleteRateValidator(_unitOfWork);
-			// var validatorResult = await validator.ValidateAsync(request.RateId);
-
-			// if (!validatorResult.IsValid)
-			// {
-			// 	throw new ValidationException(validatorResult.Errors.Select(e => e.ErrorMessage).ToList().First());
-			// }
-
-			// var rate = await _unitOfWork.RateRepository.Get(request.RateId);
-			// if (rate == null)
-			// {
-			// 	throw new NotFoundException($"Rate with ID {request.RateId} does not exist");
-			// }
-			// var ops =  await _unitOfWork.RateRepository.Delete(rate);
-			// if (ops == 0)
-			// {
-			// 	throw new InternalServerErrorException("Unable to Save to Database");
-			// }
-			// return new BaseResponse<int>
-			// {
-			// 	Success = true,
-			// 	Message = "Rate delete Successful",
-			// 	Value = request.RateId,
-			
-			
 			
 			var response = new BaseResponse<Unit>();
 
-            var rate = await _unitOfWork.RateRepository.Get(request.RateId);
+			var rate = await _unitOfWork.RateRepository.Get(request.RateId);
 
-            if (rate == null)
-                throw new NotFoundException("Resource Not Found");
-
-
-            if (await _unitOfWork.RateRepository.Delete(rate) == 0)
-                throw new InternalServerErrorException("Database Error: Unable To Save");
-
-            response.Success = true;
-            response.Message = "Deletion Succeeded";
-            response.Value = Unit.Value;
+			if (rate == null)
+				throw new NotFoundException("Resource Not Found");
 
 
-            return response;
+			if (await _unitOfWork.RateRepository.Delete(rate) == 0)
+				throw new InternalServerErrorException("Database Error: Unable To Save");
+			
+			// var driver = await _unitOfWork.DriverRepository.Get(rate.DriverId);
+			// driver.Rate[0] -= rate.Rate;
+			// driver.Rate[1] -= 1;
+			// if  (await _unitOfWork.DriverRepository.Update(driver) == 0)
+			//     throw new InternalServerErrorException("Database Error: Unable To Save");
+
+			response.Success = true;
+			response.Message = "Deletion Succeeded";
+			response.Value = Unit.Value;
+
+
+			return response;
 
 		}
 	}

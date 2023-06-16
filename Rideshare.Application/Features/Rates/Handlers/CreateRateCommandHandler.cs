@@ -38,6 +38,12 @@ public class CreateRateCommandHandler : IRequestHandler<CreateRateCommand, BaseR
 			   throw new InternalServerErrorException("Unable To Save To Database");
 			}
 			
+			// var driver = await _unitOfWork.DriverRepository.Get(request.RateDto.DriverId);
+			// driver.Rate[0] += rate.Rate;
+			// driver.Rate[1] += 1;
+			// if  (await _unitOfWork.DriverRepository.Update(driver) == 0)
+			//     throw new InternalServerErrorException("Database Error: Unable To Save");
+				
 			return new BaseResponse<int>
 			{
 				Success = true,
