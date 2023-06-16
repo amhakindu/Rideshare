@@ -1,6 +1,7 @@
-using AutoMapper;
+ using AutoMapper;
 using Moq;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.RideRequests.Handlers;
 using Rideshare.Application.Features.Tests.Commands;
 using Rideshare.Application.Profiles;
@@ -44,8 +45,9 @@ public class DeleteRideRequestCommandHandlerTests
        public async Task DeleteCommentInvalid()
        {
               
-              var result = await _handler.Handle(new DeleteRideRequestCommand() { Id =  2}, CancellationToken.None);
-              
-              (await _mockUnitOfWork.Object.RideRequestRepository.GetAll()).Count.ShouldBe(1);
+                 await Should.ThrowAsync<NotFoundException>(async () =>
+    {
+           var result = await _handler.Handle(new DeleteRideRequestCommand() { Id = 3 }, CancellationToken.None);
+    });    
        }
 }
