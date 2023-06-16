@@ -1,6 +1,7 @@
 using AutoMapper;
 using Moq;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.RideRequests.Handlers;
 using Rideshare.Application.Features.RideRequests.Queries;
 using Rideshare.Application.Profiles;
@@ -38,7 +39,11 @@ public class GetRideRequestQueryHandlerTests
     [Fact]
     public async Task GetRideRequestInvalid()
     {
-        var result = await _handler.Handle(new GetRideRequestQuery() { Id = 2}, CancellationToken.None);
-        result.Value.Id.ShouldBe(2);
+         await Should.ThrowAsync<NotFoundException>(async () =>
+    {
+             await _handler.Handle(new GetRideRequestQuery() { Id = 3}, CancellationToken.None);
+    });
+       
+        
     }
 }
