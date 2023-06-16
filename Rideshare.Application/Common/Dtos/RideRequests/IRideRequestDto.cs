@@ -1,5 +1,5 @@
- 
-using Rideshare.Domain.Entities;
+
+using Rideshare.Domain.Common;
 
 namespace Rideshare.Application.Common.Dtos.RideRequests;
 

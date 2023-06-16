@@ -1,5 +1,6 @@
 using AutoMapper;
 using Moq;
+using Rideshare.Application.Common.Dtos;
 using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Tests.Commands;
@@ -41,12 +42,12 @@ public class CreateRideRequestCommandHandlerTests
               CreateRideRequestDto rideRequestDto = new()
               {
                   Origin = new LocationDto(){
-                    latitude = 20,
-                    longitude = 20
+                    Latitude = 20,
+                    Longitude = 20
                 },
                 Destination = new LocationDto(){
-                    latitude = 20,
-                    longitude = 20
+                    Latitude = 20,
+                    Longitude = 20
                 },
                 Status =  0,
                 CurrentFare = 65,
@@ -67,12 +68,12 @@ public class CreateRideRequestCommandHandlerTests
               CreateRideRequestDto rideRequestDto = new()
               {
                 Origin = new LocationDto(){
-                    latitude = 20,
-                    longitude = 20
+                    Latitude = 20,
+                    Longitude = 20
                 },
                 Destination = new LocationDto(){
-                    latitude = 20,
-                    longitude = 20
+                    Latitude = 20,
+                    Longitude = 20
                 },
                 Status =  0,
                 CurrentFare = 65,

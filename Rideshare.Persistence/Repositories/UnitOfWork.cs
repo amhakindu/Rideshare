@@ -84,6 +84,17 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
+    private IRideOfferRepository? _RideOfferRepository;
+    public IRideOfferRepository RideOfferRepository
+    {
+        get
+        {
+            if (_RideOfferRepository == null)
+                _RideOfferRepository = new RideOfferRepository(_context);
+            return _RideOfferRepository;
+        }
+    }
+    
     public void Dispose()
     {
         _context.Dispose();

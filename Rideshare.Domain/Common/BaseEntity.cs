@@ -6,3 +6,10 @@ public class BaseEntity
     public DateTime DateCreated { get; set; }
     public DateTime LastModifiedDate { get; set; }
 }
+
+
+public enum Status{
+    WAITING,
+    ONROUTE,
+    COMPLETED
+}
