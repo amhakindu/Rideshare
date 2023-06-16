@@ -13,7 +13,9 @@ public class MockUnitOfWork
 		var mockDriverRepository = MockDriverRepository.GetDriverRepository();
 		var mockRateRepository = MockRateRepository.GetRateRepository();
         var mockFeebackRepository = MockFeedbackRepository.GetFeedbackRepository();
+        var mockVehicleRepository = MockVehicleRepository.GetVehicleRepository();
 
+        mockUow.Setup(r => r.VehicleRepository).Returns(mockVehicleRepository.Object);
         mockUow.Setup(r => r.TestEntityRepository).Returns(mockTestEntityRepository.Object);
         mockUow.Setup(r => r.RideRequestRepository).Returns(mockRideRequestRepository.Object);
         mockUow.Setup(r => r.TestEntityRepository).Returns(mockTestEntityRepository.Object);

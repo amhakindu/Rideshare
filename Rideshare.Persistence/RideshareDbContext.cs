@@ -10,10 +10,9 @@ public class RideshareDbContext: IdentityDbContext<User>
 {
 
     public DbSet<TestEntity> TestEntities{ get; set; }
+    public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<Driver> Drivers { get; set; }
     public DbSet<RideRequest> RideRequests{ get; set; }
-
-
     public DbSet<Feedback> FeedBackEntities { get; set; }
     public RideshareDbContext(DbContextOptions<RideshareDbContext> options)
         : base(options)

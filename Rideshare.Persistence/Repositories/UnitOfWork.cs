@@ -20,8 +20,8 @@ public class UnitOfWork : IUnitOfWork
 	private IRideRequestRepository? _RideRequestRepository;
 	private IDriverRepository _DriverRepository;
 	private IRateRepository? _RateRepository;
-	
     private IFeedbackRepository? _FeedbackRepository;
+    private IVehicleRepository? _VehicleRepository;
 	
 	
 	public ITestEntityRepository TestEntityRepository
@@ -73,11 +73,23 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-	public void Dispose()
-	{
-		_context.Dispose();
-		GC.SuppressFinalize(this);
-	}
+
+    public IVehicleRepository VehicleRepository
+    {
+        get
+        {
+            if (_VehicleRepository == null)
+                _VehicleRepository = new VehicleRepository(_context);
+            return _VehicleRepository;
+        }
+    }
+
+    public void Dispose()
+    {
+        _context.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
 
 	public async Task<int> Save()
 	{
