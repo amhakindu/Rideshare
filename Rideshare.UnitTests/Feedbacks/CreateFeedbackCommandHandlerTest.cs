@@ -39,10 +39,9 @@ namespace Rideshare.UnitTests.FeedbackTest
 
             var feedBackDto = new CreateFeedbackDto()
             {
-                Id = 4,
                 Title = "Test Title 3",
                 Content = "Test Content 3",
-                UserId = 4,
+                UserId = "e2231227-14b9-4f5c-ac0a-580b0324cee6",
                 Rating = 2
             };
             await _handler.Handle(new CreateFeedBackCommand() { feedbackDto = feedBackDto }, CancellationToken.None);
@@ -60,9 +59,8 @@ namespace Rideshare.UnitTests.FeedbackTest
             // mising required values
             var feedbackDto = new CreateFeedbackDto()
             {
-                Id = 5,
                 Content = "Test Content 5",
-                UserId = 5,
+                UserId = "e2231227-14b9-4f5c-ac0a-580b0324cee6",
 
             };
 

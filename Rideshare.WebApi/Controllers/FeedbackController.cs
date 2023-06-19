@@ -10,6 +10,7 @@ using Rideshare.Application.Features.Tests.Commands;
 using Rideshare.Application.Features.Tests.Queries;
 using Rideshare.Application.Responses;
 using System.Net;
+using System.Security.Claims;
 
 namespace Rideshare.WebApi.Controllers
 {
@@ -17,11 +18,14 @@ namespace Rideshare.WebApi.Controllers
     [Route("api/[controller]")]
     public class Feedback: BaseApiController
     {
-        public Feedback(IMediator mediator, IUnitOfWork unitOfWork) : base(mediator)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public Feedback(IMediator mediator, IHttpContextAccessor httpContextAccessor) : base(mediator)
         {
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
+        // only admin can view
         public async Task<IActionResult> Get()
         {
             var result = await _mediator.Send(new GetFeedbackListQuery {  });
@@ -30,6 +34,7 @@ namespace Rideshare.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        // only admin can view
         public async Task<IActionResult> Get(int id)
         {
             var result = await _mediator.Send(new GetFeedbackDetailQuery { Id = id });
@@ -38,6 +43,7 @@ namespace Rideshare.WebApi.Controllers
         }
 
         [HttpPost]
+        // only driver and commuter can post
         public async Task<IActionResult> Post([FromBody] CreateFeedbackDto feedbackDto)
         {
             var result = await _mediator.Send(new CreateFeedBackCommand { feedbackDto = feedbackDto });
@@ -47,6 +53,7 @@ namespace Rideshare.WebApi.Controllers
         }
 
         [HttpPut]
+        // only creater can update
         public async Task<IActionResult> Put([FromBody] UpdateFeedbackDto feedbackDto)
         {
             var result = await _mediator.Send(new UpdateFeedbackCommand { feedbackDto = feedbackDto });
@@ -56,8 +63,10 @@ namespace Rideshare.WebApi.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Put(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            // get feedback check the current feedback user id == current user id
+            string currentUser = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var result = await _mediator.Send(new DeleteFeedbackCommand { Id = id });
             var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
             return getResponse(status, result);
