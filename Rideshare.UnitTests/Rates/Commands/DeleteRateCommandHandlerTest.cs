@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Rideshare.UnitTests.RateTest.Commands
 {
-    public class DeleteRateCommandHandlerTest
+	public class DeleteRateCommandHandlerTest
 	{
 
 		private readonly IMapper _mapper;
@@ -28,7 +28,6 @@ namespace Rideshare.UnitTests.RateTest.Commands
 			});
 			_mapper = mapperConfig.CreateMapper();
 			
-			// _id = 1;
 
 			_handler = new DeleteRateCommandHandler(_mockRepo.Object, _mapper);
 
@@ -39,11 +38,12 @@ namespace Rideshare.UnitTests.RateTest.Commands
 		public async Task DeleteRate()
 		{
 
-			var Id = 1;
+			var id = 1;
+			var userId = "1";
 
-			var result = await _handler.Handle(new DeleteRateCommand() { RateId = Id }, CancellationToken.None);
+			var result = await _handler.Handle(new DeleteRateCommand() { Id = id, UserId = userId }, CancellationToken.None);
 			var rates = await _mockRepo.Object.RateRepository.GetAll();
-			var exist = await _mockRepo.Object.RateRepository.Exists(Id);
+			var exist = await _mockRepo.Object.RateRepository.Exists(id);
 			exist.ShouldBeFalse();
 			
 			// the count should be 1.
@@ -55,10 +55,11 @@ namespace Rideshare.UnitTests.RateTest.Commands
 		public async Task DeleteRate_Invalid_Id()
 		{
 
-			var Id = -1;
+			var id = -1;
+			var userId = "1";
 			try
 			{
-				var result = await _handler.Handle(new DeleteRateCommand() { RateId = Id }, CancellationToken.None);
+				var result = await _handler.Handle(new DeleteRateCommand() { Id = id, UserId = userId }, CancellationToken.None);
 			}
 			catch (Exception ex) {
 				var rates = await _mockRepo.Object.RateRepository.GetAll();

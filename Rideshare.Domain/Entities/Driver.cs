@@ -11,9 +11,8 @@ namespace Rideshare.Domain.Entities
 {
     public class Driver : BaseEntity
     {
-        public string UserId  {get; set;} = string.Empty;
-        public ApplicationUser User { get; set; }  
-        public List<int>  Rate { get; set; } = new List<int> (){0, 0};
+        public ApplicationUser User { get; set; } = new ApplicationUser();
+        public List<double>  Rate { get; set; } = new List<double> (){0.0, 0.0, 0.0};
         public double Experience { get; set; }
         public bool Verified { get; set; } = false;
         public string Address { get; set; } = string.Empty;

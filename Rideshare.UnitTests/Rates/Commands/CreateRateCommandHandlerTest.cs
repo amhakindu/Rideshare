@@ -35,8 +35,8 @@ namespace Rideshare.UnitTests.RateTest.Commands
 			{
 				Id = 4,
 				Rate = 2.4,
-				RaterId = 1,
-				DriverId = 3,
+				UserId = "1",
+				DriverId = 1,
 				Description = "Description 1",
 			};
 			
@@ -61,10 +61,10 @@ namespace Rideshare.UnitTests.RateTest.Commands
 			
 			var rateDto = new CreateRateDto()
 			{
-				Id = 4,
+				Id = 2,
 				Rate = 12.4, //Rate must be between 1 and 10.
-				RaterId = 1,
-				DriverId = 3,
+				UserId = "2",
+				DriverId = 1,
 				Description = "Description 1",
 
 			};
@@ -90,8 +90,8 @@ namespace Rideshare.UnitTests.RateTest.Commands
 			var rateDto = new CreateRateDto
 			{
 				// Missing or null values for required properties
-				Id = 4,
-				RaterId = 1,
+				Id = 3,
+				UserId = "3",
 				// DriverId is intentionally left as null
 				Rate = 12.4, //Invalid Rate value (>10).
 				Description = "Description 1"

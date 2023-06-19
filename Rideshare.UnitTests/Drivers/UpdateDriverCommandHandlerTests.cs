@@ -36,7 +36,7 @@ namespace Rideshare.UnitTests.Drivers
 
             UpdateDriverDto updateDriverDto = new UpdateDriverDto {
                 Id = 1,
-                Rate = new List<int> (){1, 3},
+                Rate = new List<double> (){1, 3},
                 Experience = 4,
                 Address = "new Address",
                 LicenseNumber = "newLicenseNum",
@@ -66,7 +66,7 @@ namespace Rideshare.UnitTests.Drivers
         {
             UpdateDriverDto updateDriverDto = new UpdateDriverDto {
                 Id = 1,
-                Rate = new List<int> {2, 5},
+                Rate = new List<double> {2, 5},
                 Experience = 4,
                 Address = string.Empty,
                 LicenseNumber = "34dfdf3",
