@@ -9,8 +9,8 @@ namespace Rideshare.Domain.Entities
 		public ApplicationUser User { get; set; }
 		public double Rate { get; set; }
 		public int DriverId { get; set; }
-		public string Description { get; set; }
 		public Driver Driver { get; set; }
+		public string Description { get; set; }
 
 	}
 		

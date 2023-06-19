@@ -8,7 +8,7 @@ using Rideshare.Application.Features.Rates.Queries;
 using System.Net;
 
 namespace Rideshare.WebApi.Controllers;
-// [Authorize]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class RateController : BaseApiController
@@ -16,7 +16,6 @@ public class RateController : BaseApiController
 	public RateController(IMediator mediator, IUnitOfWork unitOfWork) : base(mediator)
 	{
 	}
-	// [Authorize(Roles = "")]
 	  [HttpGet]
 		public async Task<IActionResult> Get()
 		{
@@ -33,6 +32,7 @@ public class RateController : BaseApiController
 			return getResponse(status, result);
 		}
 
+        [Authorize(Roles = "Commuter")]
 		[HttpPost]
 		
 		public async Task<IActionResult> Post([FromBody] CreateRateDto rateDto)

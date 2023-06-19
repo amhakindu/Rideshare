@@ -49,6 +49,21 @@ namespace Rideshare.UnitTests.RateTest.Commands
 			// the count should be 1.
 			rates.Count.ShouldBe(2);
 		}
+		
+		[Fact]
+		public async Task DeleteRate_UnAuthorized()
+		{
+			var id = 1;
+			var userId = "2"; //Un-authorized user to update this resource.
+
+			UnauthorizedAccessException ex = await Should.ThrowAsync<UnauthorizedAccessException>(async () =>
+			{
+				await _handler.Handle(new DeleteRateCommand() { Id = id, UserId = userId }, CancellationToken.None);
+			});
+			
+		}
+		
+		
 
 		
 		[Fact]

@@ -45,7 +45,25 @@ namespace Rideshare.UnitTests.RateTest
 			rate.Description.ShouldBe(rateDto.Description);
 			rate.Rate.ShouldBe(rateDto.Rate);
 
+		}
+		
+		[Fact]
+		public async Task UpdateRate_Anauthorized()
+		{
 
+			var rateDto = new UpdateRateDto()
+			{
+				Id = 3,
+				Rate = 3.7,
+				UserId = "2", //unauthorized user to update the rate.
+				Description = "Description 2 Edited!"
+			};
+			
+			UnauthorizedAccessException ex = await Should.ThrowAsync<UnauthorizedAccessException>(async () =>
+			{
+				await _handler.Handle(new UpdateRateCommand() { RateDto = rateDto }, CancellationToken.None);
+			});
+			
 		}
 
 		[Fact]
