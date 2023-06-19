@@ -16,7 +16,7 @@ namespace Rideshare.Infrastructure.Security;
             _userRepository = userRepository;
         }
 
-        public string GetUsername()
+        public string GetUserId()
         {
              return  _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.PrimarySid).Value;
             

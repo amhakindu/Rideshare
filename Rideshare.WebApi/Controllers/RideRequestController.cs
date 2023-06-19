@@ -38,7 +38,7 @@ public class RideRequestController : BaseApiController
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var result = await _mediator.Send(new GetRideRequestListQuery{UserId = _userAccessor.GetUsername()});
+        var result = await _mediator.Send(new GetRideRequestListQuery{UserId = _userAccessor.GetUserId()});
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);

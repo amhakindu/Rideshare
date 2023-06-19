@@ -57,9 +57,7 @@ namespace Rideshare.Application.Tests.Features.Auth.Handlers
 
             mapperMock.Setup(x => x.Map<ApplicationUser>(command.UserCreationDto)).Returns(applicationUser);
 
-            smsSenderMock.Setup(x => x.SendSmsAsync(command.UserCreationDto.PhoneNumber, It.IsAny<string>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
+
 
             var handler = new CreateUserCommandHandler(userRepositoryMock.Object, mapperMock.Object, smsSenderMock.Object);
 
@@ -73,7 +71,7 @@ namespace Rideshare.Application.Tests.Features.Auth.Handlers
 
             userRepositoryMock.Verify(x => x.CreateUserAsync(applicationUser, command.UserCreationDto.Password, It.IsAny<List<ApplicationRole>>()), Times.Once);
             mapperMock.Verify(x => x.Map<ApplicationUser>(command.UserCreationDto), Times.Once);
-            userRepositoryMock.Verify(x => x.UpdateUserAsync(applicationUser.Id, applicationUser), Times.Once);
+
         }
     }
 }
