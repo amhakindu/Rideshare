@@ -9,4 +9,7 @@ public class CreateRideRequestDto : IRideRequestDto
     public LocationDto Destination { get; set; }
     public double CurrentFare { get; set; }
     public Status Status { get; set; }
+    public int NumberOfSeats { get; set; }
+    public string UserId { get; set; }
+
 }

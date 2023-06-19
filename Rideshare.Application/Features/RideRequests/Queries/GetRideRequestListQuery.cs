@@ -6,5 +6,5 @@ namespace Rideshare.Application.Features.RideRequests.Queries;
 
 public class GetRideRequestListQuery : IRequest<BaseResponse<List<RideRequestDto>>>
 {
-    
+    public string  UserId { get; set; }
 }
