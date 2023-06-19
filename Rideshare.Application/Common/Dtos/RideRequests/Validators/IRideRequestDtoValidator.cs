@@ -21,7 +21,13 @@ public class IRideRequestDtoValidator : AbstractValidator<IRideRequestDto>
 
         RuleFor(p => p.Status)
         .IsInEnum().WithMessage("{PropertyName} must be from the status enum");
-        
+
+        RuleFor(p => p.NumberOfSeats)
+        .GreaterThan(0).WithMessage("{ProperyName} must be greater than zero");
+
+       
+
+
     }
    
 }

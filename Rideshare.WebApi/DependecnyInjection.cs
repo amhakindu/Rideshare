@@ -40,6 +40,7 @@ public static class DependencyInjection
                          ValidateIssuer = true,
                          ValidateAudience = true,
                          ValidateLifetime = true,
+                         RoleClaimType = "Roles",
                          ValidateIssuerSigningKey = true,
                          ValidIssuer = configuration["JwtSettings:Issuer"],
                          ValidAudience = configuration["JwtSettings:Audience"],
@@ -50,11 +51,11 @@ public static class DependencyInjection
                  }
              );
         services.AddAuthorization();
-         services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IJwtService, JwtService>();
 
 
 
-        
+
 
 
     }
