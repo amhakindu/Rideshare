@@ -10,6 +10,7 @@ namespace Rideshare.Application.Common.Dtos.Drivers
     public class DriverDetailDto 
     {
         public int Id { get; set; }
+        public string UserId { get; set; }
         public ApplicationUser User { get; set; } = new ApplicationUser();
         public List<int> Rate { get; set; }
         public double Experience { get; set; }

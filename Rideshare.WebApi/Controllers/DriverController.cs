@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rideshare.Application.Common.Dtos.Drivers;
 using Rideshare.Application.Common.Dtos.Tests;
@@ -14,6 +15,7 @@ namespace Rideshare.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles ="Admin")]
     public class DriverController : BaseApiController
     {
 

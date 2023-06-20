@@ -14,6 +14,7 @@ namespace Rideshare.UnitTests.Mocks
             new ()
             {
                 Id = 1,
+                UserId = "2e1b94da-7d0f-4cba-8405-087f77d3c91e",
                 License = "abebe_bekele_license",
                 LicenseNumber = "ab343lt",
                 Verified = true,
@@ -21,10 +22,12 @@ namespace Rideshare.UnitTests.Mocks
                 Address = "ShiroMeda",
                 Rate =new List<int>(){4, 4},
             },
-
+                
             new ()
             {
+                
                 Id  = 2,
+                UserId = "4509108d-dcca-47b7-916e-e0e91d728ad2",
                 License = "abebe_bekele_license",
                 LicenseNumber = "ab343lt",
                 Experience = 4.5,
@@ -46,8 +49,13 @@ namespace Rideshare.UnitTests.Mocks
 
             mockRepo.Setup(r => r.Update(It.IsAny<Driver>())).ReturnsAsync((Driver driver) =>
             {
+                var oldCount = drivers.Count();
+
                 var newDrivers = drivers.Where((r) => r.Id != driver.Id);
                 drivers = newDrivers.ToList();
+                var newCount = drivers.Count();
+                if (newCount != oldCount - 1)
+                    return 0;
                 drivers.Add(driver);
                 return 1;
             });
