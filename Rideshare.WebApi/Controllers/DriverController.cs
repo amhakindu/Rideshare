@@ -45,7 +45,7 @@ namespace Rideshare.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateDriverDto createDriverDto)
+        public async Task<IActionResult> Post([FromForm] CreateDriverDto createDriverDto)
         {
             var result = await _mediator.Send(new CreateDriverCommand { CreateDriverDto = createDriverDto });
 
