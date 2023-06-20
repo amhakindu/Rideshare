@@ -21,14 +21,14 @@ namespace Rideshare.UnitTests.Mocks
                     Id = 1,
                     Title = "Test Title",
                     Content = "Test Content",
-                    UserId = 3,
+                    UserId = "e2231227-14b9-4f5c-ac0a-580b0324cee6",
                 },
                 new ()
                 {
                     Id = 2,
                     Title = "Test Title 2",
                     Content = "Test Content 2",
-                    UserId = 3,
+                    UserId = "e2231227-14b9-4f5c-ac0a-580b0324cee6",
                 },
             };
 

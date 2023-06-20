@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Moq;
+using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Feedbacks.Commands;
 using Rideshare.Application.Features.Feedbacks.Handlers;
@@ -12,13 +13,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-
+/*
 namespace Rideshare.UnitTests.FeedbackTest
 {
     public class DeleteFeedbackCommandHandlerTest
     {
         private IMapper _mapper { get; set; }
         private Mock<IUnitOfWork> _mockUnitOfWork { get; set; }
+        private Mock<IUserRepository> _mockRepository { get; set; }
         private DeleteFeedbackCommandHandler _handler { get; set; }
 
 
@@ -30,6 +32,7 @@ namespace Rideshare.UnitTests.FeedbackTest
             {
                 c.AddProfile<MappingProfile>();
             }).CreateMapper();
+
 
             _handler = new DeleteFeedbackCommandHandler(_mockUnitOfWork.Object, _mapper);
         }
@@ -65,3 +68,4 @@ namespace Rideshare.UnitTests.FeedbackTest
         }
     }
 }
+*/

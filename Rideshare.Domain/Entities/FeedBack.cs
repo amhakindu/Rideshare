@@ -1,4 +1,5 @@
 ﻿using Rideshare.Domain.Common;
+using Rideshare.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace Rideshare.Domain.Entities
 {
     public class Feedback: BaseEntity
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
-        public float Rating { get; set; }
+        public Double Rating { get; set; }
     }
 }
