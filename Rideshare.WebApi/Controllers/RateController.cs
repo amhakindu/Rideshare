@@ -5,6 +5,7 @@ using Rideshare.Application.Common.Dtos.Rates;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Rates.Commands;
 using Rideshare.Application.Features.Rates.Queries;
+using Rideshare.Application.Features.Userss;
 using System.Net;
 
 namespace Rideshare.WebApi.Controllers;
@@ -13,13 +14,16 @@ namespace Rideshare.WebApi.Controllers;
 [Route("api/[controller]")]
 public class RateController : BaseApiController
 {
-	public RateController(IMediator mediator, IUnitOfWork unitOfWork) : base(mediator)
-	{
-	}
+	private readonly IUserAccessor _userAccessor;
+    public RateController(IMediator mediator,IUserAccessor userAccessor) : base(mediator)
+    {
+        _userAccessor = userAccessor;
+    }
+
 	  [HttpGet]
-		public async Task<IActionResult> Get()
+		public async Task<IActionResult> GetAll()
 		{
-			var result = await _mediator.Send(new GetRateListQuery {  });
+			var result = await _mediator.Send(new GetRateListQuery { UserId = _userAccessor.GetUserId() });
 			var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
 			return getResponse(status, result);
 		}
