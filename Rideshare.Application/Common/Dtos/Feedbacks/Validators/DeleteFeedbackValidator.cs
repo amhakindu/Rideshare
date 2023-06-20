@@ -13,9 +13,6 @@ namespace Rideshare.Application.Common.Dtos.Feedbacks.Validators
         public DeleteFeedbackValidator(IUnitOfWork unitOfWork)
         {
             
-            RuleFor(Id=> Id)
-            .MustAsync(async (id, token) =>
-                    await unitOfWork.FeedbackRepository.Exists(id)).WithMessage("feedback with given {PropertyName} Does not exist!");
         }
     }
 }

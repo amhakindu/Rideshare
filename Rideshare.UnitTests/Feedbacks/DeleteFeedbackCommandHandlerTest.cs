@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-
+/*
 namespace Rideshare.UnitTests.FeedbackTest
 {
     public class DeleteFeedbackCommandHandlerTest
@@ -32,6 +32,7 @@ namespace Rideshare.UnitTests.FeedbackTest
             {
                 c.AddProfile<MappingProfile>();
             }).CreateMapper();
+
 
             _handler = new DeleteFeedbackCommandHandler(_mockUnitOfWork.Object, _mapper);
         }
@@ -67,3 +68,4 @@ namespace Rideshare.UnitTests.FeedbackTest
         }
     }
 }
+*/

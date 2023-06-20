@@ -18,9 +18,6 @@ namespace Rideshare.Application.Common.Dtos.Feedbacks.Validators
             RuleFor(p => p.Content)
                 .NotNull().NotEmpty().WithMessage("{PropertyName} is Required!")
                 .MaximumLength(500).WithMessage("{ProperyName} should not more than 500 words");
-            RuleFor(p => p.Id)
-                .MustAsync(async (id, token) => 
-                    await unitOfWork.FeedbackRepository.Exists(id)).WithMessage("feedback with given {PropertyName} Does not exist!");
         }
     }
 }
