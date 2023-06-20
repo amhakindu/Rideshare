@@ -37,7 +37,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, BaseR
 
         var user = await _userRepository.CreateUserAsync(applicationUser, password, applicationRoles);
 
-        // var code = GenerateCode();
+        /*var code = GenerateCode();
 
         // user.OtpCode = code;
 
@@ -45,7 +45,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, BaseR
 
         // await _smsSender.SendSmsAsync(user.PhoneNumber, $"Your OTP code is: {code}");
 
-        // await _userRepository.UpdateUserAsync(user.Id,user);
+        await _userRepository.UpdateUserAsync(user.Id,user);
+        */
 
 
         var response = new BaseResponse<ApplicationUser>();
