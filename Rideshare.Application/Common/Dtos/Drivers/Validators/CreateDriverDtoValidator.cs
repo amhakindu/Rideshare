@@ -1,9 +1,12 @@
-﻿using FluentValidation;
+﻿using System.Data;
+using FluentValidation;
+using Rideshare.Application.Contracts.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Rideshare.Application.Contracts.Identity;
 
 namespace Rideshare.Application.Common.Dtos.Drivers.Validators
 {
