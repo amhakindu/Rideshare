@@ -35,11 +35,11 @@ public class RideOffersController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetRideOffers([FromQuery]string? DriverId)
+    public async Task<IActionResult> GetRideOffers([FromQuery]string? DriverId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
         BaseResponse<IReadOnlyList<RideOfferListDto>> result;
         if(DriverId != null){
-            result = await _mediator.Send(new GetRideOffersQuery { DriverID = DriverId });
+            result = await _mediator.Send(new GetRideOffersQuery { DriverID = DriverId, PageNumber = pageNumber, PageSize = pageSize });
         }else{
             result = await _mediator.Send(new GetAllRideOffersQuery{});
         }

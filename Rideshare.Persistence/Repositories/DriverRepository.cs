@@ -20,10 +20,12 @@ namespace Rideshare.Persistence.Repositories
         }
 
 
-         public async Task<List<Driver>> GetDriversWithDetails()
+         public async Task<List<Driver>> GetDriversWithDetails(int pageNumber, int pageSize)
         {
-            var drivers =  await _dbContext.Drivers.Include(driver => driver.User).ToListAsync();
-
+            var drivers =  await _dbContext.Drivers.Include(driver => driver.User)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
             return drivers;
         }
 

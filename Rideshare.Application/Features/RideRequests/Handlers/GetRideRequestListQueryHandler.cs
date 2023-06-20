@@ -28,7 +28,7 @@ public class GetRideRequestListQueryHandler : IRequestHandler<GetRideRequestList
         var response = new BaseResponse<List<RideRequestDto>>();
         
 
-        var rideRequests = (List<RideRequest>)await _unitOfWork.RideRequestRepository.GetAll();
+        var rideRequests = (List<RideRequest>)await _unitOfWork.RideRequestRepository.GetAll(request.PageNumber, request.PageSize);
 
         List<RideRequest> rideReqs = new List<RideRequest>();
         foreach(var rideRequest in rideRequests){

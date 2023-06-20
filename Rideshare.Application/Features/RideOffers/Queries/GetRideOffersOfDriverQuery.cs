@@ -8,4 +8,6 @@ namespace Rideshare.Application.Features.RideOffers.Queries;
 public class GetRideOffersQuery: IRequest<BaseResponse<IReadOnlyList<RideOfferListDto>>>
 {
     public string DriverID { get; set; }
+    public int PageNumber { get; set; }
+    public int PageSize { get; set; }
 }

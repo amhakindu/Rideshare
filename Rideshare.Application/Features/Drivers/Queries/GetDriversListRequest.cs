@@ -12,5 +12,7 @@ namespace Rideshare.Application.Features.Drivers.Queries
 {
     public class GetDriversListRequest : IRequest<BaseResponse<List<DriverDetailDto>>>
     {
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
     }
 }

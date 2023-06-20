@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Rideshare.Application.Common.Dtos.Feedbacks;
 using Rideshare.Application.Responses;
 using Rideshare.Domain.Entities;
@@ -12,5 +13,7 @@ namespace Rideshare.Application.Features.Feedbacks.Queries
 {
     public class GetFeedbackListQuery: IRequest<BaseResponse<List<FeedbackDto>>>
     {
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
     }
 }

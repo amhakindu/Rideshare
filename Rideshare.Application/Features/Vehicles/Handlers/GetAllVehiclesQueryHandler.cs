@@ -26,7 +26,7 @@ public class GetAllVehiclesQueryHandler : IRequestHandler<GetAllVehiclesQuery, B
 
     public async Task<BaseResponse<IList<VehicleDto>>> Handle(GetAllVehiclesQuery request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Vehicle> vehicles = await _unitOfWork.VehicleRepository.GetAll();
+        IReadOnlyList<Vehicle> vehicles = await _unitOfWork.VehicleRepository.GetAll(request.PageNumber, request.PageSize);
 
         var vehicleDtos = vehicles.Select(vehicle => _mapper.Map<VehicleDto>(vehicle)).ToList();
         return new BaseResponse<IList<VehicleDto>>()
