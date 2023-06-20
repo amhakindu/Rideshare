@@ -51,7 +51,8 @@ public class UpdateRideRequestCommandHandlerTests
                     Longitude = 10
                 },
             Status =  0,
-            CurrentFare = 100
+            CurrentFare = 100,
+            NumberOfSeats = 1
             
                    };
 
@@ -81,7 +82,8 @@ public class UpdateRideRequestCommandHandlerTests
                     Longitude = 20
                 },
             Status =  0,
-            CurrentFare = 100
+            CurrentFare = 100,
+            NumberOfSeats = 1,
             
                    };
 

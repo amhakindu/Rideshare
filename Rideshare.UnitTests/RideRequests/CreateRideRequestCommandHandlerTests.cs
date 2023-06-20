@@ -52,6 +52,7 @@ public class CreateRideRequestCommandHandlerTests
                 },
                 Status =  0,
                 CurrentFare = 65,
+                NumberOfSeats = 1
               };
               
               var result = await _handler.Handle(new CreateRideRequestCommand() {  RideRequestDto = rideRequestDto }, CancellationToken.None);
@@ -78,6 +79,7 @@ public class CreateRideRequestCommandHandlerTests
                 },
                 Status =  0,
                 CurrentFare = 65,
+                NumberOfSeats = 1
 
               };
 
