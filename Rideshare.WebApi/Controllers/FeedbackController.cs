@@ -29,9 +29,9 @@ namespace Rideshare.WebApi.Controllers
 
         [HttpGet]
         // only admin can view
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new GetFeedbackListQuery {  });
+            var result = await _mediator.Send(new GetFeedbackListQuery { PageNumber = pageNumber, PageSize = pageSize });
             var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
             return getResponse(status, result);
         }
