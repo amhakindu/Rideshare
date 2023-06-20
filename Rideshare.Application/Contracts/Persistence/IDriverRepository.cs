@@ -10,6 +10,6 @@ namespace Rideshare.Application.Contracts.Persistence
     public interface IDriverRepository : IGenericRepository<Driver>
     {
         public Task<Driver> GetDriverWithDetails(int id);
-        public Task<List<Driver>> GetDriversWithDetails();
+        public Task<List<Driver>> GetDriversWithDetails(int PageNumber, int PageSize);
     }
 }

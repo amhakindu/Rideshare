@@ -26,7 +26,7 @@ namespace Rideshare.Application.Features.Drivers.Handlers
         public async Task<BaseResponse<List<DriverDetailDto>>> Handle(GetDriversListRequest request, CancellationToken cancellationToken)
         {
             var response = new BaseResponse<List<DriverDetailDto>>();
-            var drivers = await _unitOfWork.DriverRepository.GetDriversWithDetails();
+            var drivers = await _unitOfWork.DriverRepository.GetDriversWithDetails(request.PageNumber, request.PageNumber);
 
 
             response.Success = true;
