@@ -63,7 +63,7 @@ public class UpdateRideRequestCommandHandlerTests
         updatedRideRequest.CurrentFare.ShouldBe(rideRequestDto.CurrentFare);
     
 
-        (await _mockUnitOfWork.Object.RideRequestRepository.GetAll()).Count.ShouldBe(2);
+        (await _mockUnitOfWork.Object.RideRequestRepository.GetAll(1, 10)).Count.ShouldBe(2);
     }
 
       [Fact]

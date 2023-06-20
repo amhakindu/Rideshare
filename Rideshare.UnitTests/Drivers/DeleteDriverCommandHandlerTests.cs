@@ -40,7 +40,7 @@ namespace Rideshare.UnitTests.Drivers
             var result = await _handler.Handle(command, CancellationToken.None);
             
 
-            (await _mockUnitOfWork.Object.DriverRepository.GetAll()).Count.ShouldBe(1);
+            (await _mockUnitOfWork.Object.DriverRepository.GetAll(10, 10)).Count.ShouldBe(1);
 
 
         }
@@ -56,7 +56,7 @@ public async Task DeleteDriverInValid()
         var result = await _handler.Handle(command, CancellationToken.None);
     });
 
-    (await _mockUnitOfWork.Object.DriverRepository.GetAll()).Count.ShouldBe(2);
+    (await _mockUnitOfWork.Object.DriverRepository.GetAll(10, 10)).Count.ShouldBe(2);
 }
 
 

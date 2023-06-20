@@ -50,7 +50,7 @@ namespace Rideshare.UnitTests.RateTest.Commands
 			// The current rate.
 			var rate = await _mockRepo.Object.RateRepository.Get(4);
 			rate.ShouldNotBeNull();
-			var rates = await _mockRepo.Object.RateRepository.GetAll();
+			var rates = await _mockRepo.Object.RateRepository.GetAll(1, 10);
 			rates.Count.ShouldBe(4);
 
 		}
@@ -79,7 +79,7 @@ namespace Rideshare.UnitTests.RateTest.Commands
 				rate.ShouldBeNull();
 
 				// count = 3
-				var rates = await _mockRepo.Object.RateRepository.GetAll();
+				var rates = await _mockRepo.Object.RateRepository.GetAll(1, 10);
 				rates.Count.ShouldBe(3);
 			}
 		}
@@ -111,7 +111,7 @@ namespace Rideshare.UnitTests.RateTest.Commands
 				rate.ShouldBeNull();
 
 				// Verify that the count of rates remains unchanged
-				var rates = await _mockRepo.Object.RateRepository.GetAll();
+				var rates = await _mockRepo.Object.RateRepository.GetAll(1, 10);
 				rates.Count.ShouldBe(3);
 				return;
 			}

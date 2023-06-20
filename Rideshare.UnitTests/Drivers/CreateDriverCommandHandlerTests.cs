@@ -52,7 +52,7 @@
 //            var result = await _handler.Handle(command, CancellationToken.None);
 
 //            result.Value.ShouldBeOfType<int>();
-//            (await _mockUnitOfWork.Object.DriverRepository.GetAll()).Count.ShouldBe(3);
+//            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(3);
 
 
 
@@ -78,7 +78,7 @@
 //        var result = await _handler.Handle(command, CancellationToken.None);
 //    });
 
-//            (await _mockUnitOfWork.Object.DriverRepository.GetAll()).Count.ShouldBe(2);
+//            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(2);
 
 
 
@@ -107,7 +107,7 @@
 //                var result = await _handler.Handle(command, CancellationToken.None);
 //            });
 
-//            (await _mockUnitOfWork.Object.DriverRepository.GetAll()).Count.ShouldBe(2);
+//            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(2);
 
 
 
@@ -135,7 +135,7 @@
 //                var result = await _handler.Handle(command, CancellationToken.None);
 //            });
 
-//            (await _mockUnitOfWork.Object.DriverRepository.GetAll()).Count.ShouldBe(2);
+//            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(2);
 
 
 
@@ -162,7 +162,7 @@
 //                var result = await _handler.Handle(command, CancellationToken.None);
 //            });
 
-//            (await _mockUnitOfWork.Object.DriverRepository.GetAll()).Count.ShouldBe(2);
+//            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(2);
 
 
 

@@ -42,7 +42,7 @@ namespace Rideshare.UnitTests.RateTest.Commands
 			var userId = "1";
 
 			var result = await _handler.Handle(new DeleteRateCommand() { Id = id, UserId = userId }, CancellationToken.None);
-			var rates = await _mockRepo.Object.RateRepository.GetAll();
+			var rates = await _mockRepo.Object.RateRepository.GetAll(1, 10);
 			var exist = await _mockRepo.Object.RateRepository.Exists(id);
 			exist.ShouldBeFalse();
 			
@@ -77,7 +77,7 @@ namespace Rideshare.UnitTests.RateTest.Commands
 				var result = await _handler.Handle(new DeleteRateCommand() { Id = id, UserId = userId }, CancellationToken.None);
 			}
 			catch (Exception ex) {
-				var rates = await _mockRepo.Object.RateRepository.GetAll();
+				var rates = await _mockRepo.Object.RateRepository.GetAll(1, 10);
 				rates.Count.ShouldBe(3);
 			}
 		}

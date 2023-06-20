@@ -50,7 +50,7 @@ public class MockRideOfferRepository
         var rideOfferRepo = new Mock<IRideOfferRepository>();
         
         rideOfferRepo.Setup(repo => repo.Get(It.IsAny<int>())).ReturnsAsync((int id) => rideOffers.FirstOrDefault(o => o.Id == id));
-        rideOfferRepo.Setup(repo => repo.GetAll()).ReturnsAsync(()=>rideOffers);
+        rideOfferRepo.Setup(repo => repo.GetAll(1, 10)).ReturnsAsync(()=>rideOffers);
         rideOfferRepo.Setup(repo => repo.Exists(It.IsAny<int>())).ReturnsAsync((int id) => rideOffers.Exists(o => o.Id == id));
 
         rideOfferRepo.Setup(repo => repo.Add(It.IsAny<RideOffer>())).ReturnsAsync((RideOffer rideOffer)=>{

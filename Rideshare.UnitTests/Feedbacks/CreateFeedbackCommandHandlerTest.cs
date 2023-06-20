@@ -49,7 +49,7 @@ namespace Rideshare.UnitTests.FeedbackTest
             var feedback = await _mockUnitOfWork.Object.FeedbackRepository.Get(4);
             feedback.ShouldNotBeNull();
             // the count should be 3 because there are 2 that are already added
-            var feedbacks = await _mockUnitOfWork.Object.FeedbackRepository.GetAll();
+            var feedbacks = await _mockUnitOfWork.Object.FeedbackRepository.GetAll(1, 10);
             feedbacks.Count.ShouldBe(3);
         }
 
@@ -74,7 +74,7 @@ namespace Rideshare.UnitTests.FeedbackTest
                 feedback.ShouldBeNull();
 
                 // the count should be 2
-                var feedbacks = await _mockUnitOfWork.Object.FeedbackRepository.GetAll();
+                var feedbacks = await _mockUnitOfWork.Object.FeedbackRepository.GetAll(1, 10);
                 feedbacks.Count.ShouldBe(2);
             }
         }

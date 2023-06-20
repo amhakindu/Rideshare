@@ -37,7 +37,7 @@ public class MockRideRequestRepository
         
          var mockRepo = new Mock<IRideRequestRepository>();
 
-        mockRepo.Setup(r => r.GetAll()).ReturnsAsync(rideRequests);
+        mockRepo.Setup(r => r.GetAll(1, 10)).ReturnsAsync(rideRequests);
         
         mockRepo.Setup(r => r.Add(It.IsAny<RideRequest>())).ReturnsAsync((RideRequest rideRequest) =>
         {
