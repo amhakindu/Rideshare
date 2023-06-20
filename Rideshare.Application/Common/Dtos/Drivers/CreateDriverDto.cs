@@ -1,4 +1,5 @@
-﻿using Rideshare.Domain.Models;
+﻿using Microsoft.AspNetCore.Http;
+using Rideshare.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,6 @@ namespace Rideshare.Application.Common.Dtos.Drivers
         public double Experience { get; set; }
         public string Address { get; set; }
         public string LicenseNumber { get; set; }
-        public string License { get; set; }
+        public IFormFile License { get; set; }
     }
 }

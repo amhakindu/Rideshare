@@ -28,4 +28,14 @@ public class ResourceManager : IResourceManager
         var uploadResult = await _cloudinary.UploadLargeAsync(uploadParams);
         return uploadResult.Url;
     }
+
+    public async Task<Uri> UploadImage(IFormFile image)
+        {
+            var uploadParams = new RawUploadParams()
+            {
+                File = new FileDescription(image.FileName, image.OpenReadStream()),
+            };
+            var uploadResult = await _cloudinary.UploadLargeAsync(uploadParams);
+            return uploadResult.Url;
+        }
 }
