@@ -38,7 +38,7 @@ public class DeleteRideRequestCommandHandlerTests
                var result = await _handler.Handle(new DeleteRideRequestCommand() {  Id =  1}, CancellationToken.None);
                
               
-              (await _mockUnitOfWork.Object.RideRequestRepository.GetAll()).Count.ShouldBe(1);
+              (await _mockUnitOfWork.Object.RideRequestRepository.GetAll(1, 10)).Count.ShouldBe(1);
        }
        
        [Fact]

@@ -34,7 +34,7 @@ namespace Rideshare.UnitTests.Mocks
 
             var mockRepo = new Mock<IFeedbackRepository>();
 
-            mockRepo.Setup(r => r.GetAll()).ReturnsAsync(feedbacks);
+            mockRepo.Setup(r => r.GetAll(1, 10)).ReturnsAsync(feedbacks);
 
             mockRepo.Setup(r => r.Add(It.IsAny<Feedback>())).ReturnsAsync((Feedback feedback) =>
             {

@@ -42,7 +42,7 @@ namespace Rideshare.UnitTests.Mocks
 
 			var mockRepo = new Mock<IRateRepository>();
 
-			mockRepo.Setup(r => r.GetAll()).ReturnsAsync(rates);
+			mockRepo.Setup(r => r.GetAll(1, 10)).ReturnsAsync(rates);
 			
 			mockRepo.Setup(r => r.Add(It.IsAny<RateEntity>())).ReturnsAsync((RateEntity rate) =>
 			{

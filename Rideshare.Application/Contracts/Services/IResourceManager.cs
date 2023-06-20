@@ -9,4 +9,5 @@ namespace Rideshare.Application.Contracts.Services;
 public interface IResourceManager
 {
     public Task<Uri> UploadPDF(IFormFile pdf);
+    public Task<Uri> UploadImage(IFormFile image);
 }

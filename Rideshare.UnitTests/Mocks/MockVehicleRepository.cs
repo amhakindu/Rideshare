@@ -35,7 +35,7 @@ public class MockVehicleRepository
         };
         var vehicleRepo = new Mock<IVehicleRepository>();
 
-        vehicleRepo.Setup(r => r.GetAll()).ReturnsAsync(vehicles);
+        vehicleRepo.Setup(r => r.GetAll(1, 10)).ReturnsAsync(vehicles);
         vehicleRepo.Setup(repo => repo.Get(It.IsAny<int>()))
             .ReturnsAsync((int id) => vehicles.FirstOrDefault(o => o.Id == id));
         vehicleRepo.Setup(repo => repo.Add(It.IsAny<Vehicle>()))

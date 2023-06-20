@@ -38,7 +38,7 @@ public class DeleteVehicleCommandHandlerTests
 
         var result = await _handler.Handle(command, CancellationToken.None);
 
-        (await _mockUnitOfWork.VehicleRepository.GetAll()).Count.ShouldBe(1);
+        (await _mockUnitOfWork.VehicleRepository.GetAll(1, 10)).Count.ShouldBe(1);
 
 
     }
@@ -53,6 +53,6 @@ public class DeleteVehicleCommandHandlerTests
             var result = await _handler.Handle(command, CancellationToken.None);
         });
 
-        (await _mockUnitOfWork.VehicleRepository.GetAll()).Count.ShouldBe(2);
+        (await _mockUnitOfWork.VehicleRepository.GetAll(1, 10)).Count.ShouldBe(2);
     }
 }

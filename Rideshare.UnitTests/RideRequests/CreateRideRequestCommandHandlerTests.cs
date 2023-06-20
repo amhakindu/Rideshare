@@ -60,7 +60,7 @@ public class CreateRideRequestCommandHandlerTests
               result.Value.ShouldBeEquivalentTo(3);
 
               
-              (await _mockUnitOfWork.Object.RideRequestRepository.GetAll()).Count.ShouldBe(3);
+              (await _mockUnitOfWork.Object.RideRequestRepository.GetAll(1, 10)).Count.ShouldBe(3);
        }
        
        [Fact]
