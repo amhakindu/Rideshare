@@ -17,16 +17,18 @@ using Xunit;
 namespace Rideshare.UnitTests.Vehicles;
 public class GetAllVehiclesQueryHandlerTests
 {
-    private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+    private readonly IUnitOfWork _mockUnitOfWork;
     private readonly IMapper _mapper;
     private readonly GetAllVehiclesQueryHandler _handler;
 
     public GetAllVehiclesQueryHandlerTests()
     {
-        _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
+        _mockUnitOfWork = MockUnitOfWork
+            .GetUnitOfWork()
+            .Object;
         _mapper = new MapperConfiguration(c => { c.AddProfile<MappingProfile>(); }).CreateMapper();
 
-        _handler = new GetAllVehiclesQueryHandler(_mapper, _mockUnitOfWork.Object);
+        _handler = new GetAllVehiclesQueryHandler(_mapper, _mockUnitOfWork);
     }
 
     [Fact]
@@ -37,7 +39,7 @@ public class GetAllVehiclesQueryHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         result.Value.ShouldNotBe(null);
-        var expected = await _mockUnitOfWork.Object.VehicleRepository.GetAll();
+        var expected = await _mockUnitOfWork.VehicleRepository.GetAll();
         result.Value.Count.ShouldBe(expected.Count);
     }
 }

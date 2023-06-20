@@ -12,5 +12,6 @@ public class Vehicle : BaseEntity
     public int NumberOfSeats { get; set; }
     public string Model { get; set; }
     public string Libre { get; set; }
-    public string UserId { get; set; }
+    public int DriverId { get; set; }
+    public Driver Driver { get; set; }
 }
