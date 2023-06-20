@@ -7,6 +7,6 @@ namespace Rideshare.Application.Features.Rates.Queries
 {
 	public class GetRateListQuery : IRequest<BaseResponse<List<RateDto>>>
 	{
-		
+		public string UserId { get; set; }
 	}
 }
