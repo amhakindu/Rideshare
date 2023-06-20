@@ -15,11 +15,12 @@ namespace Rideshare.WebApi.Controllers;
 public class RateController : BaseApiController
 {
 	private readonly IUserAccessor _userAccessor;
-    public RateController(IMediator mediator,IUserAccessor userAccessor) : base(mediator)
-    {
-        _userAccessor = userAccessor;
-    }
-
+	public RateController(IMediator mediator,IUserAccessor userAccessor) : base(mediator)
+	{
+		_userAccessor = userAccessor;
+	}
+	 
+	 [Authorize(Roles = "Commuter")]
 	  [HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
@@ -27,7 +28,8 @@ public class RateController : BaseApiController
 			var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
 			return getResponse(status, result);
 		}
-
+		
+		[Authorize(Roles = "Commuter")]
 		[HttpGet("{id}")]
 		public async Task<IActionResult> Get(int id)
 		{
@@ -36,7 +38,7 @@ public class RateController : BaseApiController
 			return getResponse(status, result);
 		}
 
-        [Authorize(Roles = "Commuter")]
+		[Authorize(Roles = "Commuter")]
 		[HttpPost]
 		
 		public async Task<IActionResult> Post([FromBody] CreateRateDto rateDto)
@@ -47,7 +49,7 @@ public class RateController : BaseApiController
 			return getResponse(status, result);
 		}
 		
-
+		[Authorize(Roles = "Commuter")]
 		[HttpPut]
 		
 		public async Task<IActionResult> Put([FromBody] UpdateRateDto rateDto)
@@ -58,6 +60,7 @@ public class RateController : BaseApiController
 			return getResponse(status, result);
 		}
 
+        [Authorize(Roles = "Commuter")]
 		[HttpDelete]
 		public async Task<IActionResult> Delete(int id, string userId)
 		{
