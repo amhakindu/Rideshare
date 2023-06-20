@@ -31,14 +31,14 @@ public class GetRideRequestListQueryHandlerTests
     [Fact]
     public async Task GetRideRequestListValid()
     {
-        var result = await _handler.Handle(new GetRideRequestListQuery(), CancellationToken.None);
+        var result = await _handler.Handle(new GetRideRequestListQuery() {UserId = "sura123"}, CancellationToken.None);
         result.Value?.Count.ShouldBe(2);
     }
 
     [Fact]
     public async Task GetRideRequestListInvalid()
     {
-        var result = await _handler.Handle(new GetRideRequestListQuery(), CancellationToken.None);
-        result.Value?.Count.ShouldNotBe(1);
+        var result = await _handler.Handle(new GetRideRequestListQuery() {UserId = "sura12"}, CancellationToken.None);
+        result.Value?.Count.ShouldBe(0);
     }
 }
