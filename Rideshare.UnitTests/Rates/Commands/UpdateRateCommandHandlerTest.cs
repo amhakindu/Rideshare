@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Rideshare.UnitTests.RateTest
 {
-    public class UpdateRateCommandHandlerTest
+	public class UpdateRateCommandHandlerTest
 	{
 		private IMapper _mapper { get; set; }
 		private Mock<IUnitOfWork> _mockUnitOfWork { get; set; }
@@ -35,16 +35,35 @@ namespace Rideshare.UnitTests.RateTest
 
 			var rateDto = new UpdateRateDto()
 			{
-				Id = 1,
+				Id = 2,
 				Rate = 3.7,
-				Description = "Description 1 Edited!"
+				UserId = "2",
+				Description = "Description 2 Edited!"
 			};
 			await _handler.Handle(new UpdateRateCommand() { RateDto = rateDto }, CancellationToken.None);
 			var rate = await _mockUnitOfWork.Object.RateRepository.Get(rateDto.Id);
 			rate.Description.ShouldBe(rateDto.Description);
 			rate.Rate.ShouldBe(rateDto.Rate);
 
+		}
+		
+		[Fact]
+		public async Task UpdateRate_Anauthorized()
+		{
 
+			var rateDto = new UpdateRateDto()
+			{
+				Id = 3,
+				Rate = 3.7,
+				UserId = "2", //unauthorized user to update the rate.
+				Description = "Description 2 Edited!"
+			};
+			
+			UnauthorizedAccessException ex = await Should.ThrowAsync<UnauthorizedAccessException>(async () =>
+			{
+				await _handler.Handle(new UpdateRateCommand() { RateDto = rateDto }, CancellationToken.None);
+			});
+			
 		}
 
 		[Fact]

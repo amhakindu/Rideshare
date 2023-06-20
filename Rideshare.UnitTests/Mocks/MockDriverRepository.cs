@@ -20,7 +20,7 @@ namespace Rideshare.UnitTests.Mocks
                 Verified = true,
                 Experience = 4.5,
                 Address = "ShiroMeda",
-                Rate =new List<int>(){4, 4},
+                Rate =new List<double>(){4, 4, 1},
             },
                 
             new ()
@@ -33,7 +33,7 @@ namespace Rideshare.UnitTests.Mocks
                 Experience = 4.5,
                 Verified = false,
                 Address = "ShiroMeda",
-                Rate = new List<int> {3, 4},
+                Rate = new List<double> {3, 4, 1},
             }
         };
 
