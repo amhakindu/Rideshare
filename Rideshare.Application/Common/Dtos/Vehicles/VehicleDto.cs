@@ -12,5 +12,5 @@ public class VehicleDto
     public int NumberOfSeats { get; set; }
     public string Model { get; set; }
     public string Libre { get; set; }
-    public string UserId { get; set; }
+    public int DriverId { get; set; }
 }

@@ -21,7 +21,7 @@ public class MockVehicleRepository
                 NumberOfSeats = 4,
                 Model = "FORD 230",
                 Libre = "alibre-01",
-                UserId = "01"
+                DriverId = 1
             },
             new Vehicle
             {
@@ -30,7 +30,7 @@ public class MockVehicleRepository
                 NumberOfSeats = 4,
                 Model = "FORD 231",
                 Libre = "alibre-02",
-                UserId = "02"
+                DriverId = 2
             },
         };
         var vehicleRepo = new Mock<IVehicleRepository>();
@@ -58,6 +58,9 @@ public class MockVehicleRepository
             });
         vehicleRepo.Setup(repo => repo.Update(It.IsAny<Vehicle>()))
             .ReturnsAsync((Vehicle vehicle) => {
+                var vehicleInDb = vehicles.FirstOrDefault(v => v.Id == vehicle.Id);
+                if (vehicleInDb == null)
+                    return 0;
                 var newVehicles = vehicles.Where((r) => r.Id != vehicle.Id);
                 vehicles = newVehicles.ToList();
                 vehicles.Add(vehicle);

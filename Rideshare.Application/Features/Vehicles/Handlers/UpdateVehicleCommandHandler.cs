@@ -40,7 +40,7 @@ public class UpdateVehicleCommandHandler : IRequestHandler<UpdateVehicleCommand,
 
         vehicle.PlateNumber = request.VehicleDto.PlateNumber ?? vehicle.PlateNumber;
         vehicle.Libre = request.VehicleDto.Libre ?? vehicle.Libre;
-        vehicle.UserId = request.VehicleDto.UserId ?? vehicle.UserId;
+        vehicle.DriverId = request.VehicleDto.DriverId ?? vehicle.DriverId;
 
         int operations = await _unitOfWork.VehicleRepository.Update(vehicle);
 

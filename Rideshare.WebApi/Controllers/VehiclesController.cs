@@ -41,7 +41,7 @@ public class VehiclesController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] CreateVehicleDto createVehicleDto)
+    public async Task<IActionResult> Post([FromForm] CreateVehicleDto createVehicleDto)
     {
         var result = await _mediator.Send(new CreateVehicleCommand { VehicleDto = createVehicleDto });
 
@@ -58,7 +58,7 @@ public class VehiclesController : BaseApiController
         return getResponse(status, result);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _mediator.Send(new DeleteVehicleCommand { VehicleId = id });

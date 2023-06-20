@@ -20,16 +20,18 @@ using Xunit;
 namespace Rideshare.UnitTests.Vehicles;
 public class UpdateVehicleCommandHandlerTests
 {
-    private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+    private readonly IUnitOfWork _mockUnitOfWork;
     private readonly IMapper _mapper;
     private readonly UpdateVehicleCommandHandler _handler;
 
     public UpdateVehicleCommandHandlerTests()
     {
-        _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
+        _mockUnitOfWork = MockUnitOfWork
+            .GetUnitOfWork()
+            .Object;
         _mapper = new MapperConfiguration(c => { c.AddProfile<MappingProfile>(); }).CreateMapper();
 
-        _handler = new UpdateVehicleCommandHandler(_mapper, _mockUnitOfWork.Object);
+        _handler = new UpdateVehicleCommandHandler(_mapper, _mockUnitOfWork);
     }
 
     [Fact]
@@ -43,7 +45,7 @@ public class UpdateVehicleCommandHandlerTests
 
         var command = new UpdateVehicleCommand { VehicleDto = updateVehicle };
         var result = await _handler.Handle(command, CancellationToken.None);
-        var vehicle = await _mockUnitOfWork.Object.VehicleRepository.Get(1);
+        var vehicle = await _mockUnitOfWork.VehicleRepository.Get(1);
         vehicle.PlateNumber.ShouldBe("vv401");
     }
 

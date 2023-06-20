@@ -73,8 +73,17 @@ namespace Rideshare.UnitTests.Mocks
 
             });
 
-            return mockRepo;
+            mockRepo.Setup(r => r.Exists(It.IsAny<int>())).ReturnsAsync((int driverId) =>
+            {
+                
+                var driver = drivers.FirstOrDefault(d => d.Id == driverId);
+                if (driver == null)
+                    return false;
+                return true;
 
+            });
+
+            return mockRepo;
         }
     }
 }
