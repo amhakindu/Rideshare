@@ -45,7 +45,8 @@ public class CreateRateCommandHandler : IRequestHandler<CreateRateCommand, BaseR
 			double total, count;
 			total = driver.Rate[0];
 			count = driver.Rate[1];
-            double average = (double)total / count;  
+			double average ;
+			average = (double)total / count;  
 			driver.Rate[2] = average;
 			
 			if  (await _unitOfWork.DriverRepository.Update(driver) == 0)
