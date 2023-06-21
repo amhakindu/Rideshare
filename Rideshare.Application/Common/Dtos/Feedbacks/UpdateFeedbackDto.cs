@@ -8,6 +8,6 @@ namespace Rideshare.Application.Common.Dtos.Feedbacks
 {
     public class UpdateFeedbackDto: CommonDto
     {
-        
+        public int Id { get; set; }
     }
 }

@@ -23,52 +23,52 @@ namespace Rideshare.Application.Features.Rates.Handlers
 		public async Task<BaseResponse<Unit>> Handle(UpdateRateCommand request, CancellationToken cancellationToken)
 		{
 			var response = new BaseResponse<Unit>();
-            var validator = new UpdateRateDtoValidator();
+			var validator = new UpdateRateDtoValidator();
 
-            var validationResult = await validator.ValidateAsync(request.RateDto);
-
-
-            if (!validationResult.IsValid)
-                throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());
-
-            var rate = await _unitOfWork.RateRepository.Get(request.RateDto.Id);
-
-            if (rate == null)
-                throw new NotFoundException("Resource Not Found");
-
-            _mapper.Map(request.RateDto, rate);
-
-            if (await _unitOfWork.RateRepository.Update(rate) == 0)
-                throw new InternalServerErrorException("Database Error: Unable To Save");
+			var validationResult = await validator.ValidateAsync(request.RateDto);
 
 
-            response.Success = true;
-            response.Message = "Update Successful";
-            response.Value = Unit.Value;
+			if (!validationResult.IsValid)
+				throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());
 
+			var rate = await _unitOfWork.RateRepository.Get(request.RateDto.Id);
+			var old_rate = rate.Rate;
 
-
-            return response;
-			// var validator = new UpdateRateDtoValidator(_unitOfWork);
-			// var validatorResult = await validator.ValidateAsync(request.RateDto);
-
-			// if (!validatorResult.IsValid)
-			// {
-			// 	throw new ValidationException(validatorResult.Errors.Select(e => e.ErrorMessage).ToList().First());
-			// }
+			if (rate == null)
+				throw new NotFoundException("Resource Not Found");
 			
-			// var rate = _mapper.Map<RateEntity>(request.RateDto);
-			// var operations = await _unitOfWork.RateRepository.Update(rate);
-			// if (operations == 0)
-			// {
-			// 	throw new InternalServerErrorException("Server Error");
-			// }
+			// Check if the UserId in the request matches the UserId of the rate in the database
+            if (rate.UserId != request.RateDto.UserId)
+                throw new UnauthorizedAccessException("You are not authorized to update this rate.");
+
+
+			_mapper.Map(request.RateDto, rate);
+
+			if (await _unitOfWork.RateRepository.Update(rate) == 0)
+				throw new InternalServerErrorException("Database Error: Unable To Save");
 			
-			// return new BaseResponse<int> {
-			// 	Success = true,
-			// 	Message = "Rate Update Successful",
-			// 	Value = request.RateDto.Id,
-			// };
+			var driver = await _unitOfWork.DriverRepository.Get(rate.DriverId);
+			driver.Rate[0] += request.RateDto.Rate - old_rate ;  //new_rate_value - old_rate_value
+			
+			double total, count;
+			total = driver.Rate[0];
+			count = driver.Rate[1];
+			double average = (total / count);
+			driver.Rate[2] = average;
+			
+			if  (await _unitOfWork.DriverRepository.Update(driver) == 0)
+				throw new InternalServerErrorException("Database Error: Unable To Save");
+				
+
+
+			response.Success = true;
+			response.Message = "Update Successful";
+			response.Value = Unit.Value;
+
+
+
+			return response;
+			
 			
 		}
 

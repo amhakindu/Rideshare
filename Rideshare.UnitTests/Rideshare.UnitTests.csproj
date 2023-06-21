@@ -28,7 +28,6 @@
     <ProjectReference Include="..\Rideshare.Domain\Rideshare.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Mocks\" />
     <ProjectReference Include="..\Rideshare.Domain\Rideshare.Domain.csproj" />
   </ItemGroup>
 </Project>

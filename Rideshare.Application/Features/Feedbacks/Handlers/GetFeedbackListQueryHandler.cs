@@ -25,7 +25,7 @@ namespace Rideshare.Application.Features.Feedbacks.Handlers
         public async Task<BaseResponse<List<FeedbackDto>>> Handle(GetFeedbackListQuery request, CancellationToken cancellationToken)
         {
             var response = new BaseResponse<List<FeedbackDto>>();
-            var feedbacks = await _unitOfWork.FeedbackRepository.GetAll();
+            var feedbacks = await _unitOfWork.FeedbackRepository.GetAll(request.PageNumber, request.PageSize);
             response.Success = true;
             response.Value = _mapper.Map<List<FeedbackDto>>(feedbacks);
             response.Message = "feedback fetched succesfully.";

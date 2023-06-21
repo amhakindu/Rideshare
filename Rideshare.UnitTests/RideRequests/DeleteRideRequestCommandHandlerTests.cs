@@ -31,23 +31,23 @@ public class DeleteRideRequestCommandHandlerTests
        
        
        [Fact]
-       public async Task DeleteCommentValid()
+       public async Task DeleteRideRequestValid()
        {
        
               
-               var result = await _handler.Handle(new DeleteRideRequestCommand() {  Id =  1}, CancellationToken.None);
+               var result = await _handler.Handle(new DeleteRideRequestCommand() {  Id =  1,UserId = "sura123"}, CancellationToken.None);
                
               
-              (await _mockUnitOfWork.Object.RideRequestRepository.GetAll()).Count.ShouldBe(1);
+              (await _mockUnitOfWork.Object.RideRequestRepository.GetAll(1, 10)).Count.ShouldBe(1);
        }
        
        [Fact]
-       public async Task DeleteCommentInvalid()
+       public async Task DeleteRideRequestInvalid()
        {
               
                  await Should.ThrowAsync<NotFoundException>(async () =>
     {
-           var result = await _handler.Handle(new DeleteRideRequestCommand() { Id = 3 }, CancellationToken.None);
+           var result = await _handler.Handle(new DeleteRideRequestCommand() { Id = 3 ,UserId = "sura123"}, CancellationToken.None);
     });    
        }
 }

@@ -34,9 +34,12 @@ namespace Rideshare.Persistence.Repositories;
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public async Task<IReadOnlyList<T>> GetAll()
+        public async Task<IReadOnlyList<T>> GetAll(int pageNumber, int pageSize)
         {
-            return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
+            return await _dbContext.Set<T>().AsNoTracking()
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
         public async Task<int> Update(T entity)

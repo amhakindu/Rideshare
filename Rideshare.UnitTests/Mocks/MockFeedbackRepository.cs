@@ -21,20 +21,20 @@ namespace Rideshare.UnitTests.Mocks
                     Id = 1,
                     Title = "Test Title",
                     Content = "Test Content",
-                    UserId = 3,
+                    UserId = "e2231227-14b9-4f5c-ac0a-580b0324cee6",
                 },
                 new ()
                 {
                     Id = 2,
                     Title = "Test Title 2",
                     Content = "Test Content 2",
-                    UserId = 3,
+                    UserId = "e2231227-14b9-4f5c-ac0a-580b0324cee6",
                 },
             };
 
             var mockRepo = new Mock<IFeedbackRepository>();
 
-            mockRepo.Setup(r => r.GetAll()).ReturnsAsync(feedbacks);
+            mockRepo.Setup(r => r.GetAll(1, 10)).ReturnsAsync(feedbacks);
 
             mockRepo.Setup(r => r.Add(It.IsAny<Feedback>())).ReturnsAsync((Feedback feedback) =>
             {

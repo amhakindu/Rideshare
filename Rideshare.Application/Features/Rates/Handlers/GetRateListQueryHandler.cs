@@ -20,7 +20,7 @@ public class GetRateListQueryHandler : IRequestHandler<GetRateListQuery, BaseRes
 
 	public async Task<BaseResponse<List<RateDto>>> Handle(GetRateListQuery request, CancellationToken cancellationToken)
 	{
-		IReadOnlyList<RateEntity> rates = await _unitOfWork.RateRepository.GetAll();
+		IReadOnlyList<RateEntity> rates = await _unitOfWork.RateRepository.GetAll(request.PageNumber, request.PageSize);
 		
 		
 		// var rateDtos = rates.Select(rate => _mapper.Map<RateDto>(rate)).ToList();

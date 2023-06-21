@@ -51,11 +51,11 @@ public static class DependencyInjection
                  }
              );
         services.AddAuthorization();
-         services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IJwtService, JwtService>();
 
 
 
-        
+
 
 
     }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Rideshare.Application.Common.Dtos.Feedbacks.Validators;
+using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Feedbacks.Commands;
@@ -18,11 +19,13 @@ namespace Rideshare.Application.Features.Feedbacks.Handlers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
 
-        public DeleteFeedbackCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public DeleteFeedbackCommandHandler(IUnitOfWork unitOfWork, IUserRepository userRepository, IMapper mapper)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
         }
         public async Task<BaseResponse<int>> Handle(DeleteFeedbackCommand request, CancellationToken cancellationToken)
         {
@@ -35,9 +38,16 @@ namespace Rideshare.Application.Features.Feedbacks.Handlers
             }
 
             var feedback = await _unitOfWork.FeedbackRepository.Get(request.Id);
+            
             if (feedback == null)
             {
                 throw new NotFoundException($"Feedback with ID {request.Id} does not exist");
+            }
+            var user = await _userRepository.FindByIdAsync(feedback.UserId);
+
+            if (user == null)
+            {
+                throw new NotFoundException($"User with ID {request.Id} does not exist");
             }
             var ops =  await _unitOfWork.FeedbackRepository.Delete(feedback);
             if (ops == 0)

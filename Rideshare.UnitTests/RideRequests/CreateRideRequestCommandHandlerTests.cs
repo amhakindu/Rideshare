@@ -52,6 +52,8 @@ public class CreateRideRequestCommandHandlerTests
                 },
                 Status =  0,
                 CurrentFare = 65,
+                NumberOfSeats = 1,
+                UserId = "sura"
               };
               
               var result = await _handler.Handle(new CreateRideRequestCommand() {  RideRequestDto = rideRequestDto }, CancellationToken.None);
@@ -59,7 +61,7 @@ public class CreateRideRequestCommandHandlerTests
               result.Value.ShouldBeEquivalentTo(3);
 
               
-              (await _mockUnitOfWork.Object.RideRequestRepository.GetAll()).Count.ShouldBe(3);
+              (await _mockUnitOfWork.Object.RideRequestRepository.GetAll(1, 10)).Count.ShouldBe(3);
        }
        
        [Fact]
@@ -78,6 +80,8 @@ public class CreateRideRequestCommandHandlerTests
                 },
                 Status =  0,
                 CurrentFare = 65,
+                NumberOfSeats = 1,
+                UserId = "12sura"
 
               };
 

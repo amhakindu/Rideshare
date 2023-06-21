@@ -14,7 +14,7 @@ namespace Rideshare.UnitTests.Mocks
 				{
 					Id = 1,
 					Rate = 5.4,
-					RaterId = 3,
+					UserId = "1",
 					DriverId = 2,
 					Description = "Description 1",
 				},
@@ -23,7 +23,7 @@ namespace Rideshare.UnitTests.Mocks
 				{
 					Id = 2,
 					Rate = 2.4,
-					RaterId = 2,
+					UserId = "2",
 					DriverId = 2,
 					Description = "Description 2",
 				},
@@ -33,7 +33,7 @@ namespace Rideshare.UnitTests.Mocks
 				{
 					Id = 3,
 					Rate = 4.4,
-					RaterId = 3,
+					UserId = "3",
 					DriverId = 4,
 					Description = "Description 3",
 				},
@@ -42,7 +42,7 @@ namespace Rideshare.UnitTests.Mocks
 
 			var mockRepo = new Mock<IRateRepository>();
 
-			mockRepo.Setup(r => r.GetAll()).ReturnsAsync(rates);
+			mockRepo.Setup(r => r.GetAll(1, 10)).ReturnsAsync(rates);
 			
 			mockRepo.Setup(r => r.Add(It.IsAny<RateEntity>())).ReturnsAsync((RateEntity rate) =>
 			{
@@ -76,7 +76,7 @@ namespace Rideshare.UnitTests.Mocks
 				return rates.FirstOrDefault((r) => r.Id == id);
 			});
 
-			return mockRepo;
+		return mockRepo;
 		}
 	}
 }

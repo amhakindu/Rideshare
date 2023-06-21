@@ -29,6 +29,11 @@ public class RideshareDbContext: IdentityDbContext<ApplicationUser,ApplicationRo
         base.OnModelCreating(modelBuilder);
         modelBuilder.HasPostgresExtension("postgis");
         
+        modelBuilder.Entity<Driver>()
+            .HasOne(d => d.User)
+            .WithOne()
+            .HasForeignKey<Driver>(d => d.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(RideshareDbContext).Assembly);
     }
 

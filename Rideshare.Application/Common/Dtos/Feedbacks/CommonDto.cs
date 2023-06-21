@@ -8,7 +8,6 @@ namespace Rideshare.Application.Common.Dtos.Feedbacks
 {
     public class CommonDto
     {
-        public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public float Rating { get; set; }

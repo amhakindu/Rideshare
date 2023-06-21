@@ -25,7 +25,7 @@ public class GetRideRequestQueryHandler : IRequestHandler<GetRideRequestQuery, B
     {
         var response = new BaseResponse<RideRequestDto>();
         var rideRequest = await _unitOfWork.RideRequestRepository.Get(request.Id);
-        if (rideRequest != null){
+        if (rideRequest != null && rideRequest.UserId == request.UserId){
             response.Message = "Get Successful";
             response.Value = _mapper.Map<RideRequestDto>(rideRequest);
 

@@ -29,12 +29,19 @@ namespace Rideshare.Application.Features.Feedbacks.Handlers
         {
             var validator = new UpdateFeedbackValidator(_unitOfWork);
             var validatorResult = await validator.ValidateAsync(request.feedbackDto);
+            
 
             if (!validatorResult.IsValid)
             {
                 throw new ValidationException(validatorResult.Errors.Select(e => e.ErrorMessage).ToList().First());
             }
-            var feedback = _mapper.Map<Feedback>(request.feedbackDto);
+
+            var feedback = await _unitOfWork.FeedbackRepository.Get(request.feedbackDto.Id);
+
+            if (feedback == null)
+                throw new NotFoundException($"Feedback with ID {request.feedbackDto.Id} does not exist");
+
+            _mapper.Map(request.feedbackDto, feedback);
             var noOperations = await _unitOfWork.FeedbackRepository.Update(feedback);
             if (noOperations == 0)
             {
@@ -43,7 +50,7 @@ namespace Rideshare.Application.Features.Feedbacks.Handlers
             return new BaseResponse<int> {
                 Success = true,
                 Message = "Feedback Creation Successful",
-                Value = request.feedbackDto.Id,
+                Value = feedback.Id,
             };
         }
 

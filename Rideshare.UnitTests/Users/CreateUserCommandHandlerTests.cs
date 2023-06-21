@@ -54,6 +54,7 @@ namespace Rideshare.Application.Tests.Features.Auth.Handlers
 
             
 
+
             var handler = new CreateUserCommandHandler(userRepositoryMock.Object, mapperMock.Object);
 
             // Act
@@ -67,6 +68,7 @@ namespace Rideshare.Application.Tests.Features.Auth.Handlers
             userRepositoryMock.Verify(x => x.CreateUserAsync(applicationUser, It.IsAny<List<ApplicationRole>>()), Times.Once);
             mapperMock.Verify(x => x.Map<ApplicationUser>(command.UserCreationDto), Times.Once);
           
+
         }
     }
 }

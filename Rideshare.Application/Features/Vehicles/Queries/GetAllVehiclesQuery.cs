@@ -10,4 +10,6 @@ using System.Threading.Tasks;
 namespace Rideshare.Application.Features.Vehicles.Queries;
 public class GetAllVehiclesQuery : IRequest<BaseResponse<IList<VehicleDto>>>
 {
+    public int PageNumber { get; set; }
+    public int PageSize { get; set; }
 }

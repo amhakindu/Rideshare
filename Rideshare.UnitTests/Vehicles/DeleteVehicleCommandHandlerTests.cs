@@ -17,16 +17,18 @@ using Xunit;
 namespace Rideshare.UnitTests.Vehicles;
 public class DeleteVehicleCommandHandlerTests
 {
-    private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+    private readonly IUnitOfWork _mockUnitOfWork;
     private readonly IMapper _mapper;
     private readonly DeleteVehicleCommandHandler _handler;
 
     public DeleteVehicleCommandHandlerTests()
     {
-        _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
+        _mockUnitOfWork = MockUnitOfWork
+            .GetUnitOfWork()
+            .Object;
         _mapper = new MapperConfiguration(c => { c.AddProfile<MappingProfile>(); }).CreateMapper();
 
-        _handler = new DeleteVehicleCommandHandler(_mapper, _mockUnitOfWork.Object);
+        _handler = new DeleteVehicleCommandHandler(_mapper, _mockUnitOfWork);
     }
     [Fact]
     public async void DeleteVehicleValid()
@@ -36,7 +38,7 @@ public class DeleteVehicleCommandHandlerTests
 
         var result = await _handler.Handle(command, CancellationToken.None);
 
-        (await _mockUnitOfWork.Object.VehicleRepository.GetAll()).Count.ShouldBe(1);
+        (await _mockUnitOfWork.VehicleRepository.GetAll(1, 10)).Count.ShouldBe(1);
 
 
     }
@@ -51,6 +53,6 @@ public class DeleteVehicleCommandHandlerTests
             var result = await _handler.Handle(command, CancellationToken.None);
         });
 
-        (await _mockUnitOfWork.Object.VehicleRepository.GetAll()).Count.ShouldBe(2);
+        (await _mockUnitOfWork.VehicleRepository.GetAll(1, 10)).Count.ShouldBe(2);
     }
 }

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using Rideshare.Application.Common.Dtos.Vehicles;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Contracts.Services;
 using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Vehicles.Commands;
 using Rideshare.Application.Features.Vehicles.Handlers;
@@ -18,20 +20,26 @@ using Xunit;
 namespace Rideshare.UnitTests.Vehicles;
 public class CreateVehicleCommandHandlerTests
 {
-    private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+    private readonly IUnitOfWork _mockUnitOfWork;
     private readonly IMapper _mapper;
+    private readonly IResourceManager _resourceManager;
+    private readonly IFormFile _mockPDF;
     private readonly CreateVehicleCommandHandler _handler;
 
     public CreateVehicleCommandHandlerTests()
     {
-        _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
+        _mockUnitOfWork = MockUnitOfWork
+            .GetUnitOfWork()
+            .Object;
+        _resourceManager = MockResourceManager
+            .GetResourceManager()
+            .Object;
         _mapper = new MapperConfiguration(c => { c.AddProfile<MappingProfile>(); }).CreateMapper();
-
-        _handler = new CreateVehicleCommandHandler(_mapper, _mockUnitOfWork.Object);
+        _mockPDF = MockPDF.GetMockPDF();
+        _handler = new CreateVehicleCommandHandler(_mapper, _mockUnitOfWork, _resourceManager);
     }
 
     [Fact]
-
     public async Task CreateVehicleValidTest()
     {
 
@@ -40,8 +48,8 @@ public class CreateVehicleCommandHandlerTests
             PlateNumber = "AA507",
             NumberOfSeats = 4,
             Model = "FORD 230",
-            Libre = "alibre-01",
-            UserId = "03"
+            Libre = _mockPDF,
+            DriverId = 2
         };
 
         var command = new CreateVehicleCommand { VehicleDto = createVehicleDto };
@@ -49,7 +57,9 @@ public class CreateVehicleCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         result.Value.ShouldBeOfType<int>();
-        (await _mockUnitOfWork.Object.VehicleRepository.GetAll()).Count.ShouldBe(3);
+        var vehicle = await _mockUnitOfWork.VehicleRepository.Get((int) result.Value);
+        vehicle.ShouldNotBeNull();
+        vehicle.Libre.ShouldBe($"http://cloudinary.com/{_mockPDF.FileName}");
     }
 
     [Fact]
@@ -61,8 +71,8 @@ public class CreateVehicleCommandHandlerTests
             PlateNumber = "",
             NumberOfSeats = 4,
             Model = "FORD 230",
-            Libre = "alibre-01",
-            UserId = "03"
+            Libre = _mockPDF,
+            DriverId = 2
         };
 
         var command = new CreateVehicleCommand { VehicleDto = createVehicleDto };
@@ -72,6 +82,6 @@ public class CreateVehicleCommandHandlerTests
             var result = await _handler.Handle(command, CancellationToken.None);
         });
 
-        (await _mockUnitOfWork.Object.VehicleRepository.GetAll()).Count.ShouldBe(2);
+        (await _mockUnitOfWork.VehicleRepository.GetAll(1, 10)).Count.ShouldBe(2);
     }
 }

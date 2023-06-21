@@ -17,6 +17,7 @@ namespace Rideshare.UnitTests.RideRequests;
 public class UpdateRideRequestCommandHandlerTests
 {
         private IMapper _mapper { get; set; }
+        
     private Mock<IUnitOfWork> _mockUnitOfWork { get; set; }
     private UpdateRideRequestCommandHandler _handler { get; set; }
 
@@ -51,18 +52,20 @@ public class UpdateRideRequestCommandHandlerTests
                     Longitude = 10
                 },
             Status =  0,
-            CurrentFare = 100
+            CurrentFare = 100,
+            NumberOfSeats = 1,
+            UserId = "sura123"
             
                    };
 
-        var result = await _handler.Handle(new UpdateRideRequestCommand() {RideRequestDto = rideRequestDto }, CancellationToken.None);
+        var result = await _handler.Handle(new UpdateRideRequestCommand() {RideRequestDto = rideRequestDto ,UserId = "sura123"}, CancellationToken.None);
 
         var updatedRideRequest = await _mockUnitOfWork.Object.RideRequestRepository.Get(rideRequestDto.Id);
 
         updatedRideRequest.CurrentFare.ShouldBe(rideRequestDto.CurrentFare);
     
 
-        (await _mockUnitOfWork.Object.RideRequestRepository.GetAll()).Count.ShouldBe(2);
+        (await _mockUnitOfWork.Object.RideRequestRepository.GetAll(1, 10)).Count.ShouldBe(2);
     }
 
       [Fact]
@@ -81,13 +84,15 @@ public class UpdateRideRequestCommandHandlerTests
                     Longitude = 20
                 },
             Status =  0,
-            CurrentFare = 100
+            CurrentFare = 100,
+            NumberOfSeats = 1,
+            UserId = "sula"
             
                    };
 
          await Should.ThrowAsync<ValidationException>(async () =>
     {
-           var result = await _handler.Handle(new UpdateRideRequestCommand() { RideRequestDto = rideRequestDto }, CancellationToken.None);
+           var result = await _handler.Handle(new UpdateRideRequestCommand() { RideRequestDto = rideRequestDto,UserId = "sura123" }, CancellationToken.None);
     });    
         
     }

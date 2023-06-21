@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rideshare.Application.Common.Dtos.Drivers;
 using Rideshare.Application.Common.Dtos.Tests;
@@ -14,6 +15,7 @@ namespace Rideshare.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles ="Admin")]
     public class DriverController : BaseApiController
     {
 
@@ -24,9 +26,9 @@ namespace Rideshare.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new GetDriversListRequest());
+            var result = await _mediator.Send(new GetDriversListRequest { PageNumber=pageNumber, PageSize = pageSize });
             var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
             return getResponse(status, result);
 
@@ -43,7 +45,7 @@ namespace Rideshare.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateDriverDto createDriverDto)
+        public async Task<IActionResult> Post([FromForm] CreateDriverDto createDriverDto)
         {
             var result = await _mediator.Send(new CreateDriverCommand { CreateDriverDto = createDriverDto });
 

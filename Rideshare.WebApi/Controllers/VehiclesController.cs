@@ -32,16 +32,16 @@ public class VehiclesController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var result = await _mediator.Send(new GetAllVehiclesQuery());
+        var result = await _mediator.Send(new GetAllVehiclesQuery { PageNumber = pageNumber, PageSize = pageSize });
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] CreateVehicleDto createVehicleDto)
+    public async Task<IActionResult> Post([FromForm] CreateVehicleDto createVehicleDto)
     {
         var result = await _mediator.Send(new CreateVehicleCommand { VehicleDto = createVehicleDto });
 
@@ -58,7 +58,7 @@ public class VehiclesController : BaseApiController
         return getResponse(status, result);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _mediator.Send(new DeleteVehicleCommand { VehicleId = id });
