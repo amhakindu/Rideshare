@@ -1,6 +1,7 @@
 using AutoMapper;
 using MediatR;
 using Rideshare.Application.Common.Dtos.RideRequests.Validators;
+using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Tests.Commands;
@@ -13,6 +14,7 @@ public class UpdateRideRequestCommandHandler : IRequestHandler<UpdateRideRequest
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+
 
     public   UpdateRideRequestCommandHandler(IUnitOfWork unitOfWork,IMapper mapper)
     {
@@ -32,6 +34,7 @@ public class UpdateRideRequestCommandHandler : IRequestHandler<UpdateRideRequest
             var rideRequest = await _unitOfWork.RideRequestRepository.Get(request.RideRequestDto.Id);
            rideRequest =  _mapper.Map(request.RideRequestDto, rideRequest);
 
+           if (rideRequest.UserId == request.UserId){
            var value =  await _unitOfWork.RideRequestRepository.Update(rideRequest);
 
                 if ( value > 0)
@@ -43,6 +46,10 @@ public class UpdateRideRequestCommandHandler : IRequestHandler<UpdateRideRequest
                 {
                     throw new InternalServerErrorException("Unable to update ride request!");
                 }
+
+           }else {
+            throw new NotFoundException("Unable to get this ride request");
+           }
         }
         else{
              throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());

@@ -28,7 +28,7 @@ public class RideRequestController : BaseApiController
 
     public async Task<IActionResult> Get(int id)
     {
-        var result = await _mediator.Send(new GetRideRequestQuery { Id = id });
+        var result = await _mediator.Send(new GetRideRequestQuery { Id = id,UserId = _userAccessor.GetUserId() });
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);
@@ -58,7 +58,7 @@ public class RideRequestController : BaseApiController
     [HttpPut]
     public async Task<IActionResult> Put([FromBody] UpdateRideRequestDto rideRequestDto)
     {
-        var result = await _mediator.Send(new UpdateRideRequestCommand { RideRequestDto = rideRequestDto });
+        var result = await _mediator.Send(new UpdateRideRequestCommand { RideRequestDto = rideRequestDto ,UserId = _userAccessor.GetUserId()});
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
         return getResponse(status, result);
@@ -68,7 +68,7 @@ public class RideRequestController : BaseApiController
     [HttpDelete]
     public async Task<IActionResult> Delete(int id)
     {
-        var result = await _mediator.Send(new DeleteRideRequestCommand { Id = id });
+        var result = await _mediator.Send(new DeleteRideRequestCommand { Id = id ,UserId = _userAccessor.GetUserId()});
 
         var status = result.Success ? HttpStatusCode.NoContent : HttpStatusCode.NotFound;
         return getResponse(status, result);

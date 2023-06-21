@@ -2,6 +2,7 @@ using AutoMapper;
 using MediatR;
 using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Common.Dtos.RideRequests.Validators;
+using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Tests.Commands;
@@ -14,6 +15,7 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    
 
      public  CreateRideRequestCommandHandler(IUnitOfWork unitOfWork,IMapper mapper)
     {

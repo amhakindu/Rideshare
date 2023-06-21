@@ -1,5 +1,14 @@
-// namespace Rideshare.Application.Common.Dtos.RideRequests.Validators;
+using FluentValidation;
+using Rideshare.Application.Contracts.Identity;
 
-// public class RideRequestDtoValidator : 
-// {
-// }
+namespace Rideshare.Application.Common.Dtos.RideRequests.Validators;
+
+public class RideRequestDtoValidator : AbstractValidator<RideRequestDto>
+{
+    
+    public RideRequestDtoValidator()
+    {
+        
+        Include(new IRideRequestDtoValidator());
+    }
+}

@@ -26,7 +26,7 @@ public class DeleteRideRequestCommandHandler : IRequestHandler<DeleteRideRequest
         
  
             var  rideRequest = await _unitOfWork.RideRequestRepository.Get(request.Id);
-            if (rideRequest == null){
+            if (rideRequest == null || rideRequest.UserId != request.UserId){
                  throw new NotFoundException("RideRequest not found");
             }
             else{
