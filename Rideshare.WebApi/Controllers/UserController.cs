@@ -48,7 +48,7 @@ public class UserController : BaseApiController
 
     [HttpPost]
     [AllowAnonymous]
-    public async Task<IActionResult> Post([FromBody] UserCreationDto userCreationDto)
+    public async Task<IActionResult> Post([FromForm] UserCreationDto userCreationDto)
     {
         var result = await _mediator.Send(new CreateUserCommand { UserCreationDto = userCreationDto });
 
@@ -70,7 +70,7 @@ public class UserController : BaseApiController
 
     [HttpPut("{id}")]
 
-    public async Task<IActionResult> Update(string id, [FromBody] UserUpdatingDto userUpdatingDto)
+    public async Task<IActionResult> Update(string id, [FromForm] UserUpdatingDto userUpdatingDto)
     {
         var result = await _mediator.Send(new UpdateUserCommand { UserId = id, User = userUpdatingDto });
 

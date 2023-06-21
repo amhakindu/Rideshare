@@ -16,13 +16,15 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, BaseR
     private readonly IUserRepository _userRepository;
     private readonly ISmsSender _smsSender;
     private readonly IMapper _mapper;
+    private readonly IResourceManager _resourceManager;
     private static Random random = new Random();
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper )
+    public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper, IResourceManager resourceManager)
     {
         _userRepository = userRepository;
         _mapper = mapper;
-        
+        _resourceManager = resourceManager;
+
     }
 
     public async Task<BaseResponse<UserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -33,9 +35,17 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, BaseR
 
 
         var applicationUser = _mapper.Map<ApplicationUser>(request.UserCreationDto);
+        if (request.UserCreationDto.Profilepicture != null)
+        {
+            applicationUser.ProfilePicture = (await _resourceManager.UploadImage(request.UserCreationDto.Profilepicture)).AbsoluteUri;
+        }
 
         var user = await _userRepository.CreateUserAsync(applicationUser, applicationRoles);
-          var userDto = _mapper.Map<UserDto>(user);
+
+        var userDto = _mapper.Map<UserDto>(user);
+
+
+
 
 
         var response = new BaseResponse<UserDto>();

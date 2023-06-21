@@ -2,45 +2,46 @@ using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using Rideshare.Application.Common.Dtos.Security;
-using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Features.Auth.Commands;
+using Rideshare.Application.Features.Auth.Handlers;
 using Rideshare.Application.Responses;
+using Rideshare.Application.UnitTests.Mocks;
 using Xunit;
 
-namespace Rideshare.Application.Features.Auth.Handlers.Tests
+namespace Rideshare.UnitTests.Users
 {
     public class LoginCommandHandlerTests
     {
         [Fact]
-        public async Task Handle_ValidRequest_ReturnsSuccessfulResponseWithLoginResult()
+        public async Task Handle_ValidCommand_ReturnsSuccessResponse()
         {
-            // Arrange
-            var userRepositoryMock = new Mock<IUserRepository>();
-
-            var handler = new LoginCommandHandler(userRepositoryMock.Object);
-
-            var phoneNumber = "+251968096033";
             
-            var loginRequest = new LoginRequest(phoneNumber);
-            var loginCommand = new LoginCommand
+            var userRepositoryMock = new MockUserRepository();
+            var command = new LoginCommand
             {
-                LoginRequest = loginRequest
+                LoginRequest = new LoginRequest("1234567890")
             };
 
-            var loginResult = new LoginResponse("Logged In Successfully", "access_token", "refresh_token");
+            var loggedInUser = new LoginResponse
+            ("User logged in successfully",
+                 "access_token",
+                 "refresh_token"
+            );
 
-            userRepositoryMock.Setup(repo => repo.LoginAsync(phoneNumber)).ReturnsAsync(loginResult);
+            userRepositoryMock.Setup(u => u.LoginAsync(command.LoginRequest.PhoneNumber)).ReturnsAsync(loggedInUser);
+            var handler = new LoginCommandHandler(userRepositoryMock.Object);
 
-            // Act
-            var result = await handler.Handle(loginCommand, CancellationToken.None);
+            
+            var response = await handler.Handle(command, CancellationToken.None);
 
-            // Assert
-            Assert.True(result.Success);
-            Assert.Equal("Logged In Successfully", result.Message);
-            Assert.Equal(loginResult, result.Value);
-            Assert.Equal("access_token", result.Value.AccessToken);
-            Assert.Equal("refresh_token", result.Value.refreshToken);
-            userRepositoryMock.Verify(repo => repo.LoginAsync(phoneNumber), Times.Once);
+       
+            Assert.NotNull(response);
+            Assert.True(response.Success);
+            Assert.Equal("Logged In Successfully", response.Message);
+            Assert.NotNull(response.Value);
+            Assert.Equal(loggedInUser.Message, response.Value.Message);
+            Assert.Equal(loggedInUser.AccessToken, response.Value.AccessToken);
+            Assert.Equal(loggedInUser.refreshToken, response.Value.refreshToken);
         }
     }
 }

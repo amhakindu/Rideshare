@@ -46,7 +46,8 @@ public class UserRepository : IUserRepository
     public async Task<ApplicationUser> CreateUserAsync(ApplicationUser user, List<ApplicationRole> roles)
     {
 
-
+        user.UserName = user.FullName + user.PhoneNumber;
+        user.Email = user.FullName + user.PhoneNumber;
         var result = await _userManager.CreateAsync(user);
         Console.WriteLine(result.ToString());
 

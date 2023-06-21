@@ -34,6 +34,9 @@ public class RideshareDbContext: IdentityDbContext<ApplicationUser,ApplicationRo
             .WithOne()
             .HasForeignKey<Driver>(d => d.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+         modelBuilder.Entity<ApplicationUser>()
+            .HasIndex(u => u.PhoneNumber)
+            .IsUnique();
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(RideshareDbContext).Assembly);
     }
 
