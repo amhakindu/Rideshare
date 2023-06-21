@@ -6,7 +6,7 @@ using Rideshare.Domain.Models;
 
 namespace Rideshare.Application.Features.Auth.Commands;
 
-public sealed record CreateUserCommand(): IRequest<BaseResponse<ApplicationUser>>
+public sealed record CreateUserCommand(): IRequest<BaseResponse<UserDto>>
 { 
  public UserCreationDto UserCreationDto { get; set; }  
 }

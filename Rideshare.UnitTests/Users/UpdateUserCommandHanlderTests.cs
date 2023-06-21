@@ -26,9 +26,7 @@ namespace Application.Security.Handlers.CommandHandlers.Tests
             var userId = "user-id";
             var userUpdatingDto = new UserUpdatingDto
             {
-                FirstName = "John",
-                LastName = "Doe",
-                PhoneNumber = "123456789",
+                FullName = "John",
                 Age = 30
             };
             var updateUserCommand = new UpdateUserCommand
@@ -66,9 +64,8 @@ namespace Application.Security.Handlers.CommandHandlers.Tests
             var userId = "user-id";
             var userUpdatingDto = new UserUpdatingDto
             {
-                FirstName = "John",
-                LastName = "Doe",
-                PhoneNumber = "123456789",
+                FullName = "John",
+               
                 Age = 30
             };
             var updateUserCommand = new UpdateUserCommand

@@ -11,34 +11,33 @@ using Rideshare.Application.Contracts.Services;
 
 namespace Rideshare.Application.Features.Auth.Handlers;
 
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, BaseResponse<UserDto>>
+public class CreateAdminUserCommandHanlder : IRequestHandler<CreateAdminUserCommand, BaseResponse<AdminUserDto>>
 {
     private readonly IUserRepository _userRepository;
-    private readonly ISmsSender _smsSender;
+
     private readonly IMapper _mapper;
     private static Random random = new Random();
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper )
+    public CreateAdminUserCommandHanlder(IUserRepository userRepository, IMapper mapper )
     {
         _userRepository = userRepository;
         _mapper = mapper;
         
     }
 
-    public async Task<BaseResponse<UserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<BaseResponse<AdminUserDto>> Handle(CreateAdminUserCommand request, CancellationToken cancellationToken)
     {
 
-        var roles = request.UserCreationDto.Roles;
+        var roles = request.AdminCreationDto.Roles;
         var applicationRoles = _mapper.Map<List<ApplicationRole>>(roles);
 
 
-        var applicationUser = _mapper.Map<ApplicationUser>(request.UserCreationDto);
+        var applicationUser = _mapper.Map<ApplicationUser>(request.AdminCreationDto);
 
-        var user = await _userRepository.CreateUserAsync(applicationUser, applicationRoles);
-          var userDto = _mapper.Map<UserDto>(user);
+        var user = await _userRepository.CreateAdminUserAsync(applicationUser,request.AdminCreationDto.Password ,applicationRoles);
+        var userDto = _mapper.Map<AdminUserDto>(user);
 
-
-        var response = new BaseResponse<UserDto>();
+        var response = new BaseResponse<AdminUserDto>();
         response.Success = true;
         response.Message = "User Created Successfully";
         response.Value = userDto;

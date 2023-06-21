@@ -22,7 +22,6 @@ namespace Rideshare.Application.Tests.Features.Auth.Handlers
         {
             // Arrange
             var userRepositoryMock = new Mock<IUserRepository>();
-            var smsSenderMock = new Mock<ISmsSender>();
             var mapperMock = new Mock<IMapper>();
 
             var command = new CreateUserCommand
@@ -34,11 +33,7 @@ namespace Rideshare.Application.Tests.Features.Auth.Handlers
                         new RoleDto { Id = "role1", Name = "Role 1" },
                         new RoleDto { Id = "role2", Name = "Role 2" }
                     },
-                    UserName = "testuser",
-                    FirstName = "John",
-                    LastName = "Doe",
-                    Password = "password123",
-                    Email = "test@example.com",
+                    FullName = "testuser",
                     PhoneNumber = "1234567890",
                     Age = 30
                 }
@@ -52,16 +47,14 @@ namespace Rideshare.Application.Tests.Features.Auth.Handlers
                 Value = applicationUser
             };
 
-            userRepositoryMock.Setup(x => x.CreateUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<List<ApplicationRole>>()))
+            userRepositoryMock.Setup(x => x.CreateUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<List<ApplicationRole>>()))
                 .ReturnsAsync(applicationUser);
 
             mapperMock.Setup(x => x.Map<ApplicationUser>(command.UserCreationDto)).Returns(applicationUser);
 
-            smsSenderMock.Setup(x => x.SendSmsAsync(command.UserCreationDto.PhoneNumber, It.IsAny<string>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
+            
 
-            var handler = new CreateUserCommandHandler(userRepositoryMock.Object, mapperMock.Object, smsSenderMock.Object);
+            var handler = new CreateUserCommandHandler(userRepositoryMock.Object, mapperMock.Object);
 
             // Act
             var response = await handler.Handle(command, CancellationToken.None);
@@ -71,9 +64,9 @@ namespace Rideshare.Application.Tests.Features.Auth.Handlers
             Assert.Equal("User Created Successfully", response.Message);
             Assert.Equal(applicationUser, response.Value);
 
-            userRepositoryMock.Verify(x => x.CreateUserAsync(applicationUser, command.UserCreationDto.Password, It.IsAny<List<ApplicationRole>>()), Times.Once);
+            userRepositoryMock.Verify(x => x.CreateUserAsync(applicationUser, It.IsAny<List<ApplicationRole>>()), Times.Once);
             mapperMock.Verify(x => x.Map<ApplicationUser>(command.UserCreationDto), Times.Once);
-            userRepositoryMock.Verify(x => x.UpdateUserAsync(applicationUser.Id, applicationUser), Times.Once);
+          
         }
     }
 }

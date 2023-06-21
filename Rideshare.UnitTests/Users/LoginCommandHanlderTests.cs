@@ -19,9 +19,9 @@ namespace Rideshare.Application.Features.Auth.Handlers.Tests
 
             var handler = new LoginCommandHandler(userRepositoryMock.Object);
 
-            var userName = "john.doe";
-            var password = "password";
-            var loginRequest = new LoginRequest(userName, password);
+            var phoneNumber = "+251968096033";
+            
+            var loginRequest = new LoginRequest(phoneNumber);
             var loginCommand = new LoginCommand
             {
                 LoginRequest = loginRequest
@@ -29,7 +29,7 @@ namespace Rideshare.Application.Features.Auth.Handlers.Tests
 
             var loginResult = new LoginResponse("Logged In Successfully", "access_token", "refresh_token");
 
-            userRepositoryMock.Setup(repo => repo.LoginAsync(userName, password)).ReturnsAsync(loginResult);
+            userRepositoryMock.Setup(repo => repo.LoginAsync(phoneNumber)).ReturnsAsync(loginResult);
 
             // Act
             var result = await handler.Handle(loginCommand, CancellationToken.None);
@@ -40,7 +40,7 @@ namespace Rideshare.Application.Features.Auth.Handlers.Tests
             Assert.Equal(loginResult, result.Value);
             Assert.Equal("access_token", result.Value.AccessToken);
             Assert.Equal("refresh_token", result.Value.refreshToken);
-            userRepositoryMock.Verify(repo => repo.LoginAsync(userName, password), Times.Once);
+            userRepositoryMock.Verify(repo => repo.LoginAsync(phoneNumber), Times.Once);
         }
     }
 }

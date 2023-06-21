@@ -3,7 +3,7 @@
 using Rideshare.Domain.Common;
 
 namespace Rideshare.Application.Common.Dtos.Security;
-public class UserCreationDto
+public class UserDto
 {
     public List<RoleDto> Roles { get; set; } = new();
     public string FullName { get; set; } = string.Empty;

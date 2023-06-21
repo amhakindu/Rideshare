@@ -9,37 +9,31 @@ using Rideshare.Domain.Models;
 
 namespace Application.Security.Handlers.CommandHandlers;
 
-public sealed class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, BaseResponse<UserDto>>
+public sealed class UpdateAdminUserCommandHandler : IRequestHandler<UpdateAdminUserCommand, BaseResponse<AdminUserDto>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
 
-    public UpdateUserCommandHandler(IUserRepository userRepository, IMapper mapper)
+    public UpdateAdminUserCommandHandler(IUserRepository userRepository, IMapper mapper)
     {
         _userRepository = userRepository;
         _mapper = mapper;
     }
 
-    public async Task<BaseResponse<UserDto>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task<BaseResponse<AdminUserDto>> Handle(UpdateAdminUserCommand request, CancellationToken cancellationToken)
     {
-
-        var response = new BaseResponse<UserDto>();
-        var applicationUser = _mapper.Map<ApplicationUser>(request.User);
+       
+        var response = new BaseResponse<AdminUserDto>();
+        var applicationUser = _mapper.Map<ApplicationUser>(request.UserId);
 
 
         var updatedUser = await _userRepository.UpdateUserAsync(request.UserId, applicationUser);
 
-
-        var userDto = _mapper.Map<UserDto>(updatedUser);
+        var userDto = _mapper.Map<AdminUserDto>(updatedUser);
 
         response.Success = true;
         response.Message = "User Updated Successfully";
         response.Value = userDto;
         return response;
-
-
-
-
-
     }
 }
