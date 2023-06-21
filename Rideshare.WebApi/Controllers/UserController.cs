@@ -33,9 +33,10 @@ public class UserController : BaseApiController
 
         var result = await _mediator.Send(new LoginCommand { LoginRequest = loginRequest });
 
-        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
-        return getResponse<BaseResponse<LoginResponse>>(status, result);
-    }
+		var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+		return getResponse<BaseResponse<LoginResponse>>(status, result);
+	}
+	
 
     [HttpPost("admin/login")]
     [AllowAnonymous]
