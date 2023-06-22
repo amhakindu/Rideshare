@@ -15,7 +15,7 @@ using Rideshare.Application.Common.Dtos;
 
 namespace Rideshare.Application.Profiles;
 
-public class MappingProfile: Profile
+public class MappingProfile : Profile
 {
 
     public MappingProfile()
@@ -37,41 +37,49 @@ public class MappingProfile: Profile
 
         #region Driver Mappings
         CreateMap<Driver, DriverDetailDto>().ReverseMap();
-        CreateMap<Driver, CreateDriverDto>().ReverseMap();  
+        CreateMap<Driver, CreateDriverDto>().ReverseMap();
         CreateMap<Driver, UpdateDriverDto>().ReverseMap();
         #endregion Driver Mappings
-        
+
 
         #region rideRequest Mappings
 
         CreateMap<RideRequest, RideRequestDto>().ReverseMap();
         CreateMap<RideRequest, CreateRideRequestDto>().ReverseMap();
         CreateMap<RideRequest, UpdateRideRequestDto>().ReverseMap();
-        CreateMap<Point , LocationDto>()
-            .ConstructUsing(point => new LocationDto(){Latitude=point.Y, Longitude=point.X})
+        CreateMap<Point, LocationDto>()
+            .ConstructUsing(point => new LocationDto() { Latitude = point.Y, Longitude = point.X })
             .ReverseMap()
             .ConstructUsing(dto => new Point(dto.Latitude, dto.Longitude));
 
         #endregion rideRequest
 
-            #region User Mappings
-CreateMap<ApplicationRole, RoleDto>()
-            .ReverseMap();
-             CreateMap<ApplicationUser, UserCreationDto>()
-            .ReverseMap();
-             CreateMap<ApplicationUser, UserCreationDto>()
-            .ReverseMap();
-            CreateMap<ApplicationUser, UserUpdatingDto>()
-            .ReverseMap();
+        #region User Mappings
+        CreateMap<ApplicationRole, RoleDto>()
+                    .ReverseMap();
+        CreateMap<ApplicationUser, UserCreationDto>()
+       .ReverseMap();
+        CreateMap<ApplicationUser, UserCreationDto>()
+       .ReverseMap();
+        CreateMap<ApplicationUser, UserUpdatingDto>()
+        .ReverseMap();
+        CreateMap<ApplicationUser, UserDto>()
+        .ReverseMap();
+        CreateMap<ApplicationUser, AdminUserDto>()
+       .ReverseMap();
+         CreateMap<ApplicationUser, AdminCreationDto>()
+       .ReverseMap();
 
-            #endregion User
+
+
+        #endregion User
         #region Rate Mappings
 
         CreateMap<RateEntity, RateDto>().ReverseMap();
         CreateMap<RateEntity, CreateRateDto>().ReverseMap();
         CreateMap<RateEntity, UpdateRateDto>().ReverseMap();
-			
-		#endregion Rate
+
+        #endregion Rate
 
         #region
         CreateMap<Feedback, FeedbackDto>().ReverseMap();
@@ -85,7 +93,7 @@ CreateMap<ApplicationRole, RoleDto>()
         CreateMap<RideOffer, RideOfferListDto>().ReverseMap();
         CreateMap<RideOffer, CreateRideOfferDto>().ReverseMap();
         CreateMap<Point, LocationDto>()
-            .ConstructUsing(point => new LocationDto {Longitude=point.X, Latitude=point.Y})
+            .ConstructUsing(point => new LocationDto { Longitude = point.X, Latitude = point.Y })
             .ReverseMap()
             .ConstructUsing(dto => new Point(dto.Longitude, dto.Latitude));
 

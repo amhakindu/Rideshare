@@ -43,19 +43,20 @@ public class UserRepository : IUserRepository
 
 
 
-    public async Task<ApplicationUser> CreateUserAsync(ApplicationUser user, string password,   List<ApplicationRole> roles)
+    public async Task<ApplicationUser> CreateUserAsync(ApplicationUser user, List<ApplicationRole> roles)
     {
 
-
-        var result = await _userManager.CreateAsync(user, password);
+        user.UserName = user.FullName + user.PhoneNumber;
+        user.Email = user.FullName + user.PhoneNumber;
+        var result = await _userManager.CreateAsync(user);
         Console.WriteLine(result.ToString());
 
         if (result.Succeeded)
         {
 
-            var savedUser = await _userManager.FindByEmailAsync(user.Email);
+            var savedUser = await _userManager.Users.SingleOrDefaultAsync(us => us.PhoneNumber == user.PhoneNumber);
 
-            var addRoleResult = await _userManager.AddToRolesAsync(user,  roles.Select(r => r.Name));
+            var addRoleResult = await _userManager.AddToRolesAsync(user, roles.Select(r => r.Name));
 
             if (!addRoleResult.Succeeded) throw new InvalidOperationException("User role assignment has failed");
 
@@ -65,7 +66,7 @@ public class UserRepository : IUserRepository
         else
         {
             Console.WriteLine(result.ToString());
-            throw new Exception("Failed to create user.");
+            throw new Exception($"Failed to create user. {result.ToString()}");
         }
     }
 
@@ -81,10 +82,8 @@ public class UserRepository : IUserRepository
         {
             throw new Exception("User not found.");
         }
-
-        existingUser.Email = user.Email;
-        existingUser.LastName = user.LastName;
-        existingUser.FirstName = user.FirstName;
+        existingUser.FullName = user.FullName;
+        existingUser.UserName = user.FullName;
 
         var result = await _userManager.UpdateAsync(existingUser);
         if (result.Succeeded)
@@ -144,7 +143,26 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public async Task<LoginResponse> LoginAsync(string username, string password)
+    public async Task<LoginResponse> LoginAsync(string phoneNumber)
+    {
+        var user = await _userManager.Users.SingleOrDefaultAsync(us => us.PhoneNumber == phoneNumber);
+        if (user == null)
+        {
+            throw new Exception("Invalid phoneNumber.");
+        }
+        var tokens = await _jwtService.GenerateToken(user);
+        return new LoginResponse("Login successful", tokens.AccessToken, tokens.RefreshToken);
+
+
+        ;
+    }
+
+
+    public async Task<TokenDto?> RefreshToken(TokenDto tokenDto)
+    {
+        return await _jwtService.RefreshToken(tokenDto);
+    }
+    public async Task<LoginResponse> LoginByAdminAsync(string username, string password)
     {
         var user = await _userManager.FindByNameAsync(username);
         if (user == null)
@@ -164,11 +182,53 @@ public class UserRepository : IUserRepository
 
         ;
     }
-
-
-    public async Task<TokenDto?> RefreshToken(TokenDto tokenDto)
+    public async Task<ApplicationUser> UpdateAdminUserAsync(string userId, ApplicationUser user)
     {
-        return await _jwtService.RefreshToken(tokenDto);
+        var existingUser = await _userManager.FindByIdAsync(userId);
+        if (existingUser == null)
+        {
+            throw new Exception("User not found.");
+        }
+
+        existingUser.Email = user.Email;
+        existingUser.FullName = user.FullName;
+
+
+        var result = await _userManager.UpdateAsync(existingUser);
+        if (result.Succeeded)
+        {
+            return existingUser;
+        }
+        else
+        {
+            throw new Exception(result.Errors.ToString());
+        }
+    }
+
+    public async Task<ApplicationUser> CreateAdminUserAsync(ApplicationUser user, string password, List<ApplicationRole> roles)
+    {
+
+
+        var result = await _userManager.CreateAsync(user, password);
+        Console.WriteLine(result.ToString());
+
+        if (result.Succeeded)
+        {
+
+            var savedUser = await _userManager.FindByEmailAsync(user.Email);
+
+            var addRoleResult = await _userManager.AddToRolesAsync(user, roles.Select(r => r.Name));
+
+            if (!addRoleResult.Succeeded) throw new InvalidOperationException("User role assignment has failed");
+
+
+            return user;
+        }
+        else
+        {
+            Console.WriteLine(result.ToString());
+            throw new Exception(result.ToString());
+        }
     }
 
 

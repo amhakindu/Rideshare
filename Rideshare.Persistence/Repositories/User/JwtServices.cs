@@ -72,11 +72,7 @@ public class JwtService : IJwtService
             new(ClaimTypes.Email, user.Email ?? string.Empty),
             new(ClaimTypes.NameIdentifier, user.UserName),
             new(ClaimTypes.Name, user.UserName),
-            new(ClaimTypes.PrimarySid,user.Id),
-            new("FirstName", user.FirstName),
-            new("LastName",user.LastName),
-            new("UserName", user.UserName),
-            new("Email", user.Email ?? string.Empty),
+            new("FullName", user.FullName),
             new ("PhoneNumber", user.PhoneNumber)
         };
 

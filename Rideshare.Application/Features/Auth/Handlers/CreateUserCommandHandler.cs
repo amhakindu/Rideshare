@@ -11,61 +11,47 @@ using Rideshare.Application.Contracts.Services;
 
 namespace Rideshare.Application.Features.Auth.Handlers;
 
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, BaseResponse<ApplicationUser>>
+public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, BaseResponse<UserDto>>
 {
     private readonly IUserRepository _userRepository;
     private readonly ISmsSender _smsSender;
     private readonly IMapper _mapper;
+    private readonly IResourceManager _resourceManager;
     private static Random random = new Random();
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper ,ISmsSender smsSender )
+    public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper, IResourceManager resourceManager)
     {
         _userRepository = userRepository;
         _mapper = mapper;
-        _smsSender = smsSender;
+        _resourceManager = resourceManager;
+
     }
 
-    public async Task<BaseResponse<ApplicationUser>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<BaseResponse<UserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var password = request.UserCreationDto.Password;
 
         var roles = request.UserCreationDto.Roles;
         var applicationRoles = _mapper.Map<List<ApplicationRole>>(roles);
 
 
         var applicationUser = _mapper.Map<ApplicationUser>(request.UserCreationDto);
-
-        var user = await _userRepository.CreateUserAsync(applicationUser, password, applicationRoles);
-
-        /*var code = GenerateCode();
-
-        // user.OtpCode = code;
-
-        // // Save the OTP code in a secure storage (database, cache, etc.)
-
-        // await _smsSender.SendSmsAsync(user.PhoneNumber, $"Your OTP code is: {code}");
-
-        await _userRepository.UpdateUserAsync(user.Id,user);
-        */
-
-
-        var response = new BaseResponse<ApplicationUser>();
-        response.Success = true;
-        response.Message = "User Created Successfully";
-        response.Value = user;
-        return response;
-    }
-
-     public static string GenerateCode()
-    {
-        StringBuilder codeBuilder = new StringBuilder();
-
-        for (int i = 0; i < 4; i++)
+        if (request.UserCreationDto.Profilepicture != null)
         {
-            int digit = random.Next(0, 10); // Generate a random digit between 0 and 9
-            codeBuilder.Append(digit);
+            applicationUser.ProfilePicture = (await _resourceManager.UploadImage(request.UserCreationDto.Profilepicture)).AbsoluteUri;
         }
 
-        return codeBuilder.ToString();
+        var user = await _userRepository.CreateUserAsync(applicationUser, applicationRoles);
+
+        var userDto = _mapper.Map<UserDto>(user);
+
+
+
+
+
+        var response = new BaseResponse<UserDto>();
+        response.Success = true;
+        response.Message = "User Created Successfully";
+        response.Value = userDto;
+        return response;
     }
 }

@@ -12,11 +12,7 @@ public  static class InfrastructureServiceRegistration
 {
      public static IServiceCollection ConfigureInfrastructureService(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<ISmsSender>(new TwilioSmsSender(
-            configuration["Twilio:AccountSid"],
-            configuration["Twilio:AuthToken"],
-            configuration["Twilio:FromPhoneNumber"]
-        ));
+            
         Account account = new Account(
             configuration["Cloudinary:CloudName"],
             configuration["Cloudinary:ApiKey"],
@@ -27,6 +23,5 @@ public  static class InfrastructureServiceRegistration
         services.AddScoped<IUserAccessor, UserAccessor>(); 
         return services;
     }
-
 
 }

@@ -31,7 +31,7 @@ namespace Rideshare.Application.Common.Dtos.Drivers.Validators
             .Must((IFormFile image) =>
             {
                 var extension = Path.GetExtension(image.FileName);
-                HashSet<string> validTypes = new HashSet<string>() { ".png", ".jiff", ".img", ".jpg" };
+                HashSet<string> validTypes = new HashSet<string>() { ".png", ".jiff", ".img", ".jpg","jfif" };
                 
                 return extension != null && validTypes.Contains(extension.ToLower()) ;
             }).WithMessage("{PropertyName} must be an image");

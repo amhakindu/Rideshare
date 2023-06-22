@@ -1,19 +1,17 @@
+using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
-using MediatR;
 using Moq;
 using Rideshare.Application.Common.Dtos.Security;
-using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Contracts.Services;
 using Rideshare.Application.Features.Auth.Commands;
 using Rideshare.Application.Features.Auth.Handlers;
 using Rideshare.Application.Responses;
+using Rideshare.Application.UnitTests.Mocks;
 using Rideshare.Domain.Models;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
+namespace Rideshare.UnitTests.Users
 
-namespace Rideshare.Application.Tests.Features.Auth.Handlers
 {
     public class CreateUserCommandHandlerTests
     {
@@ -21,57 +19,40 @@ namespace Rideshare.Application.Tests.Features.Auth.Handlers
         public async Task Handle_ValidRequest_ReturnsSuccessResponse()
         {
             // Arrange
-            var userRepositoryMock = new Mock<IUserRepository>();
-            var smsSenderMock = new Mock<ISmsSender>();
+            var userRepositoryMock = new MockUserRepository();
             var mapperMock = new Mock<IMapper>();
+            var resourceManagerMock = new Mock<IResourceManager>();
+
+            var handler = new CreateUserCommandHandler(userRepositoryMock.Object, mapperMock.Object, resourceManagerMock.Object);
 
             var command = new CreateUserCommand
             {
                 UserCreationDto = new UserCreationDto
                 {
-                    Roles = new List<RoleDto>
+                    
+                     Roles = new List<RoleDto>
                     {
                         new RoleDto { Id = "role1", Name = "Role 1" },
                         new RoleDto { Id = "role2", Name = "Role 2" }
                     },
-                    UserName = "testuser",
-                    FirstName = "John",
-                    LastName = "Doe",
-                    Password = "password123",
-                    Email = "test@example.com",
+                    FullName = "testuser",
                     PhoneNumber = "1234567890",
                     Age = 30
                 }
             };
 
-            var applicationUser = new ApplicationUser();
-            var baseResponse = new BaseResponse<ApplicationUser>
-            {
-                Success = true,
-                Message = "User Created Successfully",
-                Value = applicationUser
-            };
+           
+            var expectedUser = new ApplicationUser();
+            var expectedUserDto = new UserDto();
+            mapperMock.Setup(mapper => mapper.Map<ApplicationUser>(command.UserCreationDto)).Returns(expectedUser);
+            mapperMock.Setup(mapper => mapper.Map<UserDto>(expectedUser)).Returns(expectedUserDto);
 
-            userRepositoryMock.Setup(x => x.CreateUserAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<List<ApplicationRole>>()))
-                .ReturnsAsync(applicationUser);
-
-            mapperMock.Setup(x => x.Map<ApplicationUser>(command.UserCreationDto)).Returns(applicationUser);
-
-
-
-            var handler = new CreateUserCommandHandler(userRepositoryMock.Object, mapperMock.Object, smsSenderMock.Object);
-
-            // Act
+            
             var response = await handler.Handle(command, CancellationToken.None);
 
-            // Assert
             Assert.True(response.Success);
             Assert.Equal("User Created Successfully", response.Message);
-            Assert.Equal(applicationUser, response.Value);
-
-            userRepositoryMock.Verify(x => x.CreateUserAsync(applicationUser, command.UserCreationDto.Password, It.IsAny<List<ApplicationRole>>()), Times.Once);
-            mapperMock.Verify(x => x.Map<ApplicationUser>(command.UserCreationDto), Times.Once);
-
+            Assert.Equal(expectedUserDto, response.Value);
         }
     }
 }
