@@ -24,41 +24,53 @@ public class UserController : BaseApiController
     public UserController(IMediator mediator, IUserAccessor userAccessor) : base(mediator, userAccessor)
     {
     }
+	public UserController(IMediator mediator) : base(mediator)
+	{
+	}
+	
+	[Authorize(Roles = "Admin")]
+	[HttpGet]
+	public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+	{
+		var result = await _mediator.Send(new GetUserListQuery { PageNumber = pageNumber, PageSize=pageSize });
+		var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+		return getResponse(status, result);
+	}
 
-    [HttpPost("login")]
-    [AllowAnonymous]
-    public async Task<IActionResult> Login(LoginRequest loginRequest)
-    {
+	[HttpPost("login")]
+	[AllowAnonymous]
+	public async Task<IActionResult> Login(LoginRequest loginRequest)
+	{
 
 
-        var result = await _mediator.Send(new LoginCommand { LoginRequest = loginRequest });
+		var result = await _mediator.Send(new LoginCommand { LoginRequest = loginRequest });
 
 		var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
 		return getResponse<BaseResponse<LoginResponse>>(status, result);
 	}
 	
 
-    [HttpPost("admin/login")]
-    [AllowAnonymous]
-    public async Task<IActionResult> LoginAdmin(LoginRequestByAdmin loginRequest)
-    {
+	[HttpPost("admin/login")]
+	[AllowAnonymous]
+	public async Task<IActionResult> LoginAdmin(LoginRequestByAdmin loginRequest)
+	{
 
 
-        var result = await _mediator.Send(new AdminLoginCommand { LoginRequest = loginRequest });
+		var result = await _mediator.Send(new AdminLoginCommand { LoginRequest = loginRequest });
 
-        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
-        return getResponse<BaseResponse<LoginResponse>>(status, result);
-    }
+		var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+		return getResponse<BaseResponse<LoginResponse>>(status, result);
+	}
 
-    [HttpPost]
-    [AllowAnonymous]
-    public async Task<IActionResult> Post([FromForm] UserCreationDto userCreationDto)
-    {
-        var result = await _mediator.Send(new CreateUserCommand { UserCreationDto = userCreationDto });
+	[HttpPost]
+	[AllowAnonymous]
+	public async Task<IActionResult> Post([FromForm] UserCreationDto userCreationDto)
+	{
+		var result = await _mediator.Send(new CreateUserCommand { UserCreationDto = userCreationDto });
 
-        var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
-        return getResponse<BaseResponse<UserDto>>(status, result);
-    }
+		var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+		return getResponse<BaseResponse<UserDto>>(status, result);
+	}
 
     [HttpPost("admin")]
     [AllowAnonymous]
@@ -66,9 +78,9 @@ public class UserController : BaseApiController
     {
         var result = await _mediator.Send(new CreateAdminUserCommand { AdminCreationDto = userCreationDto });
 
-        var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
-        return getResponse<BaseResponse<AdminUserDto>>(status, result);
-    }
+		var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+		return getResponse<BaseResponse<AdminUserDto>>(status, result);
+	}
 
     [HttpPost("driver")]
     [AllowAnonymous]
@@ -82,21 +94,21 @@ public class UserController : BaseApiController
 
 
 
-    [HttpPut("{id}")]
+	[HttpPut("{id}")]
 
-    public async Task<IActionResult> Update(string id, [FromForm] UserUpdatingDto userUpdatingDto)
-    {
-        var result = await _mediator.Send(new UpdateUserCommand { UserId = id, User = userUpdatingDto });
+	public async Task<IActionResult> Update(string id, [FromForm] UserUpdatingDto userUpdatingDto)
+	{
+		var result = await _mediator.Send(new UpdateUserCommand { UserId = id, User = userUpdatingDto });
 
-        var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
-        return getResponse<BaseResponse<UserDto>>(status, result);
-    }
+		var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+		return getResponse<BaseResponse<UserDto>>(status, result);
+	}
 
-    [HttpPut("admin/{id}")]
+	[HttpPut("admin/{id}")]
 
-    public async Task<IActionResult> UpdateAdmin(string id, [FromBody] AdminUpdatingDto userUpdatingDto)
-    {
-        var result = await _mediator.Send(new UpdateAdminUserCommand { UserId = id, UpdatingDto = userUpdatingDto });
+	public async Task<IActionResult> UpdateAdmin(string id, [FromBody] AdminUpdatingDto userUpdatingDto)
+	{
+		var result = await _mediator.Send(new UpdateAdminUserCommand { UserId = id, UpdatingDto = userUpdatingDto });
 
         var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
         return getResponse<BaseResponse<AdminUserDto>>(status, result);
