@@ -18,6 +18,10 @@ public class MockResourceManager
             {
                 return new Uri($"http://cloudinary.com/{pdf.FileName}", UriKind.Absolute);
             });
+        mockService.Setup( s => s.UploadImage(It.IsAny<IFormFile>())).ReturnsAsync((IFormFile image) => {
+            return new Uri($"http://cloudinary.com/{image.FileName}", UriKind.Absolute);
+        }) ;
+        
         return mockService;
     }
 }

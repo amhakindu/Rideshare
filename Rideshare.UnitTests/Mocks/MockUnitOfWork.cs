@@ -10,7 +10,7 @@ public class MockUnitOfWork
                 var mockUow = new Mock<IUnitOfWork>();
                 var mockTestEntityRepository = MockTestEntityRepository.GetTestEntityRepository();
                 var mockRideRequestRepository = MockRideRequestRepository.GetRideRequestRepository();
-                var mockDriverRepository = MockDriverRepository.GetDriverRepository();
+                var mockDriverRepository = (new MockDriverRepository()).GetDriverRepository();
                 var mockRateRepository = MockRateRepository.GetRateRepository();
                 var mockFeebackRepository = MockFeedbackRepository.GetFeedbackRepository();
                 var mockVehicleRepository = MockVehicleRepository.GetVehicleRepository();
