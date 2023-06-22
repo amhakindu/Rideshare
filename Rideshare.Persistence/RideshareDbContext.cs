@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Rideshare.Domain.Common;
 using Rideshare.Domain.Entities;
 using Rideshare.Domain.Models;
+using Rideshare.Persistence.Configurations.Security;
 
 namespace Rideshare.Persistence;
 
@@ -28,6 +29,7 @@ public class RideshareDbContext: IdentityDbContext<ApplicationUser,ApplicationRo
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.HasPostgresExtension("postgis");
+        
         
         modelBuilder.Entity<Driver>()
             .HasOne(d => d.User)
