@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Entities;
 
@@ -11,8 +12,11 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
         _dbContext = dbContext;
     }
 
-    public async Task<IReadOnlyList<RideOffer>> GetRideOffersOfDriver(string DriverID){
-        return (IReadOnlyList<RideOffer>) _dbContext.RideOffers
-            .Where(rideOffer => rideOffer.DriverID == DriverID).ToList();
+    public async Task<IReadOnlyList<RideOffer>> GetRideOffersOfDriver(string DriverID, int PageNumber, int PageSize){
+        return await _dbContext.Set<RideOffer>().Where(x => x.DriverID == DriverID)
+            .AsNoTracking()
+            .Skip((PageNumber - 1) * PageSize)
+            .Take(PageSize)
+            .ToListAsync();
     }
 }

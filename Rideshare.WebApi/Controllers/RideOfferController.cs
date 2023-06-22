@@ -41,7 +41,7 @@ public class RideOffersController : BaseApiController
         if(DriverId != null){
             result = await _mediator.Send(new GetRideOffersQuery { DriverID = DriverId, PageNumber = pageNumber, PageSize = pageSize });
         }else{
-            result = await _mediator.Send(new GetAllRideOffersQuery{});
+            result = await _mediator.Send(new GetAllRideOffersQuery{ PageNumber = pageNumber, PageSize = pageSize });
         }
 
         var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.NotFound;

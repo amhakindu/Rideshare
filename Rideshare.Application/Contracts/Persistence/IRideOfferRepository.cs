@@ -4,5 +4,5 @@ namespace Rideshare.Application.Contracts.Persistence;
 
 public interface IRideOfferRepository: IGenericRepository<RideOffer>
 {
-    Task<IReadOnlyList<RideOffer>> GetRideOffersOfDriver(string DriverID);
+    Task<IReadOnlyList<RideOffer>> GetRideOffersOfDriver(string DriverID, int PageNumber, int PageSize);
 }

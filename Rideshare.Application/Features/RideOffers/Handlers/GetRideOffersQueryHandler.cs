@@ -28,8 +28,7 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
 
             if (driverExists == false)
                 throw new NotFoundException($"Driver with ID {command.DriverID} does not exist");
-            
-            var driverRideOffers = await _unitOfWork.RideOfferRepository.GetRideOffersOfDriver(command.DriverID);
+            var driverRideOffers = await _unitOfWork.RideOfferRepository.GetRideOffersOfDriver(command.DriverID, command.PageNumber, command.PageSize);
             var driverRideOfferDtos = _mapper.Map<IReadOnlyList<RideOffer>, IReadOnlyList<RideOfferListDto>>(driverRideOffers);
 
             return new BaseResponse<IReadOnlyList<RideOfferListDto>>{
