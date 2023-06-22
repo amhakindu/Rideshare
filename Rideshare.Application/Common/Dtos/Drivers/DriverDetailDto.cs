@@ -1,4 +1,5 @@
-﻿using Rideshare.Domain.Models;
+﻿using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Rideshare.Application.Common.Dtos.Drivers
     {
         public int Id { get; set; }
         public string UserId { get; set; }
-        public ApplicationUser User { get; set; } = new ApplicationUser();
+        public UserDto User {get; set;}
         public List<int> Rate { get; set; }
         public double Experience { get; set; }
         public string Address { get; set; } 
