@@ -6,7 +6,7 @@ using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Common.Dtos.Tests;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Auth.Commands;
-
+using Rideshare.Application.Features.Auth.Queries;
 using Rideshare.Application.Features.Tests.Queries;
 using Rideshare.Application.Responses;
 using Rideshare.Domain.Models;
@@ -56,7 +56,7 @@ public class UserController : BaseApiController
         return getResponse<BaseResponse<UserDto>>(status, result);
     }
 
-    [HttpPost("/admin")]
+    [HttpPost("admin")]
     [AllowAnonymous]
     public async Task<IActionResult> CreateUser([FromBody] AdminCreationDto userCreationDto)
     {
@@ -86,6 +86,30 @@ public class UserController : BaseApiController
 
         var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
         return getResponse<BaseResponse<AdminUserDto>>(status, result);
+    }
+
+    [HttpGet("users/all")]
+    
+    public async Task<IActionResult> GetAllUser()
+    {
+
+
+        var result = await _mediator.Send(new GetAllUsersQuery { });
+
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+        return getResponse(status, result);
+    }
+
+    [HttpGet("roles/all")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetAllRoles()
+    {
+
+
+        var result = await _mediator.Send(new GetAllRolesQuery { });
+
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+        return getResponse(status, result);
     }
 }
 

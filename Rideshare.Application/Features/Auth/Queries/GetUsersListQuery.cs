@@ -5,7 +5,7 @@ using Rideshare.Application.Responses;
 namespace Rideshare.Application.Features.Auth.Queries
 
 {
-	public class GetAllRolesQuery : IRequest<BaseResponse<List<RoleDto>>>
+	public class GetAllUsersQuery : IRequest<BaseResponse<List<UserDto>>>
 	{
 	
     }
