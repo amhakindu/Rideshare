@@ -41,6 +41,22 @@ public class UserRepository : IUserRepository
         return await _userManager.FindByIdAsync(userId);
     }
 
+     public async Task<List<ApplicationUser>> GetUsersByRoleAsync(string role)
+    {
+        var usersInRole = await _userManager.GetUsersInRoleAsync(role);
+        return usersInRole.ToList();
+    }
+
+    public async Task<List<ApplicationRole>> GetUserRolesAsync(ApplicationUser? user)
+    {
+        var roles = (await _userManager.GetRolesAsync(user)).Select(r => new ApplicationRole
+        {
+            Name = r
+        });
+
+        return roles.ToList();
+    }
+
 
 
     public async Task<ApplicationUser> CreateUserAsync(ApplicationUser user, List<ApplicationRole> roles)

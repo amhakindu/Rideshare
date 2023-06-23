@@ -11,6 +11,7 @@ public interface IUserRepository
     Task<ApplicationUser> CreateUserAsync(ApplicationUser user, List<ApplicationRole> roles);
     Task<ApplicationUser> CreateAdminUserAsync(ApplicationUser user, string password, List<ApplicationRole> roles);
     Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
+    Task<List<ApplicationRole>> GetUserRolesAsync(ApplicationUser? user);
     Task<ApplicationUser> UpdateUserAsync(string userId, ApplicationUser user);
     Task<ApplicationUser> UpdateAdminUserAsync(string userId, ApplicationUser user);
     Task<IEnumerable<ApplicationUser>> GetUsersAsync();
@@ -21,5 +22,6 @@ public interface IUserRepository
     Task<LoginResponse> LoginAsync(string phoneNumber);
     Task<LoginResponse> LoginByAdminAsync(string userName, string password);
     Task<TokenDto?> RefreshToken(TokenDto tokenDto);
+    Task<List<ApplicationUser>> GetUsersByRoleAsync(string role);
 
 }

@@ -11,20 +11,20 @@ using Rideshare.Domain.Models;
 
 namespace Rideshare.Application.Features.Auth.Handlers;
 
-public sealed class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, BaseResponse<List<UserDto>>>
+public sealed class GetUsersByRoleQueryHandler : IRequestHandler<GetUsersByRoleQuery, BaseResponse<List<UserDto>>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
 
-    public GetAllUsersQueryHandler(IUserRepository userRepository, IMapper mapper)
+    public GetUsersByRoleQueryHandler(IUserRepository userRepository, IMapper mapper)
     {
         _userRepository = userRepository;
         _mapper = mapper;
     }
 
-    public async Task<BaseResponse<List<UserDto>>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+    public async Task<BaseResponse<List<UserDto>>> Handle(GetUsersByRoleQuery request, CancellationToken cancellationToken)
     {
-        var allApplicationUsers = await _userRepository.GetUsersAsync();
+        var allApplicationUsers = await _userRepository.GetUsersByRoleAsync(request.Role);
 
 
         var usersWithRoles = new List<UserDto>();
