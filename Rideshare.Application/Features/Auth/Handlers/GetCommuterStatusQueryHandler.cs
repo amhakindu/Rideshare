@@ -36,9 +36,9 @@ namespace Rideshare.Application.Features.Auth.Queries
 
                 if (roles.Contains("Commuter"))
                 {
-                    if (user.LastLoginTime >= loginThreshold)
-                        activeCommuters++;
-                    else
+                    // if (user.LastLoginTime >= loginThreshold)
+                    //     activeCommuters++;
+                    // else
                         idleCommuters++;
                 }
             }
