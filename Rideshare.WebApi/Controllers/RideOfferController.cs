@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Rideshare.Application.Common.Dtos.RideOffers;
 using Rideshare.Application.Features.RideOffers.Commands;
 using Rideshare.Application.Features.RideOffers.Queries;
+using Rideshare.Application.Features.Vehicles.Queries;
 using Rideshare.Application.Responses;
 
 namespace Rideshare.WebApi.Controllers;
@@ -32,6 +33,14 @@ public class RideOffersController : BaseApiController
         
         var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.NotFound;
         return getResponse<BaseResponse<RideOfferDto>>(status, result);
+    }
+    [HttpGet("NoRideOfferForTop10Model")]
+    public async Task<IActionResult> GetNumberOfVihcle()
+    {
+        var result = await _mediator.Send(new GetNoTopModelRideOffferQuery {});
+
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+        return getResponse(status, result);
     }
 
     [HttpGet]
