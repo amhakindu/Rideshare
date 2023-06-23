@@ -9,5 +9,6 @@ namespace Rideshare.Application.Contracts.Persistence
 {
     public interface IFeedbackRepository : IGenericRepository<Feedback>
     {
+        Task<IReadOnlyList<Feedback>> GetAllByUserId(string UserId, int PageNumber, int PageSize);
     }
 }

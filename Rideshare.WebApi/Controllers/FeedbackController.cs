@@ -45,6 +45,16 @@ namespace Rideshare.WebApi.Controllers
             return getResponse(status, result);
         }
 
+        [HttpGet("byUserId")]
+        // only admin can view
+        [Authorize(Roles = "Commuter,Admin")]
+        public async Task<IActionResult> GetByUserId([FromQuery] string userId, [FromQuery] int PageNumber=1, [FromQuery] int PageSize=10)
+        {
+            var result = await _mediator.Send(new GetFeedbackListByUserIdQuery { UserId = userId, PageNumber = PageNumber, PageSize=PageSize });
+            var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+            return getResponse(status, result);
+        }
+
         [HttpPost]
         // only driver and commuter can post
         [Authorize(Roles = "Commuter,Driver" )]
