@@ -21,7 +21,7 @@ public class RateController : BaseApiController
 	}
 	 
 	//   [Authorize(Roles = "Commuter")]
-	  [AllowAnonymous]
+	//   [AllowAnonymous]
 	  [HttpGet]
 		public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
 		{
