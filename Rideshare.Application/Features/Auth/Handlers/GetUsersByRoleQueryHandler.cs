@@ -38,6 +38,14 @@ public sealed class GetUsersByRoleQueryHandler : IRequestHandler<GetUsersByRoleQ
                 Age = u.Age
 
             };
+             if (u.LastLogin.HasValue && (DateTime.Now - u.LastLogin.Value).TotalDays < 30)
+            {
+                user.StatusByLogin = "ACTIVE";
+            }
+            else
+            {
+                user.StatusByLogin = "INACTIVE";
+            }
             var roles = await _userRepository.GetUserRolesAsync(u);
             var roleDtos = _mapper.Map<List<RoleDto>>(roles);
             user.Roles.AddRange(roleDtos);
