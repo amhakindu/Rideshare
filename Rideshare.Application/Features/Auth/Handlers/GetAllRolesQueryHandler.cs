@@ -27,7 +27,7 @@ public sealed class GetAllRolesQueryHandler : IRequestHandler<GetAllRolesQuery, 
         var allApplicationRoles =  _roleManager.Roles.ToList();
         var allRoles = allApplicationRoles.Select(role => _mapper.Map<RoleDto>(role)).ToList();
 
-          var response = new BaseResponse<List<RoleDto>>();
+        var response = new BaseResponse<List<RoleDto>>();
         response.Success = true;
         response.Message = "Logged In Successfully";
         response.Value = allRoles;

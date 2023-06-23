@@ -8,6 +8,7 @@ using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Auth.Commands;
 using Rideshare.Application.Features.Auth.Queries;
 using Rideshare.Application.Features.Tests.Queries;
+using Rideshare.Application.Features.Userss;
 using Rideshare.Application.Responses;
 using Rideshare.Domain.Models;
 
@@ -18,8 +19,11 @@ namespace Rideshare.WebApi.Controllers;
 [Authorize]
 public class UserController : BaseApiController
 {
-    public UserController(IMediator mediator) : base(mediator)
+
+    private readonly IUserAccessor _userAccessor;
+    public UserController(IMediator mediator, IUserAccessor userAccessor) : base(mediator)
     {
+        _userAccessor = userAccessor;
     }
 
     [HttpPost("login")]
@@ -88,13 +92,35 @@ public class UserController : BaseApiController
         return getResponse<BaseResponse<AdminUserDto>>(status, result);
     }
 
-    [HttpGet("users/all")]
-    
+    [HttpGet("{id}")]
+
+    public async Task<IActionResult> GetUserId()
+    {
+        var result = await _mediator.Send(new GetUserByIdQuery { UserId = _userAccessor.GetUserId() });
+
+        var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+        return getResponse<BaseResponse<UserDto>>(status, result);
+    }
+
+    [HttpGet("all")]
+
     public async Task<IActionResult> GetAllUser()
     {
 
 
         var result = await _mediator.Send(new GetAllUsersQuery { });
+
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+        return getResponse(status, result);
+    }
+    [HttpGet("by-role")]
+    [Authorize(Roles = "Admin")]
+
+    public async Task<IActionResult> GetUsersByRole(string role)
+    {
+
+
+        var result = await _mediator.Send(new GetUsersByRoleQuery { Role = role });
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);
