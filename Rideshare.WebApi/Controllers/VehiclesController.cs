@@ -30,6 +30,14 @@ public class VehiclesController : BaseApiController
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);
     }
+    [HttpGet("NumberOfVehicle")]
+    public async Task<IActionResult> GetNumberOfVihcle([FromQuery] int days)
+    {
+        var result = await _mediator.Send(new GetNumberOfVehicleQuery { Days = days });
+
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+        return getResponse(status, result);
+    }
 
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
