@@ -40,7 +40,7 @@ public class JwtService : IJwtService
 
         user.RefreshToken = refreshToken;
         user.RefreshTokenExpiryTime = DateTime.Now.AddDays(28);
-
+        user.LastLogin = DateTime.Now;
         await _userManager.UpdateAsync(user);
 
         return new TokenDto(accessToken, refreshToken);
