@@ -20,7 +20,7 @@ public class GetYearlyCommuterCountQueryHandler : IRequestHandler<GetYearlyCommu
 
     public async Task<BaseResponse<YearlyCommuterCountDto>> Handle(GetYearlyCommuterCountQuery request, CancellationToken cancellationToken)
     {
-        var commuters = await _userRepository.GetUsersByRoleAsync("Commuter");
+        var commuters = await _userRepository.GetUsersAsync();
         var yearlyCounts = new YearlyCommuterCountDto
         {
             YearlyCounts = new Dictionary<string, int>()

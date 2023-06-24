@@ -21,7 +21,7 @@ public class GetMonthlyCommuterCountQueryHandler : IRequestHandler<GetMonthlyCom
 
 	public async Task<BaseResponse<MonthlyCommuterCountDto>> Handle(GetMonthlyCommuterCountQuery request, CancellationToken cancellationToken)
 	{
-		var commuters = await _userRepository.GetUsersByRoleAsync("Commuter");
+		var commuters = await _userRepository.GetUsersAsync();
 		var monthlyCounts = new MonthlyCommuterCountDto
 		{
 			MonthlyCounts = new Dictionary<string, int>()

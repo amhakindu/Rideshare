@@ -18,11 +18,11 @@ public class GetCommuterStatusQueryHandler : IRequestHandler<GetCommuterStatusQu
 
 	public async Task<BaseResponse<CommuterStatusDto>> Handle(GetCommuterStatusQuery request, CancellationToken cancellationToken)
 	{
-		var commuters = await _userRepository.GetUsersByRoleAsync("Commuter");
+		var commuters = await _userRepository.GetUsersAsync();
 		int ActiveCommuters = 0; int IdleCommuters = 0;
 		foreach (var commuter in commuters)
 		{
-			if (commuter.LastLogin >= DateTime.Now.AddDays(-7))
+			if (commuter.LastLogin >= DateTime.Now.AddDays(-30))
 			{
 				ActiveCommuters +=1;
 			}
