@@ -18,19 +18,29 @@ public class GetCommuterStatusQueryHandler : IRequestHandler<GetCommuterStatusQu
 
 	public async Task<BaseResponse<CommuterStatusDto>> Handle(GetCommuterStatusQuery request, CancellationToken cancellationToken)
 	{
-        List<int> counts = await _userRepository.CountActiveCommuterAsync();
-		int activeCount = counts[0];
-		int idleCount = counts[1];
+		var commuters = await _userRepository.GetUsersByRoleAsync("Commuter");
+		int ActiveCommuters = 0; int IdleCommuters = 0;
+		foreach (var commuter in commuters)
+		{
+			if (commuter.LastLogin >= DateTime.Now.AddDays(-7))
+			{
+				ActiveCommuters +=1;
+			}
+			else 
+			{
+				IdleCommuters += 1;
+			}
+		};
 
 		var responseDto = new CommuterStatusDto
 		{
-			ActiveCommuters = activeCount,
-			IdleCommuters = idleCount
+			ActiveCommuters = ActiveCommuters,
+			IdleCommuters = IdleCommuters
 		};
 		
 		var response = new BaseResponse<CommuterStatusDto>();
 		response.Success = true;
-		response.Message = "Fetched In Successfully";
+		response.Message = "Commuters status count fetched Successfully!";
 		response.Value = responseDto;
 		return response;
 
