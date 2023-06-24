@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Rideshare.Application.Common.Dtos.Vehicles.Validators;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Contracts.Services;
@@ -21,6 +22,7 @@ public class CreateVehicleCommandHandler : IRequestHandler<CreateVehicleCommand,
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IResourceManager _resourceManager;
+    private readonly IRideShareHubService _context;
 
     public CreateVehicleCommandHandler(IMapper mapper, IUnitOfWork work, IResourceManager resourceManager)
     {

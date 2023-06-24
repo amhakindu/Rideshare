@@ -73,7 +73,8 @@ public class JwtService : IJwtService
             new(ClaimTypes.NameIdentifier, user.UserName),
             new(ClaimTypes.Name, user.UserName),
             new("FullName", user.FullName),
-            new ("PhoneNumber", user.PhoneNumber)
+            new("PhoneNumber", user.PhoneNumber),
+            new("uid", user.Id)
         };
 
         claims.AddRange(

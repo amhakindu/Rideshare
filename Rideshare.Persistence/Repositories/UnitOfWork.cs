@@ -22,6 +22,7 @@ public class UnitOfWork : IUnitOfWork
 	private IRateRepository? _RateRepository;
     private IFeedbackRepository? _FeedbackRepository;
     private IVehicleRepository? _VehicleRepository;
+	private IConnectionRepository? _ConnectionRepository;
 	
 	
 	public ITestEntityRepository TestEntityRepository
@@ -94,6 +95,16 @@ public class UnitOfWork : IUnitOfWork
             return _RideOfferRepository;
         }
     }
+
+	public IConnectionRepository ConnectionRepository
+	{
+		get
+		{
+			if (_ConnectionRepository == null)
+				_ConnectionRepository = new ConnectionRepository(_context);
+			return _ConnectionRepository;
+		}
+	}
     
     public void Dispose()
     {

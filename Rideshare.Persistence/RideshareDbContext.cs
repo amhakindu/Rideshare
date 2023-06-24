@@ -12,11 +12,12 @@ public class RideshareDbContext: IdentityDbContext<ApplicationUser,ApplicationRo
 
     public DbSet<TestEntity> TestEntities{ get; set; }
     public DbSet<RideOffer> RideOffers { get; set; }
-    
     public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<Driver> Drivers { get; set; }
     public DbSet<RideRequest> RideRequests{ get; set; }
     public DbSet<Feedback> FeedBackEntities { get; set; }
+    public DbSet<Connection> Connections { get; set; }
+
     public RideshareDbContext(DbContextOptions<RideshareDbContext> options)
         : base(options)
     {
