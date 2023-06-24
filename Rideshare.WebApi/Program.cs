@@ -41,17 +41,20 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("CorsPolicy");
-app.UseAuthentication();
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rideshare.WebApi v1"));
-app.UseHttpsRedirection();
-app.UseAuthorization();
+// app.UseHttpsRedirection();
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization(); 
 
 // Use Serilog for logging
 app.UseSerilogRequestLogging();
 app.UseMiddleware<ExceptionHandler>();
 
 app.MapControllers();
+
+app.UseInfrastructureServices();
 
 app.Run();
 
