@@ -25,9 +25,8 @@ namespace Rideshare.Application.Features.Auth.Handlers
 
             var firstDayOfMonth = new DateTime(request.Year, request.Month, 1);
             var currentDay = firstDayOfMonth;
-            while (currentDay.Month == request.Month)
+            for (int weekNumber = 1; weekNumber <= 4; weekNumber++)
             {
-                var weekNumber = GetWeekNumber(currentDay);
                 var startDate = GetWeekStartDate(request.Year, request.Month, weekNumber);
                 var endDate = startDate.AddDays(6);
                 var count = commuters.Count(u => u.CreatedAt >= startDate && u.CreatedAt <= endDate);
@@ -43,13 +42,6 @@ namespace Rideshare.Application.Features.Auth.Handlers
             };
 
             return response;
-        }
-
-        private int GetWeekNumber(DateTime date)
-        {
-            var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
-            var weekNumber = currentCulture.Calendar.GetWeekOfYear(date, currentCulture.DateTimeFormat.CalendarWeekRule, currentCulture.DateTimeFormat.FirstDayOfWeek);
-            return weekNumber;
         }
 
         private DateTime GetWeekStartDate(int year, int month, int weekNumber)
