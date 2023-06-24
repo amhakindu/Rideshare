@@ -12,5 +12,6 @@ namespace Rideshare.Application.Features.Drivers.Commands
     public class UpdateDriverCommand : IRequest<BaseResponse<Unit>>
     {
         public UpdateDriverDto UpdateDriverDto { get; set; }
+        public string UserId {get; set;}
     }
 }

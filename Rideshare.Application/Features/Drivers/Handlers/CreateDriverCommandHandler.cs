@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel.Design;
+using AutoMapper;
 using MediatR;
 using Rideshare.Application.Common.Dtos.Drivers.Validators;
 using Rideshare.Application.Contracts.Identity;
@@ -44,11 +45,11 @@ namespace Rideshare.Application.Features.Drivers.Handlers
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());
 
-            if (await _userRepository.FindByIdAsync(request.CreateDriverDto.UserId) == null)
-                throw new NotFoundException("User Not Found");
+            
 
             var driver = _mapper.Map<Driver>(request.CreateDriverDto);
 
+            driver.UserId = request.UserId;
             driver.License= (await _resourceManager.UploadImage(request.CreateDriverDto.License)).AbsoluteUri;
 
             if (await _unitOfWork.DriverRepository.Add(driver) == 0)

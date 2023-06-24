@@ -39,7 +39,7 @@ namespace Rideshare.Application.Features.Drivers.Handlers
 
             var driver = await _unitOfWork.DriverRepository.Get(request.UpdateDriverDto.Id);
 
-            if (driver == null)
+            if (driver == null || request.UserId != driver.UserId)
                 throw new NotFoundException("Resource Not Found");
 
             _mapper.Map(request.UpdateDriverDto, driver);

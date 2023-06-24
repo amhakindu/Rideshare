@@ -12,5 +12,7 @@ namespace Rideshare.Application.Features.Drivers.Commands
     public class CreateDriverCommand : IRequest<BaseResponse<int>>
     {
         public CreateDriverDto CreateDriverDto { get; set; }
+        public string UserId {get; set;}
+        
     }
 }

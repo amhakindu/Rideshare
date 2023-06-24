@@ -33,7 +33,7 @@ namespace Rideshare.Application.Features.Drivers.Handlers
 
             var driver = await _unitOfWork.DriverRepository.Get(request.Id);
 
-            if (driver == null)
+            if (driver == null || driver.UserId != request.UserId)
                 throw new NotFoundException("Resource Not Found");
 
 

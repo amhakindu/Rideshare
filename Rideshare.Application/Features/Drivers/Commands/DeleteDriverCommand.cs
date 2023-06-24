@@ -11,5 +11,6 @@ namespace Rideshare.Application.Features.Drivers.Commands
     public class DeleteDriverCommand : IRequest<BaseResponse<Unit>>
     {
         public int Id { get; set; }
+        public string UserId  {get; set;}
     }
 }
