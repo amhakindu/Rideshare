@@ -6,6 +6,5 @@ namespace Rideshare.Application.Features.Auth.Queries
 {
     public class GetCommuterStatusQuery : IRequest<BaseResponse<CommuterStatusDto>>
     {   
-        public int TimeIntervalMinutes { get; set; }
     }
 }
