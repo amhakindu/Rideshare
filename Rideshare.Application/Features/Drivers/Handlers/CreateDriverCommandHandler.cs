@@ -44,7 +44,9 @@ namespace Rideshare.Application.Features.Drivers.Handlers
 
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());
-
+                
+            if(await _unitOfWork.DriverRepository.GetDriverByUserId(request.UserId) != null)
+                throw new ValidationException("Driver with ${request.UserId} already exists");
             
 
             var driver = _mapper.Map<Driver>(request.CreateDriverDto);
