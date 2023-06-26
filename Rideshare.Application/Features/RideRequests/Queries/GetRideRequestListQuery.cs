@@ -6,7 +6,7 @@ namespace Rideshare.Application.Features.RideRequests.Queries;
 
 public class GetRideRequestListQuery : IRequest<BaseResponse<List<RideRequestDto>>>
 {
-    public string  UserId { get; set; }
+    public string?  UserId { get; set; }
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
 }

@@ -53,9 +53,7 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .Include(ro => ro.Origin)
-                .ThenInclude(loc => loc.Coordinate)
             .Include(ro => ro.Destination)
-                .ThenInclude(loc => loc.Coordinate)
             .ToListAsync();
     }
 }
