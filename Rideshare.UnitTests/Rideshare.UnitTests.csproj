@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Rideshare.Application\Rideshare.Application.csproj" />
     <ProjectReference Include="..\Rideshare.Domain\Rideshare.Domain.csproj" />
+    <ProjectReference Include="..\Rideshare.Infrastructure\Rideshare.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rideshare.Domain\Rideshare.Domain.csproj" />

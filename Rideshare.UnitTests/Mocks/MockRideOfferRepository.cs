@@ -1,7 +1,6 @@
 using Moq;
 using NetTopologySuite.Geometries;
 using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Exceptions;
 using Rideshare.Domain.Common;
 using Rideshare.Domain.Entities;
 
@@ -14,43 +13,26 @@ public class MockRideOfferRepository
         var rideOffers = new List<RideOffer>{
             new RideOffer{
                 Id = 1,
-                DriverID="QWER-1234-TYUI-5678",
-                VehicleID=1,
-                CurrentLocation = new Point(10.0, 30.0),
-                Destination = new Point(10.0, -37.0),
-                Status = Status.WAITING,
+                Driver= new Driver(),
+                Vehicle= new Vehicle(){Id=1},
+                CurrentLocation = new GeographicalLocation(){Coordinate=new Point(38.7478, 8.9945){SRID=4326}},
+                Destination = new GeographicalLocation(){Coordinate=new Point(38.7668, 9.0004){SRID=4326}},
                 AvailableSeats = 2,
-                EstimatedFare = 203.00,
-                EstimatedDuration = TimeSpan.FromHours(2.0)
             },
             new RideOffer{
                 Id = 2,
-                DriverID="ASDF-1234-GHJK-5678",
-                VehicleID=1,
-                CurrentLocation = new Point(10.0, 30.0),
-                Destination = new Point(10.0, -37.0),
-                Status = Status.ONROUTE,
+                Driver= new Driver(),
+                Vehicle= new Vehicle(){Id=1},
+                CurrentLocation = new GeographicalLocation(){Coordinate=new Point(38.7445, 9.0105){SRID=4326}},
+                Destination = new GeographicalLocation(){Coordinate=new Point(38.7667, 9.0106){SRID=4326}},
                 AvailableSeats = 2,
-                EstimatedFare = 203.00,
-                EstimatedDuration = TimeSpan.FromHours(2.0)
-            },
-            new RideOffer{
-                Id = 3,
-                DriverID="ZXCV-1234-BNMM-5678",
-                VehicleID=1,
-                CurrentLocation = new Point(10.0, 30.0),
-                Destination = new Point(10.0, -37.0),
-                Status = Status.COMPLETED,
-                AvailableSeats = 2,
-                EstimatedFare = 203.00,
-                EstimatedDuration = TimeSpan.FromHours(2.0)
-            },
+            }
         };
         Count = rideOffers.Count();
         var rideOfferRepo = new Mock<IRideOfferRepository>();
         
         rideOfferRepo.Setup(repo => repo.Get(It.IsAny<int>())).ReturnsAsync((int id) => rideOffers.FirstOrDefault(o => o.Id == id));
-        rideOfferRepo.Setup(repo => repo.GetAll(1, 10)).ReturnsAsync(()=>rideOffers);
+        rideOfferRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(rideOffers);
         rideOfferRepo.Setup(repo => repo.Exists(It.IsAny<int>())).ReturnsAsync((int id) => rideOffers.Exists(o => o.Id == id));
 
         rideOfferRepo.Setup(repo => repo.Add(It.IsAny<RideOffer>())).ReturnsAsync((RideOffer rideOffer)=>{
@@ -75,7 +57,7 @@ public class MockRideOfferRepository
                     RideOffer? rideOfferTemp = rideOffers.FirstOrDefault(b => b.Id == rideOffer.Id);
                     if(rideOfferTemp == null)
                         return 0;
-                    rideOfferTemp.VehicleID = rideOffer.VehicleID;
+                    rideOfferTemp.Vehicle = rideOffer.Vehicle;
                     rideOfferTemp.CurrentLocation = rideOffer.CurrentLocation;
                     rideOfferTemp.Destination = rideOffer.Destination;
                     rideOfferTemp.Status = rideOffer.Status;

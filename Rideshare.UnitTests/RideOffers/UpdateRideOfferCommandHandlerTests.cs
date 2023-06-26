@@ -25,8 +25,9 @@ public class UpdateRideOfferCommandHandlerTests
     public UpdateRideOfferCommandHandlerTests()
     {
         _mockUow = MockUnitOfWork.GetUnitOfWork();
+        var mapboxService = MockServices.GetMapboxService();
 
-        var mapperConfig = new MapperConfiguration(c => { c.AddProfile<MappingProfile>(); });
+        var mapperConfig = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockUow.Object)); });
 
         _mapper = mapperConfig.CreateMapper();
         _handler = new UpdateRideOfferCommandHandler(_mockUow.Object, _mapper);
@@ -35,7 +36,7 @@ public class UpdateRideOfferCommandHandlerTests
     [Fact]
     public async Task ValidRideOfferUpdateTest()
     {
-        var newVehicleID = 3;
+        var newVehicleID = 2;
         var newOrigin = new LocationDto{
             Longitude=-56.0,
             Latitude=26.0
@@ -61,12 +62,12 @@ public class UpdateRideOfferCommandHandlerTests
         response.Success.ShouldBeTrue();
 
         RideOffer temp = await _mockUow.Object.RideOfferRepository.Get(id: 1);
-        temp.VehicleID.ShouldBe(newVehicleID);
-        temp.CurrentLocation.X.ShouldBe(newOrigin.Longitude);
-        temp.CurrentLocation.Y.ShouldBe(newOrigin.Latitude);
+        temp.Vehicle.Id.ShouldBe(newVehicleID);
+        temp.CurrentLocation.Coordinate.X.ShouldBe(newOrigin.Longitude);
+        temp.CurrentLocation.Coordinate.Y.ShouldBe(newOrigin.Latitude);
 
-        temp.Destination.X.ShouldBe(newDestination.Longitude);
-        temp.Destination.Y.ShouldBe(newDestination.Latitude);
+        temp.Destination.Coordinate.X.ShouldBe(newDestination.Longitude);
+        temp.Destination.Coordinate.Y.ShouldBe(newDestination.Latitude);
     }
 
     [Fact]

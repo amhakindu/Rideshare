@@ -55,7 +55,7 @@ public class ExceptionHandler : IMiddleware
                 new BaseResponse<Unit>{
                     Success=false,
                     Message="Failed to Process Request",
-                    Errors=new List<string>{exception.Message}
+                    Errors=new List<string>{"Could not Process Request Internal Server Error"}
                 }
             );
         }

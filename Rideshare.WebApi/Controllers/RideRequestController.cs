@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rideshare.Application.Common.Dtos.RideRequests;
+using Rideshare.Application.Features.RideRequests.Commands;
 using Rideshare.Application.Features.RideRequests.Queries;
 using Rideshare.Application.Features.Tests.Commands;
 using Rideshare.Application.Features.Userss;
@@ -16,14 +17,12 @@ namespace Rideshare.WebApi.Controllers;
 
 public class RideRequestController : BaseApiController
 {
-    private readonly IUserAccessor _userAccessor;
-    public RideRequestController(IMediator mediator,IUserAccessor userAccessor) : base(mediator)
+    public RideRequestController(IMediator mediator,IUserAccessor userAccessor) : base(mediator, userAccessor)
     {
-        _userAccessor = userAccessor;
     }
 
    
-    [Authorize(Roles = "Commuter")]
+    [Authorize(Roles = "Commuter,Admin")]
     [HttpGet("{id}")]
 
     public async Task<IActionResult> Get(int id)
@@ -34,7 +33,7 @@ public class RideRequestController : BaseApiController
         return getResponse(status, result);
     }
 
-    [Authorize(Roles = "Commuter")]
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
@@ -44,10 +43,11 @@ public class RideRequestController : BaseApiController
         return getResponse(status, result);
     }
 
-    [Authorize(Roles = "Commuter")]
     [HttpPost]
+    [Authorize(Roles = "Commuter")]
     public async Task<IActionResult> Post([FromBody] CreateRideRequestDto rideRequestDto)
     {
+        rideRequestDto.UserId = _userAccessor.GetUserId();
         var result = await _mediator.Send(new CreateRideRequestCommand { RideRequestDto = rideRequestDto });
 
         var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;

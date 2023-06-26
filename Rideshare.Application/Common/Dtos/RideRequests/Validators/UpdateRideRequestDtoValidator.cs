@@ -12,12 +12,22 @@ public class UpdateRideRequestDtoValidator : AbstractValidator<UpdateRideRequest
     {
         
         _unitOfWork = unitOfWork;
-        Include(new IRideRequestDtoValidator()); 
 
-        RuleFor(p => p.Id)
-        .MustAsync(async (id,token) => {
-            return await _unitOfWork.RideRequestRepository.Exists(id);
+        // RuleFor(p => p.Id)
+        // .MustAsync(async (id,token) => {
+        //     return await _unitOfWork.RideRequestRepository.Exists(id);
             
-        }).WithMessage("{PropertyName} does not exist"); 
+        // }).WithMessage("{PropertyName} does not exist"); 
+
+        RuleFor(dto => dto.Origin)
+            .NotNull().WithMessage("Current location is required")
+            .SetValidator(new LocationDtoValidator());
+
+        RuleFor(dto => dto.Destination)
+            .NotNull().WithMessage("Destination is required")
+            .SetValidator(new LocationDtoValidator());
+
+        RuleFor(dto => dto.Origin)
+            .NotEqual(dto => dto.Destination).WithMessage("Origin cannot be the same as the destination");
     }
 }

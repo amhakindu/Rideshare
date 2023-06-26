@@ -23,7 +23,7 @@ public static class DependencyInjection
     public static void AddAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtSettings = configuration.GetSection("JwtSettings");
-        var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecurityKey"]);
+        var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecurityKey"]!);
         services.AddIdentity<ApplicationUser, ApplicationRole>()
      .AddEntityFrameworkStores<RideshareDbContext>();
         services.AddAuthentication(

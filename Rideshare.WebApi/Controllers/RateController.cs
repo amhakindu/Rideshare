@@ -16,13 +16,11 @@ namespace Rideshare.WebApi.Controllers;
 [Route("api/[controller]")]
 public class RateController : BaseApiController
 {
-	private readonly IUserAccessor _userAccessor;
-	public RateController(IMediator mediator,IUserAccessor userAccessor) : base(mediator)
+	public RateController(IMediator mediator,IUserAccessor userAccessor) : base(mediator, userAccessor)
 	{
-		_userAccessor = userAccessor;
 	}
 	 
-	 [Authorize(Roles = "Commuter")]
+	 [Authorize(Roles = "Commuter,Admin")]
 	  [HttpGet]
 		public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
 		{
@@ -31,7 +29,7 @@ public class RateController : BaseApiController
 			return getResponse(status, result);
 		}
 		
-		[Authorize(Roles = "Commuter")]
+		[Authorize(Roles = "Commuter, Admin")]
 		[HttpGet("{id}")]
 		public async Task<IActionResult> Get(int id)
 		{

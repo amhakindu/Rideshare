@@ -1,10 +1,12 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rideshare.Application.Common.Dtos.Tests;
 using Rideshare.Application.Common.Dtos.Vehicles;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Tests.Commands;
 using Rideshare.Application.Features.Tests.Queries;
+using Rideshare.Application.Features.Userss;
 using Rideshare.Application.Features.Vehicles.Commands;
 using Rideshare.Application.Features.Vehicles.Queries;
 using Rideshare.Application.Responses;
@@ -13,16 +15,16 @@ using System.Net;
 namespace Rideshare.WebApi.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class VehiclesController : BaseApiController
 {
-    public IUnitOfWork _unitOfWork { get; set; }
-    public VehiclesController(IMediator mediator, IUnitOfWork unitOfWork) : base(mediator)
+    public VehiclesController(IMediator mediator, IUserAccessor userAccessor) : base(mediator, userAccessor)
     {
-        _unitOfWork = unitOfWork;
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "Commuter,Driver,Admin")]
     public async Task<IActionResult> Get(int id)
     {
         var result = await _mediator.Send(new GetVehicleQuery { VehicleId = id });
@@ -31,6 +33,7 @@ public class VehiclesController : BaseApiController
         return getResponse(status, result);
     }
     [HttpGet("NumberOfVehicle")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetNumberOfVihcle([FromQuery] int days)
     {
         var result = await _mediator.Send(new GetNumberOfVehicleQuery { Days = days });
@@ -40,6 +43,7 @@ public class VehiclesController : BaseApiController
     }
 
     [HttpGet]
+    [Authorize(Roles = "Commuter,Driver,Admin")]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
         var result = await _mediator.Send(new GetAllVehiclesQuery { PageNumber = pageNumber, PageSize = pageSize });
@@ -49,6 +53,7 @@ public class VehiclesController : BaseApiController
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Post([FromForm] CreateVehicleDto createVehicleDto)
     {
         var result = await _mediator.Send(new CreateVehicleCommand { VehicleDto = createVehicleDto });
@@ -58,6 +63,7 @@ public class VehiclesController : BaseApiController
     }
 
     [HttpPatch]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Patch([FromBody] UpdateVehicleDto updateVehicleDto)
     {
         var result = await _mediator.Send(new UpdateVehicleCommand { VehicleDto = updateVehicleDto });
@@ -67,6 +73,7 @@ public class VehiclesController : BaseApiController
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _mediator.Send(new DeleteVehicleCommand { VehicleId = id });

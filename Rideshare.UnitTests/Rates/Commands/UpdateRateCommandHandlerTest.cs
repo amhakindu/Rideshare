@@ -21,10 +21,11 @@ namespace Rideshare.UnitTests.RateTest
 		public UpdateRateCommandHandlerTest()
 		{
 			_mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
-			_mapper = new MapperConfiguration(c =>
-			{
-				c.AddProfile<MappingProfile>();
-			}).CreateMapper();
+			var mapboxService = MockServices.GetMapboxService();
+
+			var mapperConfig = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockUnitOfWork.Object)); });
+
+			_mapper = mapperConfig.CreateMapper();
 
 			_handler = new UpdateRateCommandHandler(_mockUnitOfWork.Object, _mapper);
 		}

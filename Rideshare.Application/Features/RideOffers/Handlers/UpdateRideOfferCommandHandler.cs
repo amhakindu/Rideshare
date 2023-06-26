@@ -8,6 +8,8 @@ using Rideshare.Application.Features.RideOffers.Commands;
 using Rideshare.Application.Common.Dtos.RideOffers.Validators;
 using NetTopologySuite.Geometries;
 using Rideshare.Application.Exceptions;
+using Rideshare.Application.Common.Dtos.RideOffers;
+using Rideshare.Domain.Common;
 
 namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
 {
@@ -29,9 +31,13 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
 
             if (rideOffer == null)
                 throw new NotFoundException($"RideOffer with ID {command.RideOfferDto.Id} does not exist");
-            
-            if(command.RideOfferDto.VehicleID != null && !CreateRideOfferDtoValidator.vehicleIDs.Exists(o => o == command.RideOfferDto.VehicleID))
-                throw new NotFoundException($"Vehicle with ID {command.RideOfferDto.VehicleID} does not exist");
+
+            Vehicle? vehicle = null;
+            if(command.RideOfferDto.VehicleID != null){
+                vehicle = await _unitOfWork.VehicleRepository.Get((int)command.RideOfferDto.VehicleID);
+                if(vehicle == null)
+                    throw new NotFoundException($"Vehicle with ID {command.RideOfferDto.VehicleID} does not exist");
+            }
 
             var validator = new UpdateRideOfferDtoValidator(_unitOfWork);
             var validationResult = await validator.ValidateAsync(command.RideOfferDto);
@@ -39,11 +45,12 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
             if (validationResult.IsValid == false)
                 throw new ValidationException(validationResult.Errors.Select(e => e.ErrorMessage).ToList().First());
 
-
-            rideOffer.VehicleID = command.RideOfferDto.VehicleID ?? rideOffer.VehicleID;
-            rideOffer.CurrentLocation = _mapper.Map<Point>(command.RideOfferDto.CurrentLocation) ?? rideOffer.CurrentLocation;
-            rideOffer.Destination = _mapper.Map<Point>(command.RideOfferDto.Destination) ?? rideOffer.Destination;
-            rideOffer.Status = command.RideOfferDto.Status ?? rideOffer.Status;
+            rideOffer.Vehicle = vehicle ?? rideOffer.Vehicle;
+            rideOffer.CurrentLocation = _mapper.Map<GeographicalLocation>(command.RideOfferDto.CurrentLocation) ?? rideOffer.CurrentLocation;
+            rideOffer.Destination = _mapper.Map<GeographicalLocation>(command.RideOfferDto.Destination) ?? rideOffer.Destination;
+            if(command.RideOfferDto.Status != null)
+                rideOffer.Status = (Status)Enum.Parse(typeof(Status), command.RideOfferDto.Status);
+                
             
             var numOfOperations = await _unitOfWork.RideOfferRepository.Update(rideOffer);
             if (numOfOperations == 0)

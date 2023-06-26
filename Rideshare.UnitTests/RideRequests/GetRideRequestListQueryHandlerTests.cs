@@ -20,10 +20,10 @@ public class GetRideRequestListQueryHandlerTests
     {
         _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
 
-        _mapper = new MapperConfiguration(c =>
-        {
-            c.AddProfile<MappingProfile>();
-        }).CreateMapper();
+        var mapboxService = MockServices.GetMapboxService();
+
+        _mapper = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockUnitOfWork.Object)); })
+        .CreateMapper();
 
         _handler = new GetRideRequestListQueryHandler(_mockUnitOfWork.Object, _mapper);
     }
@@ -31,14 +31,16 @@ public class GetRideRequestListQueryHandlerTests
     [Fact]
     public async Task GetRideRequestListValid()
     {
-        var result = await _handler.Handle(new GetRideRequestListQuery() {UserId = "sura123"}, CancellationToken.None);
-        result.Value?.Count.ShouldBe(2);
+        var result = await _handler.Handle(new GetRideRequestListQuery() {UserId = "user1"}, CancellationToken.None);
+        result.Value.ShouldNotBeNull();
+        result.Value.Count.ShouldBe(4);
     }
 
     [Fact]
     public async Task GetRideRequestListInvalid()
     {
-        var result = await _handler.Handle(new GetRideRequestListQuery() {UserId = "sura12"}, CancellationToken.None);
-        result.Value?.Count.ShouldBe(0);
+        var result = await _handler.Handle(new GetRideRequestListQuery() {UserId = "user12333"}, CancellationToken.None);
+        result.Value.ShouldNotBeNull();
+        result.Value.Count.ShouldBe(0);
     }
 }

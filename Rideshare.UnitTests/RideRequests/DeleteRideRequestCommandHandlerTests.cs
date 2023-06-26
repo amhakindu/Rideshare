@@ -21,10 +21,10 @@ public class DeleteRideRequestCommandHandlerTests
        {
               _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
               
-              _mapper = new MapperConfiguration(c =>
-              {
-                     c.AddProfile<MappingProfile>();
-              }).CreateMapper();
+              var mapboxService = MockServices.GetMapboxService();
+
+              _mapper = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockUnitOfWork.Object)); })
+              .CreateMapper();
 
               _handler = new DeleteRideRequestCommandHandler(_mockUnitOfWork.Object, _mapper);
        }
@@ -33,12 +33,12 @@ public class DeleteRideRequestCommandHandlerTests
        [Fact]
        public async Task DeleteRideRequestValid()
        {
-       
+              int prevCount = (await _mockUnitOfWork.Object.RideRequestRepository.GetAll()).Count;
               
-               var result = await _handler.Handle(new DeleteRideRequestCommand() {  Id =  1,UserId = "sura123"}, CancellationToken.None);
+               var result = await _handler.Handle(new DeleteRideRequestCommand() {  Id =  1,UserId = "user1"}, CancellationToken.None);
                
               
-              (await _mockUnitOfWork.Object.RideRequestRepository.GetAll(1, 10)).Count.ShouldBe(1);
+              (await _mockUnitOfWork.Object.RideRequestRepository.GetAll()).Count.ShouldBe(prevCount-1);
        }
        
        [Fact]
@@ -47,7 +47,7 @@ public class DeleteRideRequestCommandHandlerTests
               
                  await Should.ThrowAsync<NotFoundException>(async () =>
     {
-           var result = await _handler.Handle(new DeleteRideRequestCommand() { Id = 3 ,UserId = "sura123"}, CancellationToken.None);
+           var result = await _handler.Handle(new DeleteRideRequestCommand() { Id = 30 ,UserId = "user1"}, CancellationToken.None);
     });    
        }
 }

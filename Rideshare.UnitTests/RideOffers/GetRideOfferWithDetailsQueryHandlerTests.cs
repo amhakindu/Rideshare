@@ -23,8 +23,9 @@ public class GetRideOfferWithDetailsQueryHandlerTests
     public GetRideOfferWithDetailsQueryHandlerTests()
     {
         _mockUow = MockUnitOfWork.GetUnitOfWork();
+        var mapboxService = MockServices.GetMapboxService();
 
-        var mapperConfig = new MapperConfiguration(c => { c.AddProfile<MappingProfile>(); });
+        var mapperConfig = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockUow.Object)); });
 
         _mapper = mapperConfig.CreateMapper();
         _handler = new GetRideOfferWithDetailsQueryHandler(_mockUow.Object, _mapper);

@@ -6,6 +6,7 @@ using Rideshare.Application.Common.Dtos.Tests;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Tests.Commands;
 using Rideshare.Application.Features.Tests.Queries;
+using Rideshare.Application.Features.Userss;
 using Rideshare.Application.Responses;
 
 namespace Rideshare.WebApi.Controllers;
@@ -15,7 +16,7 @@ namespace Rideshare.WebApi.Controllers;
 [Authorize]
 public class TestController : BaseApiController
 {
-    public TestController(IMediator mediator) : base(mediator)
+    public TestController(IMediator mediator, IUserAccessor userAccessor) : base(mediator, userAccessor)
     {
     }
 

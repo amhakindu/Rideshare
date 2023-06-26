@@ -11,5 +11,6 @@ public class BaseEntity
 public enum Status{
     WAITING,
     ONROUTE,
-    COMPLETED
+    COMPLETED,
+    CANCELLED
 }
