@@ -48,7 +48,9 @@ namespace Rideshare.WebApi.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Driver")]
+        // [Authorize(Roles = "Driver")]
+        [AllowAnonymous]
+
         public async Task<IActionResult> Post([FromForm] CreateDriverDto createDriverDto)
         {
             var result = await _mediator.Send(new CreateDriverCommand { CreateDriverDto = createDriverDto, UserId = _userAccessor.GetUserId() });
@@ -92,9 +94,22 @@ namespace Rideshare.WebApi.Controllers
         //[Authorize(Roles = "Admin")]
         [AllowAnonymous]
 
-        public async Task<IActionResult> Get(bool weekly, bool monthly, bool yearly)
+        public async Task<IActionResult> Get(string timeFrame)
         {
-            var result = await _mediator.Send(new GetDriversStatisticsRequest { Weekly = weekly, Monthly = monthly, Yearly = yearly });
+            var result = await _mediator.Send(new GetDriversStatisticsRequest {TimeFrame = timeFrame });
+            var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+            return getResponse(status, result);
+
+
+        }
+
+        [HttpGet("status")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
+
+        public async Task<IActionResult> Get()
+        {
+            var result = await _mediator.Send(new GetCountByStatusRequest { });
             var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
             return getResponse(status, result);
 

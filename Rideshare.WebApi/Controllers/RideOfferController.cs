@@ -73,4 +73,14 @@ public class RideOffersController : BaseApiController
         var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.NotFound;
         return getResponse<BaseResponse<Unit>>(status, result);
     }
+
+
+    [HttpGet("TopFiveDrivers")]
+    public async Task<IActionResult> GetTopFiveDrivers()
+    {
+        var result = await _mediator.Send(new GetTopDriversWithStatsRequest { });
+
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+        return getResponse(status, result);
+    }
 }

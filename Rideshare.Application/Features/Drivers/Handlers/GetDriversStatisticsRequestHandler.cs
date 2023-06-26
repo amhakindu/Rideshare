@@ -6,7 +6,7 @@ using Rideshare.Application.Responses;
 
 namespace Rideshare.Application.Features.Drivers.Handlers
 {
-    public class GetDriversStatisticsRequestHandler : IRequestHandler<GetDriversStatisticsRequest, BaseResponse<Dictionary<string, int>>>
+    public class GetDriversStatisticsRequestHandler : IRequestHandler<GetDriversStatisticsRequest, BaseResponse<Dictionary<int, Dictionary<string, int>>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         public GetDriversStatisticsRequestHandler(IUnitOfWork unitOfWork)
@@ -15,11 +15,11 @@ namespace Rideshare.Application.Features.Drivers.Handlers
             
         }
 
-        public async Task<BaseResponse<Dictionary<string, int>>> Handle(GetDriversStatisticsRequest request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<Dictionary<int,Dictionary<string, int>>>> Handle(GetDriversStatisticsRequest request, CancellationToken cancellationToken)
         {
-            var response = new BaseResponse<Dictionary<string, int>>();
+            var response = new BaseResponse<Dictionary<int,Dictionary<string, int>>>();
 
-            var statistics = await _unitOfWork.DriverRepository.GetDriversStatistics(request.Weekly, request.Monthly, request.Yearly);
+            var statistics = await _unitOfWork.DriverRepository.GetDriversStatistics(request.TimeFrame.ToLower());
 
             response.Success = true;
             response.Message = "Fetch Succesful";

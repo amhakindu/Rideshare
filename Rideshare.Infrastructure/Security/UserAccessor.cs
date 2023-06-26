@@ -16,11 +16,11 @@ namespace Rideshare.Infrastructure.Security;
             _userRepository = userRepository;
         }
 
-        public string GetUserId()
+        public string? GetUserId()
         {
-             return  _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.PrimarySid).Value;
-            
-            
-        }
+             return _httpContextAccessor.HttpContext != null ? _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.PrimarySid)?.Value : null;
+
+
+    }
     }
  
