@@ -21,10 +21,10 @@ public class GetRideRequestQueryHandlerTests
     { 
         _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
               
-        _mapper = new MapperConfiguration(c =>
-        {
-            c.AddProfile<MappingProfile>();
-        }).CreateMapper();
+        var mapboxService = MockServices.GetMapboxService();
+
+        _mapper = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockUnitOfWork.Object)); })
+        .CreateMapper();
 
         _handler = new  GetRideRequestQueryHandler(_mockUnitOfWork.Object, _mapper);
     }
@@ -32,7 +32,7 @@ public class GetRideRequestQueryHandlerTests
     [Fact]
     public async Task GetRideRequestValid()
     {
-        var result = await _handler.Handle(new GetRideRequestQuery() { Id = 1, UserId = "sura123"}, CancellationToken.None);
+        var result = await _handler.Handle(new GetRideRequestQuery() { Id = 1, UserId = "user1"}, CancellationToken.None);
         result.Value.Id.ShouldBe(1);
     }
        
@@ -41,7 +41,7 @@ public class GetRideRequestQueryHandlerTests
     {
          await Should.ThrowAsync<NotFoundException>(async () =>
     {
-             await _handler.Handle(new GetRideRequestQuery() { Id = 3,UserId = "sura"}, CancellationToken.None);
+             await _handler.Handle(new GetRideRequestQuery() { Id = 30,UserId = "user1"}, CancellationToken.None);
     });
     }
 }

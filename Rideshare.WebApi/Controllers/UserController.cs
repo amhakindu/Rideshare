@@ -20,10 +20,8 @@ namespace Rideshare.WebApi.Controllers;
 public class UserController : BaseApiController
 {
 
-    private readonly IUserAccessor _userAccessor;
-    public UserController(IMediator mediator, IUserAccessor userAccessor) : base(mediator)
+    public UserController(IMediator mediator, IUserAccessor userAccessor) : base(mediator, userAccessor)
     {
-        _userAccessor = userAccessor;
     }
 
     [HttpPost("login")]

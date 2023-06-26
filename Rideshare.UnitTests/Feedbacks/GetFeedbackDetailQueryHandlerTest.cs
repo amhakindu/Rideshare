@@ -26,10 +26,10 @@ namespace Rideshare.UnitTests.FeedbackTest
         {
             _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
 
-            _mapper = new MapperConfiguration(c =>
-            {
-                c.AddProfile<MappingProfile>();
-            }).CreateMapper();
+            var mapboxService = MockServices.GetMapboxService();
+
+            _mapper = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockUnitOfWork.Object)); })
+            .CreateMapper();
 
             _handler = new GetFeedbackDetailQueryHandler(_mockUnitOfWork.Object, _mapper);
         }

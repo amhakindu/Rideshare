@@ -22,8 +22,7 @@ public class UnitOfWork : IUnitOfWork
 	private IRateRepository? _RateRepository;
     private IFeedbackRepository? _FeedbackRepository;
     private IVehicleRepository? _VehicleRepository;
-	private IConnectionRepository? _ConnectionRepository;
-	
+	private IConnectionRepository? _ConnectionRepository;	
 	
 	public ITestEntityRepository TestEntityRepository
 	{

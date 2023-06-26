@@ -1,4 +1,6 @@
 
+using Rideshare.Application.Contracts.Identity;
+
 namespace Rideshare.Application.Contracts.Persistence;
 
 public interface IUnitOfWork : IDisposable

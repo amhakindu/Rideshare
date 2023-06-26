@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
 using Rideshare.Domain.Common;
 using Rideshare.Domain.Entities;
 using Rideshare.Domain.Models;
@@ -12,6 +13,7 @@ public class RideshareDbContext: IdentityDbContext<ApplicationUser,ApplicationRo
 
     public DbSet<TestEntity> TestEntities{ get; set; }
     public DbSet<RideOffer> RideOffers { get; set; }
+    public DbSet<GeographicalLocation> Locations { get; set; }    
     public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<Driver> Drivers { get; set; }
     public DbSet<RideRequest> RideRequests{ get; set; }
@@ -24,12 +26,12 @@ public class RideshareDbContext: IdentityDbContext<ApplicationUser,ApplicationRo
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
     }
- 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.HasPostgresExtension("postgis");
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(RideshareDbContext).Assembly);
         
         
         modelBuilder.Entity<Driver>()
@@ -40,7 +42,34 @@ public class RideshareDbContext: IdentityDbContext<ApplicationUser,ApplicationRo
          modelBuilder.Entity<ApplicationUser>()
             .HasIndex(u => u.PhoneNumber)
             .IsUnique();
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(RideshareDbContext).Assembly);
+
+        modelBuilder.Entity<GeographicalLocation>()
+            .Property(g => g.Coordinate)
+            .HasColumnType("geometry(Point,4326)");
+            
+        modelBuilder.Entity<RideOffer>()
+            .HasMany(rideoffer => rideoffer.Matches)
+            .WithOne(riderequest => riderequest.MatchedRide);
+
+        modelBuilder.Entity<RideOffer>()
+            .HasOne<Driver>(rideoffer => rideoffer.Driver)
+            .WithMany();
+        
+        modelBuilder.Entity<RideOffer>()
+            .HasOne<Vehicle>(rideoffer => rideoffer.Vehicle)
+            .WithMany();
+
+        modelBuilder.Entity<RideOffer>()
+            .HasOne<GeographicalLocation>(rideoffer => rideoffer.CurrentLocation);
+
+        modelBuilder.Entity<RideOffer>()
+            .HasOne<GeographicalLocation>(rideoffer => rideoffer.Destination);
+
+        modelBuilder.Entity<RideRequest>()
+            .HasOne<GeographicalLocation>(riderequest => riderequest.Origin);
+
+        modelBuilder.Entity<RideRequest>()
+            .HasOne<GeographicalLocation>(riderequest => riderequest.Destination);
     }
 
 	public DbSet<RateEntity> RateEntities{ get; set; }

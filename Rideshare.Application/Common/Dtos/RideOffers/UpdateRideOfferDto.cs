@@ -10,5 +10,5 @@ public class UpdateRideOfferDto
     public int? VehicleID { get; set; }   
     public LocationDto? CurrentLocation { get; set; }
     public LocationDto? Destination { get; set; }
-    public Status? Status { get; set; }
+    public string? Status { get; set; }
 }
