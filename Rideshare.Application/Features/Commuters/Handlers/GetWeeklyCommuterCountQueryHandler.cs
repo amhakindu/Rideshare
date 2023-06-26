@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using MediatR;
 using Rideshare.Application.Common.Dtos.Commuter.Validators;
 using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Contracts.Identity;
-using Rideshare.Application.Features.Auth.Queries;
+using Rideshare.Application.Features.Commuters.Queries;
 using Rideshare.Application.Responses;
 
-namespace Rideshare.Application.Features.Auth.Handlers
+namespace Rideshare.Application.Features.Commuters.Handlers
 {
 	public class GetWeeklyCommuterCountQueryHandler : IRequestHandler<GetWeeklyCommuterCountQuery, BaseResponse<WeeklyCommuterCountDto>>
 	{
@@ -33,7 +34,7 @@ namespace Rideshare.Application.Features.Auth.Handlers
 			{
 				Year = request.Year,
 				Month = request.Month,
-				WeeklyCounts = new Dictionary<string, int>()
+				WeeklyCounts = new Dictionary<int, int>()
 			};
 
 			var firstDayOfMonth = new DateTime(request.Year, request.Month, 1);
@@ -45,7 +46,7 @@ namespace Rideshare.Application.Features.Auth.Handlers
 				var startDate = currentDay;
 				var endDate = startDate.AddDays(6);
 				var count = commuters.Count(u => u.CreatedAt >= startDate && u.CreatedAt <= endDate);
-				weeklyCounts.WeeklyCounts.Add($"Week {weekNumber}", count);
+				weeklyCounts.WeeklyCounts.Add(weekNumber, count);
 				currentDay = currentDay.AddDays(7);
 				weekNumber++;
 			}
@@ -53,7 +54,7 @@ namespace Rideshare.Application.Features.Auth.Handlers
 			var response = new BaseResponse<WeeklyCommuterCountDto>
 			{
 				Success = true,
-				Message = "Fetched In Successfully",
+				Message = $"Weekly commuter count for {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(request.Month)} {request.Year} fetched Successfully",
 				Value = weeklyCounts
 			};
 

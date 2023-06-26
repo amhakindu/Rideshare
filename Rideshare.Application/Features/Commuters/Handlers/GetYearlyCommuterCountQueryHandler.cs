@@ -3,10 +3,10 @@ using AutoMapper;
 using MediatR;
 using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Contracts.Identity;
-using Rideshare.Application.Features.Auth.Queries;
+using Rideshare.Application.Features.Commuters.Queries;
 using Rideshare.Application.Responses;
 
-namespace Rideshare.Application.Features.Auth.Handlers;
+namespace Rideshare.Application.Features.Commuters.Handlers;
 public class GetYearlyCommuterCountQueryHandler : IRequestHandler<GetYearlyCommuterCountQuery, BaseResponse<YearlyCommuterCountDto>>
 {
 	private readonly IUserRepository _userRepository;

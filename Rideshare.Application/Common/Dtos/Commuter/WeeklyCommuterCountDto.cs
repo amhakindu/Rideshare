@@ -6,6 +6,6 @@ namespace Rideshare.Application.Common.Dtos.Security
 	{
 		public int Year { get; set; }
 		public int Month { get; set; }
-		public Dictionary<string, int> WeeklyCounts { get; set; }
+		public Dictionary<int, int> WeeklyCounts { get; set; }
 	}
 }

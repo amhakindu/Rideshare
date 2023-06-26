@@ -6,7 +6,7 @@ using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Responses;
 using Rideshare.Domain.Models;
 
-namespace Rideshare.Application.Features.Auth.Queries;
+namespace Rideshare.Application.Features.Commuters.Queries;
 public class GetCommuterStatusQueryHandler : IRequestHandler<GetCommuterStatusQuery, BaseResponse<CommuterStatusDto>>
 {
 	private readonly IUserRepository _userRepository;

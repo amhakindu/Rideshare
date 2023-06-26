@@ -6,10 +6,10 @@ using MediatR;
 using Rideshare.Application.Common.Dtos.Commuter.Validators;
 using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Contracts.Identity;
-using Rideshare.Application.Features.Auth.Queries;
+using Rideshare.Application.Features.Commuters.Queries;
 using Rideshare.Application.Responses;
 
-namespace Rideshare.Application.Features.Auth.Handlers;
+namespace Rideshare.Application.Features.Commuters.Handlers;
 public class GetMonthlyCommuterCountQueryHandler : IRequestHandler<GetMonthlyCommuterCountQuery, BaseResponse<MonthlyCommuterCountDto>>
 {
 	private readonly IUserRepository _userRepository;
@@ -37,7 +37,7 @@ public class GetMonthlyCommuterCountQueryHandler : IRequestHandler<GetMonthlyCom
 		var monthlyCounts = new MonthlyCommuterCountDto
 		{
 			Year = request.Year,
-			MonthlyCounts = new Dictionary<string, int>()
+			MonthlyCounts = new Dictionary<int, int>()
 		};
 		
 
@@ -46,13 +46,13 @@ public class GetMonthlyCommuterCountQueryHandler : IRequestHandler<GetMonthlyCom
 			var startDate = new DateTime(request.Year, month, 1);
 			var endDate = startDate.AddMonths(1).AddDays(-1);
 			var count = commuters.Count(u => u.CreatedAt >= startDate && u.CreatedAt <= endDate);
-			monthlyCounts.MonthlyCounts.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month), count);
+			monthlyCounts.MonthlyCounts.Add(month, count);
 		}
 
 		var response = new BaseResponse<MonthlyCommuterCountDto>
 		{
 			Success = true,
-			Message = "Fetched In Successfully",
+			Message = $"Monthly commuter count for {request.Year} fetched Successfully",
 			Value = monthlyCounts
 		};
 
