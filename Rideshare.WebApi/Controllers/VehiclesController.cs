@@ -20,9 +20,9 @@ namespace Rideshare.WebApi.Controllers;
 public class VehiclesController : BaseApiController
 {
     public VehiclesController(IMediator mediator, IUserAccessor userAccessor) : base(mediator, userAccessor)
-    {
-    }
-
+    {}
+    public IUnitOfWork _unitOfWork { get; set; }
+    
     [HttpGet("{id}")]
     [Authorize(Roles = "Commuter,Driver,Admin")]
     public async Task<IActionResult> Get(int id)
@@ -34,9 +34,9 @@ public class VehiclesController : BaseApiController
     }
     [HttpGet("NumberOfVehicle")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetNumberOfVihcle([FromQuery] int days)
+    public async Task<IActionResult> GetNumberOfVihcle([FromQuery] string option, [FromQuery] int year, [FromQuery] int month)
     {
-        var result = await _mediator.Send(new GetNumberOfVehicleQuery { Days = days });
+        var result = await _mediator.Send(new GetNumberOfVehicleQuery { option = option, Year = year, Month = month });
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);
