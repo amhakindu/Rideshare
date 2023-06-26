@@ -2,7 +2,7 @@ using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rideshare.Application.Features.Auth.Queries;
+using Rideshare.Application.Features.Commuters.Queries;
 using Rideshare.Application.Features.Userss;
 
 namespace Rideshare.WebApi.Controllers;
@@ -52,7 +52,7 @@ public class CommuterController : BaseApiController
 				return getResponse(weeklyStatus, weeklyResult);
 
 			default:
-				return BadRequest("Invalid option provided.");
+				throw new ArgumentException("Invalid option provided.");
 		}
 	} 
  
