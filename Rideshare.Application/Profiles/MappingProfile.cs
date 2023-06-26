@@ -5,7 +5,6 @@ using Rideshare.Application.Common.Dtos.Drivers;
 using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Common.Dtos.Rates;
 using Rideshare.Application.Common.Dtos.Feedbacks;
-using NetTopologySuite.Geometries;
 using Rideshare.Application.Common.Dtos.RideOffers;
 using Rideshare.Application.Common.Dtos.Tests;
 using Rideshare.Application.Common.Dtos.Vehicles;

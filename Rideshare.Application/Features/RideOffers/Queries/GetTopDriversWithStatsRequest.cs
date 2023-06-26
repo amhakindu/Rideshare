@@ -7,11 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rideshare.Application.Features.Drivers.Commands
+namespace Rideshare.Application.Features.RideOffers.Queries
 {
-    public class UpdateDriverCommand : IRequest<BaseResponse<Unit>>
+    public class GetTopDriversWithStatsRequest : IRequest<BaseResponse<List<DriverStatsDto>>>
     {
-        public UpdateDriverDto UpdateDriverDto { get; set; }
-        public string UserId {get; set;}
     }
 }

@@ -50,7 +50,6 @@ namespace Rideshare.UnitTests.Drivers
 
             CreateDriverDto createDriverDto = new CreateDriverDto
             {
-                UserId = "user1",
                 Experience = 1,
                 Address = "Shiro meda",
                 LicenseNumber = "343dld34",
@@ -78,7 +77,6 @@ namespace Rideshare.UnitTests.Drivers
 
             CreateDriverDto createDriverDto = new CreateDriverDto
             {
-                UserId = "user2",
                 Experience = -1,
                 Address = "Shiro meda",
                 LicenseNumber = "343dld34",
@@ -108,7 +106,6 @@ namespace Rideshare.UnitTests.Drivers
 
             CreateDriverDto createDriverDto = new CreateDriverDto
             {
-                UserId = "user1",
                 Experience = 10,
                 Address = string.Empty,
                 LicenseNumber = "343dld34",
@@ -136,7 +133,6 @@ namespace Rideshare.UnitTests.Drivers
 
             CreateDriverDto createDriverDto = new CreateDriverDto
             {
-                UserId = "user1",
                 Experience = 1,
                 Address = "Shiro meda",
                 LicenseNumber = string.Empty,
@@ -164,7 +160,6 @@ namespace Rideshare.UnitTests.Drivers
 
             CreateDriverDto createDriverDto = new CreateDriverDto
             {
-                UserId = "user1",
                 Experience = 1,
                 Address = "Shiro meda",
                 LicenseNumber = "3sdkfkd3",
@@ -184,31 +179,7 @@ namespace Rideshare.UnitTests.Drivers
 
         }
 
-                [Fact]
-        public async Task CreateDriverInvalidUserTest()
-        {
-
-            CreateDriverDto createDriverDto = new CreateDriverDto
-            {
-                UserId = "user5",
-                Experience = 1,
-                Address = "Shiro meda",
-                LicenseNumber = "3sdkfkd3",
-                License = _mockIMG,
-            };
-
-            var command = new CreateDriverCommand { CreateDriverDto = createDriverDto };
-
-            await Should.ThrowAsync<NotFoundException>(async () =>
-            {
-                var result = await _handler.Handle(command, CancellationToken.None);
-            });
-
-            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(2);
-
-
-
-        }
+        
 
     }
 }

@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace Rideshare.Application.Features.Drivers.Commands
 {
-    public class UpdateDriverCommand : IRequest<BaseResponse<Unit>>
+    public class ApproveDriverCommand : IRequest<BaseResponse<Unit>>
     {
-        public UpdateDriverDto UpdateDriverDto { get; set; }
-        public string UserId {get; set;}
+        public ApproveDriverDto ApproveDriverDto { get; set; } 
     }
 }

@@ -10,5 +10,6 @@ public interface IUnitOfWork : IDisposable
     IFeedbackRepository FeedbackRepository { get; }
     IVehicleRepository VehicleRepository { get; }
     IRideOfferRepository RideOfferRepository { get; }
+    IConnectionRepository ConnectionRepository { get; }
     Task<int> Save(); 
 }

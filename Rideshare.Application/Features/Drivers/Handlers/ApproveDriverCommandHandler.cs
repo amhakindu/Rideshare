@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Rideshare.Application.Common.Dtos.Drivers.Validators;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Exceptions;
@@ -14,35 +13,35 @@ using System.Threading.Tasks;
 
 namespace Rideshare.Application.Features.Drivers.Handlers
 {
-    public class UpdateDriverCommandHandler : IRequestHandler<UpdateDriverCommand, BaseResponse<Unit>>
+    public class ApproveDriverCommandHandler : IRequestHandler<ApproveDriverCommand, BaseResponse<Unit>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UpdateDriverCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public ApproveDriverCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
 
         }
 
-        public async Task<BaseResponse<Unit>> Handle(UpdateDriverCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<Unit>> Handle(ApproveDriverCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseResponse<Unit>();
-            var validator = new UpdateDriverDtoValidator();
+            var validator = new ApproveDriverDtoValidator();
 
-            var validationResult = await validator.ValidateAsync(request.UpdateDriverDto);
+            var validationResult = await validator.ValidateAsync(request.ApproveDriverDto);
 
 
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());
 
-            var driver = await _unitOfWork.DriverRepository.Get(request.UpdateDriverDto.Id);
+            var driver = await _unitOfWork.DriverRepository.Get(request.ApproveDriverDto.Id);
 
-            if (driver == null || request.UserId != driver.UserId)
-                throw new NotFoundException("Resource Not Found");
+            if (driver == null)
+                throw new NotFoundException("Driver Not Found");
 
-            _mapper.Map(request.UpdateDriverDto, driver);
+            _mapper.Map(request.ApproveDriverDto, driver);
 
             if (await _unitOfWork.DriverRepository.Update(driver) == 0)
                 throw new InternalServerErrorException("Database Error: Unable To Save");
@@ -53,10 +52,7 @@ namespace Rideshare.Application.Features.Drivers.Handlers
             response.Value = Unit.Value;
 
 
-
             return response;
-
-
         }
     }
 }
