@@ -21,7 +21,7 @@ public class RateController : BaseApiController
 	}
 	 
 	//   [Authorize(Roles = "Commuter")]
-	//   [AllowAnonymous]
+	  [AllowAnonymous]
 	  [HttpGet]
 		public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
 		{
@@ -40,7 +40,8 @@ public class RateController : BaseApiController
 			return getResponse(status, result);
 		}
 
-		[Authorize(Roles = "Commuter")]
+		// [Authorize(Roles = "Commuter")]
+		[AllowAnonymous]
 		[HttpPost]
 		
 		public async Task<IActionResult> Post([FromBody] CreateRateDto rateDto)
@@ -62,7 +63,9 @@ public class RateController : BaseApiController
 			return getResponse(status, result);
 		}
 
-		[Authorize(Roles = "Commuter")]
+		// [Authorize(Roles = "Commuter")]
+		[AllowAnonymous]
+
 		[HttpDelete]
 		public async Task<IActionResult> Delete(int id, string userId)
 		{

@@ -6,4 +6,6 @@ namespace Rideshare.Application.Features.Auth.Queries;
 public class GetMonthlyCommuterCountQuery : IRequest<BaseResponse<MonthlyCommuterCountDto>>
 {
 	public int Year { get; set; }
+	public MonthlyCommuterCountDto MonthlyCommuterCountDto { get; set; }
+
 }
