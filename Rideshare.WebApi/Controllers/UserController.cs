@@ -28,8 +28,7 @@ public class UserController : BaseApiController
 	{
 	}
 	
-	// [Authorize(Roles = "Admin")]
-	[AllowAnonymous]
+	[Authorize(Roles = "Admin")]
 	[HttpGet]
 	public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
 	{
