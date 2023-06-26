@@ -11,7 +11,9 @@ namespace Rideshare.Application.Contracts.Persistence
     {
         public Task<Driver> GetDriverWithDetails(int id);
         public Task<List<Driver>> GetDriversWithDetails(int PageNumber, int PageSize);
-        public Task<Dictionary<int, Dictionary<string, int>>> GetDriversStatistics(string timeframe);
+        public Task<Dictionary<int, int>> GetDriversStatistics(string timeframe, int _year = 0, int _month = 0);
+
+
         public Task<Driver> GetDriverByUserId(string userId);
         public Task<List<int>> GetCountByStatus ();
     }

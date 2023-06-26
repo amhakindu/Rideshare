@@ -94,9 +94,9 @@ namespace Rideshare.WebApi.Controllers
         //[Authorize(Roles = "Admin")]
         [AllowAnonymous]
 
-        public async Task<IActionResult> Get(string timeFrame)
+        public async Task<IActionResult> Get(string timeFrame, int year, int month)
         {
-            var result = await _mediator.Send(new GetDriversStatisticsRequest {TimeFrame = timeFrame });
+            var result = await _mediator.Send(new GetDriversStatisticsRequest {TimeFrame = timeFrame, Year = year, Month = month });
             var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
             return getResponse(status, result);
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Rideshare.Application.Common.Constants;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Entities;
@@ -43,16 +44,32 @@ namespace Rideshare.Persistence.Repositories
             return driver;
         }
 
-        
 
 
 
 
-        public async Task<Dictionary<int, Dictionary<string, int>>> GetDriversStatistics(string timeframe)
+
+        public async Task <Dictionary<int, int>> GetDriversStatistics(string timeframe, int _year = 0, int _month = 0)
         {
-            Dictionary<int, Dictionary<string, int>> driversCount = new Dictionary<int, Dictionary<string, int>>();
+
+            var driversCount = new Dictionary<int, int>();
 
             var drivers = await _dbContext.Drivers.OrderBy(driver => driver.DateCreated).ToListAsync();
+            if (timeframe.ToLower() == "weekly")
+            {
+                for (int i = 1; i <= 5; i++)
+                    driversCount.Add(i, 0);
+
+
+                drivers = drivers.Where(driver => driver.DateCreated.Year == _year && driver.DateCreated.Month == _month).ToList();
+            }
+            else if (timeframe.ToLower() == "monthly")
+            {
+                for (int i = 1; i <= 12; i++)
+                    driversCount.Add(i, 0);
+
+                drivers = drivers.Where(driver => driver.DateCreated.Year == _year).ToList();
+            }
             CultureInfo culture = CultureInfo.CurrentCulture;
             Calendar calendar = culture.Calendar;
 
@@ -60,37 +77,36 @@ namespace Rideshare.Persistence.Repositories
             {
                 var date = driver.DateCreated;
                 var year = date.Year;
-                var month = date.ToString("MMMM");
+                var month = date.Month;
                 var week = calendar.GetWeekOfYear(date, culture.DateTimeFormat.CalendarWeekRule, culture.DateTimeFormat.FirstDayOfWeek);
 
-                if (!driversCount.ContainsKey(year))
-                {
-                    driversCount[year] = new Dictionary<string, int>();
-                }
+                
 
                 if (timeframe == "weekly")
                 {
-                    if (!driversCount[year].ContainsKey(week.ToString()))
+                    var startMonth = new DateTime(year: year, month: date.Month, day: 1);
+                    var startWeek = calendar.GetWeekOfYear(startMonth, culture.DateTimeFormat.CalendarWeekRule, culture.DateTimeFormat.FirstDayOfWeek);
+                    if (!driversCount.ContainsKey((week - startWeek + 1)))
                     {
-                        driversCount[year][week.ToString()] = 0;
+                        driversCount[(week - startWeek  + 1)] = 0;
                     }
-                    driversCount[year][week.ToString()] += 1;
+                    driversCount[(week - startWeek + 1)] += 1;
                 }
                 else if (timeframe == "monthly")
                 {
-                    if (!driversCount[year].ContainsKey(month))
+                    if (!driversCount.ContainsKey(month))
                     {
-                        driversCount[year][month] = 0;
+                        driversCount[month] = 0;
                     }
-                    driversCount[year][month] += 1;
+                    driversCount[month] += 1;
                 }
                 else if (timeframe == "yearly")
                 {
-                    if (!driversCount[year].ContainsKey(year.ToString()))
+                    if (!driversCount.ContainsKey(year))
                     {
-                        driversCount[year][year.ToString()] = 0;
+                        driversCount[year] = 0;
                     }
-                    driversCount[year][year.ToString()] += 1;
+                    driversCount[year] += 1;
                 }
             }
 
