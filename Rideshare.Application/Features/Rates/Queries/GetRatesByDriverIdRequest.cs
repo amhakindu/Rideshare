@@ -9,6 +9,7 @@ namespace Rideshare.Application.Features.Drivers.Queries
     public class GetRatesByDriverIdRequest : IRequest<BaseResponse<List<RateDto>>>
     {
         public int DriverId {get; set;}
-        public PaginationDto PaginationDto {get; set;}
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
     }
 }

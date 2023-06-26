@@ -72,9 +72,9 @@ public class RateController : BaseApiController
 		}
 
 	[HttpGet("driver/{driverId}")]
-    public async Task<IActionResult> Get([FromBody] PaginationDto paginationDto, int driverId)
+    public async Task<IActionResult> Get( int driverId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var result = await _mediator.Send(new GetRatesByDriverIdRequest {PaginationDto = paginationDto, DriverId = driverId });
+        var result = await _mediator.Send(new GetRatesByDriverIdRequest {PageNumber=pageNumber, PageSize=pageSize, DriverId = driverId });
         var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
         return getResponse(status, result);
     }

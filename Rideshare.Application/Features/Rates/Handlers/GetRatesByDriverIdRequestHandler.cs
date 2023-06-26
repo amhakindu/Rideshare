@@ -1,7 +1,6 @@
 using System;
 using AutoMapper;
 using MediatR;
-using Rideshare.Application.Common.Dtos.Pagination.Validators;
 using Rideshare.Application.Common.Dtos.Rates;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Exceptions;
@@ -25,13 +24,13 @@ namespace Rideshare.Application.Features.Rates.Handlers
         {
 
             var response = new BaseResponse<List<RateDto>>();
-            var validator = new PaginationDtoValidator();
+            // var validator = new PaginationDtoValidator();
 
-            var validationResult = await validator.ValidateAsync(request.PaginationDto);
+            // var validationResult = await validator.ValidateAsync(request.PaginationDto);
 
-            if (!validationResult.IsValid)
-                throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());
-            var rates = await _unitOfWork.RateRepository.GetRatesByDriverId(request.PaginationDto.PageNumber, request.PaginationDto.PageSize, request.DriverId);
+            // if (!validationResult.IsValid)
+            //     throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());
+            var rates = await _unitOfWork.RateRepository.GetRatesByDriverId(request.PageNumber, request.PageSize, request.DriverId);
 
            var rateDtos = _mapper.Map<List<RateDto>>(rates);
 
