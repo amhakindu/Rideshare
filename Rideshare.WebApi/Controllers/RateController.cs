@@ -1,8 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Rideshare.Application.Common.Dtos;
 using Rideshare.Application.Common.Dtos.Rates;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Features.Drivers.Queries;
 using Rideshare.Application.Features.Rates.Commands;
 using Rideshare.Application.Features.Rates.Queries;
 using Rideshare.Application.Features.Userss;
@@ -69,4 +71,11 @@ public class RateController : BaseApiController
 			return getResponse(status, result);
 		}
 
-	}
+	[HttpGet("driver/{driverId}")]
+    public async Task<IActionResult> Get([FromBody] PaginationDto paginationDto, int driverId)
+    {
+        var result = await _mediator.Send(new GetRatesByDriverIdRequest {PaginationDto = paginationDto, DriverId = driverId });
+        var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+        return getResponse(status, result);
+    }
+}

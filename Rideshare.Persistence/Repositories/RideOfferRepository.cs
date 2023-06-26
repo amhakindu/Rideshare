@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Rideshare.Application.Common.Dtos.Drivers;
 using Rideshare.Application.Common.Dtos.RideOffers;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Entities;
@@ -31,4 +32,24 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
         return result;
     }
 
+    public async Task<List<DriverStatsDto>> GetTopDriversWithStats()
+    {
+        var result = await _dbContext.RideOffers
+            .GroupBy(ro => ro.DriverID)
+            .Select(g => new DriverStatsDto
+            {
+                DriverID = g.Key,
+                TotalOffers = g.Count(),
+                Earnings = g.Sum(ro => ro.EstimatedFare)
+            })
+            .OrderByDescending(dto => dto.TotalOffers)
+            .Take(5)
+            .ToListAsync();
+
+        return result;
+    }
 }
+
+    
+
+

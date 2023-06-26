@@ -10,7 +10,6 @@ namespace Rideshare.Application.Common.Dtos.Drivers
 {
     public class CreateDriverDto
     {
-        public string UserId {get; set;}
         public double Experience { get; set; }
         public string Address { get; set; }
         public string LicenseNumber { get; set; }
