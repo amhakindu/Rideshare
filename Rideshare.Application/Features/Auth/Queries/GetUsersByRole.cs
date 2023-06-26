@@ -5,9 +5,11 @@ using Rideshare.Application.Responses;
 namespace Rideshare.Application.Features.Auth.Queries
 
 {
-    public class GetUsersByRoleQuery : IRequest<BaseResponse<List<UserDto>>>
+    public class GetUsersByRoleQuery : IRequest<BaseResponse<PaginatedUserList>>
     {
         public string Role { get; set; }
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
     }
 
 

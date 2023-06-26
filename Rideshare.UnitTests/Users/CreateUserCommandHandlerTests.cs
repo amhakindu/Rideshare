@@ -30,11 +30,9 @@ namespace Rideshare.UnitTests.Users
                 UserCreationDto = new UserCreationDto
                 {
                     
-                     Roles = new List<RoleDto>
-                    {
-                        new RoleDto { Id = "role1", Name = "Role 1" },
-                        new RoleDto { Id = "role2", Name = "Role 2" }
-                    },
+                     Roles = new RoleDto
+                   { Id = "role1", Name = "Role 1" },
+                    
                     FullName = "testuser",
                     PhoneNumber = "1234567890",
                     Age = 30

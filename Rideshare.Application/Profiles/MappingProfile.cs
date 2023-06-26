@@ -65,6 +65,9 @@ public class MappingProfile : Profile
         CreateMap<ApplicationUser, UserDto>()
       
         .ReverseMap();
+        CreateMap<ApplicationUser, UserDtoForAdmin>()
+      
+        .ReverseMap();
         CreateMap<ApplicationUser, AdminUserDto>()
        .ReverseMap();
          CreateMap<ApplicationUser, AdminCreationDto>()
