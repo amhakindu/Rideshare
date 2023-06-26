@@ -50,10 +50,10 @@ public class RideOffersController : BaseApiController
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetAll([FromQuery] int PageNumber=1, [FromQuery] int PageSize=10)
+    [Authorize(Roles = "Driver")]
+    public async Task<IActionResult> GetDriverRideOffers([FromQuery] int PageNumber=1, [FromQuery] int PageSize=10)
     {
-        var result = await _mediator.Send(new GetAllRideOffersQuery { PageNumber=PageNumber, PageSize=PageSize});
+        var result = await _mediator.Send(new GetRideOffersOfDriverQuery {UserId=_userAccessor.GetUserId(), PageNumber=PageNumber, PageSize=PageSize});
 
         var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.NotFound;
         return getResponse<BaseResponse<Dictionary<string, object>>>(status, result);

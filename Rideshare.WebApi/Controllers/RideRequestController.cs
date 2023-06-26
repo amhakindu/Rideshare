@@ -33,11 +33,21 @@ public class RideRequestController : BaseApiController
         return getResponse(status, result);
     }
 
-    [Authorize(Roles = "Admin")]
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    [Authorize(Roles = "Commuter")]
+    public async Task<IActionResult> GetCommuterRequests([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
         var result = await _mediator.Send(new GetRideRequestListQuery{UserId = _userAccessor.GetUserId(), PageNumber=pageNumber, PageSize = pageSize});
+
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+        return getResponse(status, result);
+    }
+
+    [HttpGet("all")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var result = await _mediator.Send(new GetRideRequestListQuery{PageNumber=pageNumber, PageSize = pageSize});
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);
