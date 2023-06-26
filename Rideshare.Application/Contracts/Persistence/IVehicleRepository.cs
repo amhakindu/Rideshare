@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 namespace Rideshare.Application.Contracts.Persistence;
 public interface IVehicleRepository : IGenericRepository<Vehicle>
 {
-    Task<int> GetNoVehicle(int days);
+    Task<Dictionary<int, int>> GetNoVehicle(string option, int year, int month);
 }

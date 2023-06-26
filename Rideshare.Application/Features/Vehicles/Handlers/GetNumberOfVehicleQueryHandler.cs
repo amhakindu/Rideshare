@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Rideshare.Application.Features.Vehicles.Handlers
 {
-    public class GetNumberOfVehicleQueryHandler : IRequestHandler<GetNumberOfVehicleQuery, BaseResponse<int>>
+    public class GetNumberOfVehicleQueryHandler : IRequestHandler<GetNumberOfVehicleQuery, BaseResponse<Dictionary<int, int>>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -19,12 +19,12 @@ namespace Rideshare.Application.Features.Vehicles.Handlers
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<BaseResponse<int>> Handle(GetNumberOfVehicleQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<Dictionary<int, int>>> Handle(GetNumberOfVehicleQuery request, CancellationToken cancellationToken)
         {
-            var res = await _unitOfWork.VehicleRepository.GetNoVehicle(request.Days);
-            return new BaseResponse<int> {
+            var res = await _unitOfWork.VehicleRepository.GetNoVehicle(request.option, request.Year, request.Month);
+            return new BaseResponse<Dictionary<int, int>> {
                 Value = res,
-                Message=$"Number of vehicle registered for {request.Days} days fetched succesfully"
+                Message=$"Number of vehicle registered fetched succesfully"
             };
         }
     }

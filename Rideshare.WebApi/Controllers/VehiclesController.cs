@@ -17,6 +17,7 @@ namespace Rideshare.WebApi.Controllers;
 public class VehiclesController : BaseApiController
 {
     public IUnitOfWork _unitOfWork { get; set; }
+    
     public VehiclesController(IMediator mediator, IUnitOfWork unitOfWork) : base(mediator)
     {
         _unitOfWork = unitOfWork;
@@ -31,9 +32,9 @@ public class VehiclesController : BaseApiController
         return getResponse(status, result);
     }
     [HttpGet("NumberOfVehicle")]
-    public async Task<IActionResult> GetNumberOfVihcle([FromQuery] int days)
+    public async Task<IActionResult> GetNumberOfVihcle([FromQuery] string option, [FromQuery] int year, [FromQuery] int month)
     {
-        var result = await _mediator.Send(new GetNumberOfVehicleQuery { Days = days });
+        var result = await _mediator.Send(new GetNumberOfVehicleQuery { option = option, Year = year, Month = month });
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);

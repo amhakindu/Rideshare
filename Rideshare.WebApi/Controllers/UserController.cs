@@ -7,6 +7,7 @@ using Rideshare.Application.Common.Dtos.Tests;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Auth.Commands;
 using Rideshare.Application.Features.Auth.Queries;
+using Rideshare.Application.Features.RideRequests.Queries;
 using Rideshare.Application.Features.Tests.Queries;
 using Rideshare.Application.Features.Userss;
 using Rideshare.Application.Responses;
@@ -112,6 +113,16 @@ public class UserController : BaseApiController
 
         var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
         return getResponse<BaseResponse<UserDto>>(status, result);
+
+    }
+    [HttpGet("Top5Commuter")]
+
+    public async Task<IActionResult> GetTop5Commuter()
+    {
+        var result = await _mediator.Send(new GetTop5CommuterQuery { });
+
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+        return getResponse(status, result);
     }
 
     [HttpGet("all")]
