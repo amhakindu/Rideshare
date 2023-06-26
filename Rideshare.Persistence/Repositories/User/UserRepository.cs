@@ -41,10 +41,21 @@ public class UserRepository : IUserRepository
         return await _userManager.FindByIdAsync(userId);
     }
 
-     public async Task<List<ApplicationUser>> GetUsersByRoleAsync(string role)
+    public async Task<PaginatedResponse> GetUsersByRoleAsync(string role, int pageNumber = 1,
+       int pageSize = 10)
     {
         var usersInRole = await _userManager.GetUsersInRoleAsync(role);
-        return usersInRole.ToList();
+        var filteredUsers = usersInRole
+          .Skip((pageNumber - 1) * pageSize)
+          .Take(pageSize)
+          .ToList();
+        var paginatedResponse = new PaginatedResponse 
+        {
+            PaginatedUsers = filteredUsers,
+            Count = usersInRole.Count
+           
+        };
+        return paginatedResponse;
     }
 
     public async Task<List<ApplicationRole>> GetUserRolesAsync(ApplicationUser? user)
@@ -62,7 +73,7 @@ public class UserRepository : IUserRepository
     public async Task<ApplicationUser> CreateUserAsync(ApplicationUser user, List<ApplicationRole> roles)
     {
 
-        user.UserName = user.FullName.Replace(" ","") + user.PhoneNumber;
+        user.UserName = user.FullName.Replace(" ", "") + user.PhoneNumber;
         user.Email = user.FullName + user.PhoneNumber;
         var result = await _userManager.CreateAsync(user);
         Console.WriteLine(result.ToString());
@@ -70,9 +81,11 @@ public class UserRepository : IUserRepository
         if (result.Succeeded)
         {
 
+
             var savedUser = await _userManager.Users.SingleOrDefaultAsync(us => us.PhoneNumber == user.PhoneNumber);
 
             var addRoleResult = await _userManager.AddToRolesAsync(user, roles.Select(r => r.Name));
+            Console.WriteLine(addRoleResult.ToString());
 
             if (!addRoleResult.Succeeded) throw new InvalidOperationException("User role assignment has failed");
 
@@ -108,13 +121,25 @@ public class UserRepository : IUserRepository
         }
         else
         {
-            throw new Exception("Failed to update user.");
+            throw new Exception(result.ToString());
         }
     }
 
-    public async Task<IEnumerable<ApplicationUser>> GetUsersAsync()
+    public async Task<PaginatedResponse> GetUsersAsync(int pageNumber = 1,
+        int pageSize = 10)
     {
-        return await _userManager.Users.ToListAsync();
+        var users = await _userManager.Users.ToListAsync();
+        var filteredUsers = users.
+            Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+        var paginatedResponse = new PaginatedResponse
+        {
+            PaginatedUsers = filteredUsers,
+            Count = users.Count
+        };
+        return paginatedResponse;
+
     }
 
     public async Task DeleteUserAsync(string userId)
@@ -128,7 +153,7 @@ public class UserRepository : IUserRepository
         var result = await _userManager.DeleteAsync(user);
         if (!result.Succeeded)
         {
-            throw new Exception("Failed to delete user.");
+            throw new Exception(result.ToString());
         }
     }
 
@@ -155,7 +180,7 @@ public class UserRepository : IUserRepository
         var result = await _userManager.ResetPasswordAsync(user, token, password);
         if (!result.Succeeded)
         {
-            throw new Exception("Failed to reset password.");
+            throw new Exception(result.ToString());
         }
     }
 

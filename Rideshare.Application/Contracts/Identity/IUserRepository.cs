@@ -14,7 +14,8 @@ public interface IUserRepository
     Task<List<ApplicationRole>> GetUserRolesAsync(ApplicationUser? user);
     Task<ApplicationUser> UpdateUserAsync(string userId, ApplicationUser user);
     Task<ApplicationUser> UpdateAdminUserAsync(string userId, ApplicationUser user);
-    Task<IEnumerable<ApplicationUser>> GetUsersAsync();
+    Task<PaginatedResponse> GetUsersAsync( int pageNumber = 1,
+        int pageSize = 10);
     Task DeleteUserAsync(string userId);
     Task<bool> CheckEmailExistence(string email, string? userId);
     Task<ApplicationUser> GetUserById(string userId);
@@ -22,6 +23,7 @@ public interface IUserRepository
     Task<LoginResponse> LoginAsync(string phoneNumber);
     Task<LoginResponse> LoginByAdminAsync(string userName, string password);
     Task<TokenDto?> RefreshToken(TokenDto tokenDto);
-    Task<List<ApplicationUser>> GetUsersByRoleAsync(string role);
+    Task<PaginatedResponse> GetUsersByRoleAsync(string role,  int pageNumber = 1,
+        int pageSize = 10);
 
 }

@@ -60,8 +60,8 @@ namespace Rideshare.Application.UnitTests.Mocks
                 });
 
             // GetUsersAsync
-            Setup(repo => repo.GetUsersAsync())
-                .ReturnsAsync(GetAllUsers());
+            // Setup(repo => repo.GetUsersAsync())
+            //     .ReturnsAsync(GetAllUsers());
 
             // DeleteUserAsync
             Setup(repo => repo.DeleteUserAsync(It.IsAny<string>()))

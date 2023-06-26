@@ -25,7 +25,8 @@ public sealed class GetUserByQueryHandler : IRequestHandler<GetUserByIdQuery, Ba
     public async Task<BaseResponse<UserDto>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
         var applicationUser = await _userRepository.GetUserById(request.UserId);
-
+        Console.WriteLine(request.UserId);
+        Console.WriteLine("checking");
 
 
         var user = new UserDto
@@ -44,7 +45,9 @@ public sealed class GetUserByQueryHandler : IRequestHandler<GetUserByIdQuery, Ba
         {
             user.StatusByLogin = "INACTIVE";
         }
+        
         var roles = await _userRepository.GetUserRolesAsync(applicationUser);
+        Console.WriteLine(roles.Count);
         var roleDtos = _mapper.Map<List<RoleDto>>(roles);
         user.Roles.AddRange(roleDtos);
 

@@ -62,7 +62,7 @@ public class UserController : BaseApiController
 
     [HttpPost("admin")]
     [AllowAnonymous]
-    public async Task<IActionResult> CreateUser([FromBody] AdminCreationDto userCreationDto)
+    public async Task<IActionResult> CreateUser([FromForm] AdminCreationDto userCreationDto)
     {
         var result = await _mediator.Send(new CreateAdminUserCommand { AdminCreationDto = userCreationDto });
 
@@ -92,7 +92,7 @@ public class UserController : BaseApiController
         return getResponse<BaseResponse<AdminUserDto>>(status, result);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet()]
 
     public async Task<IActionResult> GetUserId()
     {
@@ -102,13 +102,26 @@ public class UserController : BaseApiController
         return getResponse<BaseResponse<UserDto>>(status, result);
     }
 
+     [HttpGet("withAGiven/{id}")]
+
+    public async Task<IActionResult> GetUserById(string id)
+    {
+        Console.WriteLine(id);
+        Console.WriteLine("cha");
+        var result = await _mediator.Send(new GetUserByIdQuery { UserId = id });
+
+        var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+        return getResponse<BaseResponse<UserDto>>(status, result);
+    }
+
     [HttpGet("all")]
 
-    public async Task<IActionResult> GetAllUser()
+    public async Task<IActionResult> GetAllUser( [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
     {
 
 
-        var result = await _mediator.Send(new GetAllUsersQuery { });
+        var result = await _mediator.Send(new GetAllUsersQuery { PageNumber = pageNumber, PageSize= pageSize });
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);
@@ -116,11 +129,12 @@ public class UserController : BaseApiController
     [HttpGet("by-role")]
     [Authorize(Roles = "Admin")]
 
-    public async Task<IActionResult> GetUsersByRole(string role)
+    public async Task<IActionResult> GetUsersByRole(  [FromQuery]string role,  [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
     {
 
 
-        var result = await _mediator.Send(new GetUsersByRoleQuery { Role = role });
+        var result = await _mediator.Send(new GetUsersByRoleQuery { Role = role , PageNumber = pageNumber, PageSize= pageSize});
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);
@@ -137,5 +151,30 @@ public class UserController : BaseApiController
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);
     }
+
+     [HttpGet("filter")]
+        public async Task<IActionResult> GetUsersByFilter(
+            [FromQuery] string phoneNumber,
+            [FromQuery] string roleName,
+            [FromQuery] string fullName,
+            [FromQuery] string statuss,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            var query = new GetUsersByFilterQuery
+            {
+                PhoneNumber = phoneNumber,
+                RoleName = roleName,
+                FullName = fullName,
+                Status = statuss,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
+            var result = await _mediator.Send(query);
+
+            var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
+            return getResponse<BaseResponse<PaginatedUserList>>(status, result);
+        }
 }
 

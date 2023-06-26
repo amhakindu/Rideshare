@@ -69,6 +69,7 @@ public class JwtService : IJwtService
 
         var claims = new List<Claim>
         {
+            new(ClaimTypes.PrimarySid,user.Id),
             new(ClaimTypes.Email, user.Email ?? string.Empty),
             new(ClaimTypes.NameIdentifier, user.UserName),
             new(ClaimTypes.Name, user.UserName),

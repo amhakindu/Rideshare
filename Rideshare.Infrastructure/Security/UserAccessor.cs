@@ -18,7 +18,7 @@ namespace Rideshare.Infrastructure.Security;
 
         public string GetUserId()
         {
-             return  _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.PrimarySid).Value;
+             return  _httpContextAccessor.HttpContext != null ? _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.PrimarySid) : null;
             
             
         }
