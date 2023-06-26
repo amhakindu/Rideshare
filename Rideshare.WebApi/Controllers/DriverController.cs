@@ -46,19 +46,9 @@ namespace Rideshare.WebApi.Controllers
             var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
             return getResponse(status, result);
         }
-
-        [HttpGet("RideOffers")]
-        public async Task<IActionResult> GetRideOffersOf()
-        {
-            var DriverId = 1;
-            var result = await _mediator.Send(new GetRideOffersOfDriverQuery { DriverID = DriverId });
-
-            var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.NotFound;
-            return getResponse<BaseResponse<Dictionary<string, object>>>(status, result);
-        } 
-
+        
         [HttpPost]
-        // [Authorize(Roles = "Driver")]
+        [Authorize(Roles = "Driver")]
         [AllowAnonymous]
 
         public async Task<IActionResult> Post([FromForm] CreateDriverDto createDriverDto)

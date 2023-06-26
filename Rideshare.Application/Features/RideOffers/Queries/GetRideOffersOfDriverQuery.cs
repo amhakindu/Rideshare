@@ -7,7 +7,7 @@ namespace Rideshare.Application.Features.RideOffers.Queries;
 
 public class GetRideOffersOfDriverQuery: IRequest<BaseResponse<Dictionary<string, object>>>
 {
-    public int DriverID { get; set; }
+    public string UserId { get; set; }
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
 }

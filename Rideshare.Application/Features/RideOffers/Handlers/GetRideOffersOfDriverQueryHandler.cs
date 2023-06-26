@@ -28,10 +28,11 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
 
         public async Task<BaseResponse<Dictionary<string, object>>> Handle(GetRideOffersOfDriverQuery command, CancellationToken cancellationToken)
         {
-            if (!(await _unitOfWork.DriverRepository.Exists(command.DriverID)))
-                throw new NotFoundException($"Driver with ID {command.DriverID} does not exist");
+            var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(command.UserId);
+            if (driver == null)
+                throw new NotFoundException($"User with ID {command.UserId} is not a driver");
             
-            var driverRideOffers = await _unitOfWork.RideOfferRepository.GetRideOffersOfDriver(command.DriverID, command.PageNumber, command.PageSize);
+            var driverRideOffers = await _unitOfWork.RideOfferRepository.GetRideOffersOfDriver(driver.Id, command.PageNumber, command.PageSize);
 
             return new BaseResponse<Dictionary<string, object>>{
                 Success = true,

@@ -32,7 +32,7 @@ public class GetRideRequestListQueryHandler : IRequestHandler<GetRideRequestList
 
         List<RideRequest> rideReqs = new List<RideRequest>();
         foreach(var rideRequest in rideRequests){
-            if (rideRequest.UserId == request.UserId){
+            if (rideRequest.UserId == (request.UserId ?? rideRequest.UserId)){
                 rideReqs.Add(rideRequest);
             }
         }
