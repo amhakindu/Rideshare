@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 
 namespace Rideshare.Application.Features.Vehicles.Queries
 {
-    public class GetNumberOfVehicleQuery: IRequest<BaseResponse<int>>
+     
+    public class GetNumberOfVehicleQuery: IRequest<BaseResponse<Dictionary<int, int>>>
     {
-        public int Days { get; set; }
+        public string option { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
     }
 }
