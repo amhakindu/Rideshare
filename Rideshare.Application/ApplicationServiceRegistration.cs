@@ -4,8 +4,6 @@ using Serilog.Events;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Hangfire;
-using Hangfire.PostgreSql;
 using Rideshare.Application.Profiles;
 using Rideshare.Application.Contracts.Infrastructure;
 using Rideshare.Application.Contracts.Persistence;
@@ -38,18 +36,6 @@ public static class ApplicationServicesRegistration
             }
         );
         services.AddMediatR(Assembly.GetExecutingAssembly());
-
-        var connectionstring = configuration.GetSection("ConnectionStrings")["HangFireConnectionString"];
-        // Add Hangfire services.
-        services.AddHangfire(configuration => configuration
-            .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-            .UseSimpleAssemblyNameTypeSerializer()
-            .UseRecommendedSerializerSettings()
-            .UsePostgreSqlStorage(connectionstring)
-        );
-
-        // Add the processing server as IHostedService
-        services.AddHangfireServer();
         return services;
     }
 }

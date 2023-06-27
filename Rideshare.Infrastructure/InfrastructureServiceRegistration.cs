@@ -1,6 +1,5 @@
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Builder;
-using Hangfire;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Rideshare.Application.Contracts.Infrastructure;
@@ -38,9 +37,8 @@ public  static class InfrastructureServiceRegistration
 
                 var unitOfWork = provider.GetRequiredService<IUnitOfWork>();
                 var mapboxService = provider.GetRequiredService<IMapboxService>();
-                var backgroundJobClient = provider.GetRequiredService<IBackgroundJobClient>();
 
-                return new RideshareMatchingService(unitOfWork, mapboxService, backgroundJobClient, doubleValue);
+                return new RideshareMatchingService(unitOfWork, mapboxService, doubleValue);
                 // }
             }
         );

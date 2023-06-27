@@ -4,7 +4,6 @@ using Rideshare.Application.Contracts.Infrastructure;
 using Rideshare.Infrastructure.Services;
 using Rideshare.UnitTests.Mocks;
 using Moq;
-using Hangfire;
 using Shouldly;
 using Rideshare.Domain.Entities;
 using Rideshare.Application.Contracts.Persistence;
@@ -16,19 +15,16 @@ public class RideshareMatchingServiceTests
 {
     private readonly IRideshareMatchingService _matchingService;
     private readonly Mock<MapboxService> _mapboxService;
-    private readonly Mock<IBackgroundJobClient> _backgroundJobClient;
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
 
     public RideshareMatchingServiceTests()
     {
         _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
-        var mockBackgroundJobClient = MockServices.GetBackgroundJobClient();
         var mockMapboxService = MockServices.GetMapboxService();
 
         _matchingService = new RideshareMatchingService(
             _mockUnitOfWork.Object,
             mockMapboxService.Object,
-            mockBackgroundJobClient.Object,
             500
         );
     }

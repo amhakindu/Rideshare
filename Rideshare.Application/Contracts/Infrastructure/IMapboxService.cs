@@ -1,5 +1,4 @@
 using NetTopologySuite.Geometries;
-using Newtonsoft.Json;
 
 namespace Rideshare.Application.Contracts.Infrastructure;
 
