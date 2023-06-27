@@ -189,8 +189,5 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
         }; 
     }
 
-    public Task<IReadOnlyList<RideRequest>> SearchByGivenParameter(int PageNumber, int PageSize, Status? status, int fare, string name, string phoneNumber)
-    {
-        throw new NotImplementedException();
-    }
+    
 }
