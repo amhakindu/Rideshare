@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Features.RideRequests.Commands;
+using Rideshare.Application.Features.RideRequests.Commands;
 using Rideshare.Application.Features.RideRequests.Queries;
-using Rideshare.Application.Features.Tests.Commands;
 using Rideshare.Application.Features.Userss;
+using Rideshare.Domain.Common;
 
 namespace Rideshare.WebApi.Controllers;
 
 
-[ApiController]
+// [ApiController]
 [Authorize]
 [Route("api/[controller]")]
 
@@ -33,27 +34,17 @@ public class RideRequestController : BaseApiController
         return getResponse(status, result);
     }
 
-    [HttpGet]
-    [Authorize(Roles = "Commuter")]
-    public async Task<IActionResult> GetCommuterRequests([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
-    {
-        var result = await _mediator.Send(new GetRideRequestListQuery{UserId = _userAccessor.GetUserId(), PageNumber=pageNumber, PageSize = pageSize});
+    // [Authorize(Roles = "Commuter,Admin")]
+    // [HttpGet("UserRequests")]
+    // public async Task<IActionResult> GetUserRideRequests([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    // {
+    //     var result = await _mediator.Send(new GetRideRequestListQuery{UserId = _userAccessor.GetUserId(), PageNumber=pageNumber, PageSize = pageSize});
 
-        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
-        return getResponse(status, result);
-    }
+    //     var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+    //     return getResponse(status, result);
+    // }
 
-    [HttpGet("all")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
-    {
-        var result = await _mediator.Send(new GetRideRequestListQuery{PageNumber=pageNumber, PageSize = pageSize});
 
-        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
-        return getResponse(status, result);
-    }
-
-    [HttpPost]
     [Authorize(Roles = "Commuter")]
     public async Task<IActionResult> Post([FromBody] CreateRideRequestDto rideRequestDto)
     {
@@ -83,4 +74,19 @@ public class RideRequestController : BaseApiController
         var status = result.Success ? HttpStatusCode.NoContent : HttpStatusCode.NotFound;
         return getResponse(status, result);
     }
+
+
+    [Authorize(Roles = "Commuter")]
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutStatus(int id)
+    {
+        var result = await _mediator.Send(new UpdateRideRequestStatusCommand { Id = id,UserId = _userAccessor.GetUserId()});
+
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
+        return getResponse(status, result);
+    }
+
+
+
+
 }
