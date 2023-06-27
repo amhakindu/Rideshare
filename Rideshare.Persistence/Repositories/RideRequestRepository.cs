@@ -5,6 +5,7 @@ using Rideshare.Domain.Entities;
 using static Rideshare.Application.Common.Constants.Utils;
 using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Domain.Common;
 using Rideshare.Domain.Entities;
 using Rideshare.Domain.Models;
 
