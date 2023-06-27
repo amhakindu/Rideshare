@@ -1,4 +1,3 @@
-using Hangfire;
 using NetTopologySuite.Geometries;
 using Rideshare.Application.Contracts.Infrastructure;
 using Rideshare.Application.Contracts.Persistence;
@@ -13,13 +12,11 @@ public class RideshareMatchingService : IRideshareMatchingService
     private readonly double _radius;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapboxService _mapboxService;
-    private readonly IBackgroundJobClient _backgroundJobClient;
 
-    public RideshareMatchingService(IUnitOfWork unitOfWork, IMapboxService mapboxService, IBackgroundJobClient backgroundJobClient, double radius)
+    public RideshareMatchingService(IUnitOfWork unitOfWork, IMapboxService mapboxService, double radius)
     {
         _unitOfWork = unitOfWork;
         _mapboxService = mapboxService;
-        _backgroundJobClient = backgroundJobClient;
         _radius = radius;
     }
     public static double HaversineDistance(Point origin, Point dest)

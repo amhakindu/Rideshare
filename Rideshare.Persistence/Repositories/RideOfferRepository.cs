@@ -56,6 +56,19 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
             {"rideoffers", rideoffers}
         };
     }
+    public async Task<int> UpdateCurrentLocation(RideOffer rideoffer, GeographicalLocation location){
+        var locations = await _dbContext.Locations.ToListAsync();
+        var temp1 = locations.OrderBy(g => HaversineDistance(g.Coordinate, location.Coordinate))
+            .FirstOrDefault();
+        
+        if (temp1 != null && HaversineDistance(temp1.Coordinate, location.Coordinate) <= RADIUS_IN_METERS)
+            location = null;
+        if(location == null)
+            rideoffer.CurrentLocation = temp1;
+        else
+            rideoffer.CurrentLocation = location;
+        return await Update(rideoffer);
+    }
     public async Task<int> Add(RideOffer entity)
     {
         var locations = await _dbContext.Locations.ToListAsync();
