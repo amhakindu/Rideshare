@@ -25,7 +25,10 @@ namespace Rideshare.UnitTests.Drivers
         {
             
             _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
-            _mapper = new MapperConfiguration(c => { c.AddProfile<MappingProfile>(); }).CreateMapper();
+            var mapboxService = MockServices.GetMapboxService();
+
+            _mapper = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockUnitOfWork.Object)); })
+            .CreateMapper();
 
             _handler = new UpdateDriverCommandHandler( _mockUnitOfWork.Object, _mapper);
 
@@ -41,10 +44,9 @@ namespace Rideshare.UnitTests.Drivers
                 Address = "new Address",
                 LicenseNumber = "newLicenseNum",
                 License = "newLicense"
-
             };
             
-            var command = new UpdateDriverCommand{UpdateDriverDto = updateDriverDto};
+            var command = new UpdateDriverCommand{UpdateDriverDto = updateDriverDto, UserId="user1"};
 
             
 

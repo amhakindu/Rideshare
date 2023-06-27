@@ -29,13 +29,17 @@ public class UpdateRideRequestCommandHandler : IRequestHandler<UpdateRideRequest
         var response = new BaseResponse<Unit>();
         var validator = new UpdateRideRequestDtoValidator(_unitOfWork);
         var validationResult = await validator.ValidateAsync(request.RideRequestDto);
+
+        if(!await _unitOfWork.RideRequestRepository.Exists(request.RideRequestDto.Id))
+            throw new NotFoundException($"RideRequest with ID {request.RideRequestDto.Id} does not exist");
+
  
         if (validationResult.IsValid == true){
             var rideRequest = await _unitOfWork.RideRequestRepository.Get(request.RideRequestDto.Id);
            rideRequest =  _mapper.Map(request.RideRequestDto, rideRequest);
 
            if (rideRequest.UserId == request.UserId){
-           var value =  await _unitOfWork.RideRequestRepository.Update(rideRequest);
+                var value =  await _unitOfWork.RideRequestRepository.Update(rideRequest);
 
                 if ( value > 0)
                 {

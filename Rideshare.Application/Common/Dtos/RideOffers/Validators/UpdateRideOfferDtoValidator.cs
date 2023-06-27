@@ -1,6 +1,7 @@
 using FluentValidation;
 using NetTopologySuite.Geometries;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Domain.Common;
 
 namespace Rideshare.Application.Common.Dtos.RideOffers.Validators;
 
@@ -33,8 +34,8 @@ public class UpdateRideOfferDtoValidator : AbstractValidator<UpdateRideOfferDto>
 
         When(dto => dto.Status != null, ()=>{
             RuleFor(dto => dto.Status)
-                .IsInEnum().WithMessage("Invalid status")
-                .When(dto => dto.Status != null);
+                .Must((status) => Enum.IsDefined(typeof(Status), status))
+                .WithMessage("{PropertyName} must be waiting, noroute, completed or cancelled");
         });
     }
 }

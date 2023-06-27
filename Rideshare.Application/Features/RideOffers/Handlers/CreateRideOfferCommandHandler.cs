@@ -6,6 +6,7 @@ using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.RideOffers.Commands;
 using Rideshare.Application.Common.Dtos.RideOffers.Validators;
 using Rideshare.Application.Exceptions;
+using Rideshare.Application.Contracts.Infrastructure;
 
 namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
 {
@@ -13,7 +14,6 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
         public CreateRideOfferCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
@@ -22,12 +22,12 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
 
         public async Task<BaseResponse<int>> Handle(CreateRideOfferCommand command, CancellationToken cancellationToken)
         {
-
-            if(!CreateRideOfferDtoValidator.driverIDs.Exists(o => o == command.RideOfferDto.DriverID))
-                throw new NotFoundException($"Driver with ID {command.RideOfferDto.DriverID} does not exist");
             
-            if(!CreateRideOfferDtoValidator.vehicleIDs.Exists(o => o == command.RideOfferDto.VehicleID))
+            if(!await _unitOfWork.VehicleRepository.Exists(command.RideOfferDto.VehicleID))
                 throw new NotFoundException($"Vehicle with ID {command.RideOfferDto.VehicleID} does not exist");
+
+            if(!await _unitOfWork.DriverRepository.Exists(command.RideOfferDto.DriverID))
+                throw new NotFoundException($"Driver with ID {command.RideOfferDto.DriverID} does not exist");
 
             var validator = new CreateRideOfferDtoValidator();
             var validationResult = await validator.ValidateAsync(command.RideOfferDto);
@@ -35,6 +35,9 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
                 throw new ValidationException(validationResult.Errors.Select(e => e.ErrorMessage).ToList().First());
 
             var rideOffer = _mapper.Map<RideOffer>(command.RideOfferDto);
+
+            if(rideOffer.EstimatedFare == 0 && rideOffer.EstimatedDuration.TotalSeconds == 0)
+                throw new ValidationException("No Route Found For The Given Origin and Destination");
 
             var dbOperations = await _unitOfWork.RideOfferRepository.Add(rideOffer);
 

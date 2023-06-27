@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rideshare.Application.Common.Dtos.Drivers;
+using Rideshare.Application.Common.Dtos.RideOffers;
 using Rideshare.Application.Common.Dtos.Tests;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Drivers.Commands;
 using Rideshare.Application.Features.Drivers.Queries;
+using Rideshare.Application.Features.RideOffers.Queries;
 using Rideshare.Application.Features.Tests.Commands;
 using Rideshare.Application.Features.Tests.Queries;
 using Rideshare.Application.Features.Userss;
@@ -19,10 +21,8 @@ namespace Rideshare.WebApi.Controllers
     [Authorize]
     public class DriverController : BaseApiController
     {
-        private readonly IUserAccessor _userAccessor;
-        public DriverController(IMediator mediator, IUserAccessor userAccessor) : base(mediator)
+        public DriverController(IMediator mediator, IUserAccessor userAccessor) : base(mediator, userAccessor)
         {
-            _userAccessor = userAccessor;
         }
 
         [HttpGet]
@@ -46,9 +46,9 @@ namespace Rideshare.WebApi.Controllers
             var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
             return getResponse(status, result);
         }
-
+        
         [HttpPost]
-        // [Authorize(Roles = "Driver")]
+        [Authorize(Roles = "Driver")]
         [AllowAnonymous]
 
         public async Task<IActionResult> Post([FromForm] CreateDriverDto createDriverDto)

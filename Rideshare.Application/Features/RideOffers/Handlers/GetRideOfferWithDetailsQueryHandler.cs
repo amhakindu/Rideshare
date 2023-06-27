@@ -21,7 +21,6 @@ namespace Rideshare.Application.Features.Movies.CQRS.Handlers
         }
         public async Task<BaseResponse<RideOfferDto>> Handle(GetRideOfferWithDetailsQuery query, CancellationToken cancellationToken)
         {
-            var response = new BaseResponse<RideOfferDto>();
             var rideOffer = await _unitOfWork.RideOfferRepository.Get(query.RideOfferID);
             
             if(rideOffer == null)

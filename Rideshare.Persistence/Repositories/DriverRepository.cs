@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Rideshare.Application.Common.Constants;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Entities;
 using System;

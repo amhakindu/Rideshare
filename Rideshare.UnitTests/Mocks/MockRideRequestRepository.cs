@@ -1,6 +1,7 @@
 using Moq;
 using NetTopologySuite.Geometries;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Domain.Common;
 using Rideshare.Domain.Entities;
 
 namespace Rideshare.UnitTests.Mocks;
@@ -16,28 +17,60 @@ public class MockRideRequestRepository
             new ()
             {
                 Id=1,
-                Origin = new Point(15,18),
-                Destination = new Point(15,20),
+                Origin = new GeographicalLocation(){Coordinate=new Point(38.7547, 8.9975){SRID=4326}},
+                Destination = new GeographicalLocation(){Coordinate=new Point(38.7668, 9.0004){SRID=4326}},
                 CurrentFare = 60,
                 Status =  0,
                 NumberOfSeats = 2,
-                UserId = "sura123"
+                UserId = "user1"
             },
             new ()
             {
                 Id=2,
-                Origin = new Point(25,18),
-                Destination = new Point(75,20),
+                Origin = new GeographicalLocation(){Coordinate=new Point(38.7529, 9.0136){SRID=4326}},
+                Destination =new GeographicalLocation(){Coordinate= new Point(38.7631, 9.0101){SRID=4326}},
                 CurrentFare = 70,
                 Status =  0,
                 NumberOfSeats = 1,
-                UserId = "sura123"
-            }
+                UserId = "user1"
+            },
+            
+            new ()
+            {
+                Id=3,
+                Origin = new GeographicalLocation(){Coordinate= new Point(38.7631, 9.0101){SRID=4326}},
+                Destination = new GeographicalLocation(){Coordinate= new Point(38.7529, 9.0136){SRID=4326}},
+                CurrentFare = 70,
+                Status =  0,
+                NumberOfSeats = 1,
+                UserId = "user1"
+            },
+            new ()
+            {
+                Id=4,
+                Origin = new GeographicalLocation(){Coordinate= new Point(-55, -54)},
+                Destination = new GeographicalLocation(){Coordinate= new Point(54, 53)},
+                CurrentFare = 70,
+                Status =  0,
+                NumberOfSeats = 1,
+                UserId = "user1"
+            },
+            // new ()
+            // {
+            //     Id=1,
+            //     Origin = new Point(38.7547, 8.9975){SRID=4326},
+            //     Destination = new Point(38.7668, 9.0004){SRID=4326},
+            // },
+            // new ()
+            // {
+            //     Id=2,
+            //     Origin = new Point(38.7529, 9.0136){SRID=4326},
+            //     Destination = new Point(38.7631, 9.0101){SRID=4326},
+            // },
         };
-
         var mockRepo = new Mock<IRideRequestRepository>();
 
-        mockRepo.Setup(r => r.GetAll(1, 10)).ReturnsAsync(rideRequests);
+        mockRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(rideRequests);
         
         mockRepo.Setup(r => r.Add(It.IsAny<RideRequest>())).ReturnsAsync((RideRequest rideRequest) =>
         {

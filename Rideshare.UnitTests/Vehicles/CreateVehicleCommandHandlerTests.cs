@@ -34,7 +34,10 @@ public class CreateVehicleCommandHandlerTests
         _resourceManager = MockResourceManager
             .GetResourceManager()
             .Object;
-        _mapper = new MapperConfiguration(c => { c.AddProfile<MappingProfile>(); }).CreateMapper();
+        var mapboxService = MockServices.GetMapboxService();
+
+        _mapper = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockUnitOfWork)); })
+        .CreateMapper();
         _mockPDF = MockPDF.GetMockPDF();
         _handler = new CreateVehicleCommandHandler(_mapper, _mockUnitOfWork, _resourceManager);
     }

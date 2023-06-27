@@ -7,15 +7,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Rideshare.WebApi;
 using Rideshare.Infrastructure;
+using Hangfire;
+using Rideshare.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services
-builder.Services.ConfigureApplicationService();
+builder.Services.AddSingleton<ExceptionHandler>();
+builder.Services.ConfigureApplicationService(builder.Configuration);
 builder.Services.ConfigurePersistenceService(builder.Configuration);
-builder.Services.AddTransient<ExceptionHandler>();
-builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.ConfigureInfrastructureService(builder.Configuration);
+builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 builder.Host.UseSerilog();
 
@@ -52,10 +54,13 @@ app.UseAuthorization();
 app.UseSerilogRequestLogging();
 app.UseMiddleware<ExceptionHandler>();
 
+// Use HangFire for processing background jobs
+app.UseHangfireDashboard();
+app.MapHangfireDashboard();
+
 app.MapControllers();
 
-app.UseInfrastructureServices();
-
+app.MapHub<RideShareHub>("/rideshare");
 app.Run();
 
 void AddSwaggerDoc(IServiceCollection services)

@@ -28,15 +28,15 @@ public class RideShareHub : Hub<IRideShareHubClient>
 
     public async Task SendLocation(LocationDto locationDto)
     {
-        var userId = Context.User.FindFirst(ClaimTypes.PrimarySid).Value;
-        var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(userId);
-        var driverOffers = await _unitOfWork.RideOfferRepository.GetRideOffersOfDriver(driver.Id.ToString());
-        foreach (RideOffer offer in driverOffers)
-        {
-            var newLoc = new Point(locationDto.Latitude, locationDto.Longitude);
-            offer.CurrentLocation = newLoc;
-            await _unitOfWork.RideOfferRepository.Update(offer);
-        }
+        // var userId = Context.User.FindFirst(ClaimTypes.PrimarySid).Value;
+        // var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(userId);
+        // var driverOffers = await _unitOfWork.RideOfferRepository.GetRideOffersOfDriver(driver.Id.ToString());
+        // foreach (RideOffer offer in driverOffers)
+        // {
+        //     var newLoc = new Point(locationDto.Latitude, locationDto.Longitude);
+        //     offer.CurrentLocation = newLoc;
+        //     await _unitOfWork.RideOfferRepository.Update(offer);
+        // }
         
     }
 

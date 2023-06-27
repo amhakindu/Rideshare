@@ -22,12 +22,10 @@ namespace Rideshare.WebApi.Controllers;
 public class MatchingController : BaseApiController
 {
     private readonly IRideShareHubService _rideShareHubService;
-    private readonly IUserAccessor _userAccessor;
 
-    public MatchingController(IMediator mediator, IRideShareHubService rideShareHubService, IUserAccessor userAccessor) : base(mediator)
+    public MatchingController(IMediator mediator, IRideShareHubService rideShareHubService, IUserAccessor userAccessor) : base(mediator, userAccessor)
     {
         _rideShareHubService = rideShareHubService;
-        _userAccessor = userAccessor;
     }
 
     [HttpGet("{id}")]

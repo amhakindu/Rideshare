@@ -33,7 +33,11 @@ namespace Rideshare.UnitTests.Drivers
         {
 
             _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
-            _mapper = new MapperConfiguration(c => { c.AddProfile<MappingProfile>(); }).CreateMapper();
+            var mapboxService = MockServices.GetMapboxService();
+
+            _mapper = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockUnitOfWork.Object)); })
+            .CreateMapper();
+
             _mockResourceManager = MockResourceManager.GetResourceManager().Object;
             _mockUserRepository = new MockUserRepository();
             _mockIMG = MockIMG.GetMockImage();

@@ -21,10 +21,8 @@ namespace Rideshare.WebApi.Controllers
     [Route("api/[controller]")]
     public class Feedback: BaseApiController
     {
-        private readonly IHttpContextAccessor _accessor;
-        public Feedback(IMediator mediator, IHttpContextAccessor httpContextAccessor) : base(mediator)
+        public Feedback(IMediator mediator, IUserAccessor userAccessor) : base(mediator, userAccessor)
         {
-            _accessor = httpContextAccessor;
         }
 
         [HttpGet]
@@ -75,7 +73,7 @@ namespace Rideshare.WebApi.Controllers
 
             BaseResponse<FeedbackDto> response = await _mediator.Send(new GetFeedbackDetailQuery { Id = feedbackDto.Id });
             FeedbackDto? feedback = response.Value;
-            string? currentUser = _accessor.HttpContext != null ?_accessor.HttpContext.User.FindFirst(ClaimTypes.PrimarySid)?.Value:null;
+            string? currentUser = _userAccessor.GetUserId();
             //throw new Exception(currentUser);
             var result = new BaseResponse<int>
             {
@@ -103,7 +101,7 @@ namespace Rideshare.WebApi.Controllers
             var status = HttpStatusCode.OK;
             BaseResponse<FeedbackDto> response = await _mediator.Send(new GetFeedbackDetailQuery { Id = id });
             FeedbackDto? feedback = response.Value;
-            string? userId = _accessor.HttpContext != null ? _accessor.HttpContext.User.FindFirstValue(ClaimTypes.PrimarySid) : null;
+            string? userId = _userAccessor.GetUserId();
             var result = new BaseResponse<int>
             {
                 Success = false,

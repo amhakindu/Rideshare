@@ -26,7 +26,10 @@ namespace Rideshare.UnitTests.Drivers
         {
 
             _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
-            _mapper = new MapperConfiguration(c => { c.AddProfile<MappingProfile>(); }).CreateMapper();
+            var mapboxService = MockServices.GetMapboxService();
+
+            _mapper = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockUnitOfWork.Object)); })
+            .CreateMapper();
 
             _handler = new DeleteDriverCommandHandler(_mapper, _mockUnitOfWork.Object);
         }
@@ -35,7 +38,7 @@ namespace Rideshare.UnitTests.Drivers
         public async void DeleteDriverValid()
         {
 
-            var command = new DeleteDriverCommand { Id = 1 };
+            var command = new DeleteDriverCommand { Id = 1 , UserId="user1"};
 
             var result = await _handler.Handle(command, CancellationToken.None);
             

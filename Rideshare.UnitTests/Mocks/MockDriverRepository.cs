@@ -48,7 +48,7 @@ namespace Rideshare.UnitTests.Mocks
 
             var mockRepo = new Mock<IDriverRepository>();
 
-            mockRepo.Setup(r => r.GetAll(1, 10)).ReturnsAsync(drivers);
+            mockRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(drivers);
             mockRepo.Setup(r => r.Get(It.IsAny<int>())).ReturnsAsync((int id) => drivers.FirstOrDefault(d => d.Id == id));
             mockRepo.Setup(r => r.Add(It.IsAny<Driver>())).ReturnsAsync((Driver driver) =>
             {
