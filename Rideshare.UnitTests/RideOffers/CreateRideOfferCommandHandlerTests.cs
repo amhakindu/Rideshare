@@ -23,8 +23,9 @@ public class CreateRideOfferCommandHandlerTests
     public CreateRideOfferCommandHandlerTests()
     {
         _mockUow = MockUnitOfWork.GetUnitOfWork();
+        var mapboxService = MockServices.GetMapboxService();
 
-        var mapperConfig = new MapperConfiguration(c => { c.AddProfile<MappingProfile>(); });
+        var mapperConfig = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockUow.Object)); });
 
         _mapper = mapperConfig.CreateMapper();
         _handler = new CreateRideOfferCommandHandler(_mockUow.Object, _mapper);
@@ -36,15 +37,15 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = "ASDF-1234-GHJK-5678",
+                DriverID = 1,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
-                    Longitude=1.0,
-                    Latitude=2.0
+                    Longitude=38.7445,
+                    Latitude=9.0105
                 },
                 Destination = new LocationDto{
-                    Longitude=10.0,
-                    Latitude=2.0
+                    Longitude=38.7667,
+                    Latitude=9.0106
                 },
             }
         };
@@ -63,7 +64,7 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = "ASDF-1234-GHJK-5678",
+                DriverID = 1,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
                     Longitude=2.0,
@@ -84,7 +85,7 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = "ASDF-1234-GHJK-5678",
+                DriverID = 1,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
                     Longitude=195.0,
@@ -105,7 +106,7 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = "ASDF-1234-GHJK-5678",
+                DriverID = 1,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
                     Longitude=2.0,
@@ -126,7 +127,7 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = "ASDF-1234-GHJK-5678",
+                DriverID = 1,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
                     Longitude=2.0,
@@ -147,7 +148,7 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = "ASDF-1234-GHJK-5678",
+                DriverID = 1,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
                     Longitude=1.0,
@@ -168,7 +169,7 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = "45678",
+                DriverID = 45678,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
                     Longitude=2.0,
@@ -188,7 +189,7 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = "ASDF-1234-GHJK-5678",
+                DriverID = 1,
                 VehicleID = 1000,
                 CurrentLocation = new LocationDto{
                     Longitude=2.0,

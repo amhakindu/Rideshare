@@ -18,8 +18,7 @@ public static class PersistenceServiceRegistration
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserRepository , UserRepository>();
-         
-
+        
         return services;
     }
 }

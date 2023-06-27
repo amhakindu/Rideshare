@@ -26,8 +26,10 @@ public class DeleteVehicleCommandHandlerTests
         _mockUnitOfWork = MockUnitOfWork
             .GetUnitOfWork()
             .Object;
-        _mapper = new MapperConfiguration(c => { c.AddProfile<MappingProfile>(); }).CreateMapper();
+        var mapboxService = MockServices.GetMapboxService();
 
+        _mapper = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockUnitOfWork)); })
+        .CreateMapper();
         _handler = new DeleteVehicleCommandHandler(_mapper, _mockUnitOfWork);
     }
     [Fact]

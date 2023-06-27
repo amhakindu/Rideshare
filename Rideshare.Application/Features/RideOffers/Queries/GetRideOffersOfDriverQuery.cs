@@ -5,9 +5,9 @@ using Rideshare.Application.Common.Dtos.RideOffers;
 
 namespace Rideshare.Application.Features.RideOffers.Queries;
 
-public class GetRideOffersQuery: IRequest<BaseResponse<IReadOnlyList<RideOfferListDto>>>
+public class GetRideOffersOfDriverQuery: IRequest<BaseResponse<Dictionary<string, object>>>
 {
-    public string DriverID { get; set; }
+    public string UserId { get; set; }
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
 }

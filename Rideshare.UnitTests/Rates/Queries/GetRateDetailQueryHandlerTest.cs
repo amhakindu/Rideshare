@@ -23,10 +23,10 @@ namespace Rideshare.UnitTests.RateTest.Queries
 		public GetRateDetailQueryHandlerTest()
 		{
 			_mockRepo = MockUnitOfWork.GetUnitOfWork();
-			var mapperConfig = new MapperConfiguration(c =>
-			{
-				c.AddProfile<MappingProfile>();
-			});
+			var mapboxService = MockServices.GetMapboxService();
+
+			var mapperConfig = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockRepo.Object)); });
+
 			_mapper = mapperConfig.CreateMapper();
 			_handler = new GetRateDetailQueryHandler( _mapper, _mockRepo.Object);
 

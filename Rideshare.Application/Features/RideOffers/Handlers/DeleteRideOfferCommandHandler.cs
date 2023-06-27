@@ -20,7 +20,6 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
 
         public async Task<BaseResponse<Unit>> Handle(DeleteRideOfferCommand command, CancellationToken cancellationToken)
         {
-            var response = new BaseResponse<Unit>();
             var rideOffer = await _unitOfWork.RideOfferRepository.Get(command.RideOfferID);
 
             if (rideOffer == null)
@@ -34,7 +33,6 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
                 Success = true,
                 Message = "RideOffer Deletion Successful",
                 Value = Unit.Value,
-                Errors = new List<string>{"Unable to save to database"}
             };
         }
     }
