@@ -30,8 +30,11 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, BaseR
     public async Task<BaseResponse<UserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
 
-        var roles = request.UserCreationDto.Roles;
-        var applicationRoles = _mapper.Map<List<ApplicationRole>>(roles);
+        var role = request.UserCreationDto.Roles;
+        List<RoleDto> temp = new() ;
+        temp.Add(role);
+        
+        var applicationRoles = _mapper.Map<List<ApplicationRole>>(temp);
 
 
         var applicationUser = _mapper.Map<ApplicationUser>(request.UserCreationDto);

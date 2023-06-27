@@ -11,7 +11,7 @@ using Rideshare.Domain.Models;
 
 namespace Rideshare.Application.Features.Auth.Handlers;
 
-public sealed class GetUsersByRoleQueryHandler : IRequestHandler<GetUsersByRoleQuery, BaseResponse<List<UserDto>>>
+public sealed class GetUsersByRoleQueryHandler : IRequestHandler<GetUsersByRoleQuery,  BaseResponse<PaginatedUserList>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
@@ -22,17 +22,18 @@ public sealed class GetUsersByRoleQueryHandler : IRequestHandler<GetUsersByRoleQ
         _mapper = mapper;
     }
 
-    public async Task<BaseResponse<List<UserDto>>> Handle(GetUsersByRoleQuery request, CancellationToken cancellationToken)
+    public async Task<BaseResponse<PaginatedUserList>> Handle(GetUsersByRoleQuery request, CancellationToken cancellationToken)
     {
-        var allApplicationUsers = await _userRepository.GetUsersByRoleAsync(request.Role);
+        var allApplicationUsers = await _userRepository.GetUsersByRoleAsync(request.Role,request.PageNumber,request.PageSize);
 
 
-        var usersWithRoles = new List<UserDto>();
-        foreach (var u in allApplicationUsers)
+        var usersWithRoles = new List<UserDtoForAdmin>();
+        foreach (var u in allApplicationUsers.PaginatedUsers)
         {
-            var user = new UserDto
+            var user = new UserDtoForAdmin
             {
 
+                Id = u.Id,
                 FullName = u.FullName,
                 PhoneNumber = u.PhoneNumber,
                 Age = u.Age
@@ -51,10 +52,18 @@ public sealed class GetUsersByRoleQueryHandler : IRequestHandler<GetUsersByRoleQ
             user.Roles.AddRange(roleDtos);
             usersWithRoles.Add(user);
         }
-        var response = new BaseResponse<List<UserDto>>();
+
+        var paginatedResponse = new PaginatedUserList 
+        {
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize,
+            Count = allApplicationUsers.Count,
+            PaginatedUsers = usersWithRoles
+        };
+        var response = new BaseResponse<PaginatedUserList>();
         response.Success = true;
         response.Message = "Fetched In Successfully";
-        response.Value = usersWithRoles;
+        response.Value = paginatedResponse;
         return response;
 
     }
