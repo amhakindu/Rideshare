@@ -69,6 +69,16 @@ public class UserController : BaseApiController
         return getResponse<BaseResponse<AdminUserDto>>(status, result);
     }
 
+    [HttpPost("driver")]
+    [AllowAnonymous]
+    public async Task<IActionResult> CreateDriverUser([FromForm] DriverCreatingDto userCreationDto)
+    {
+        var result = await _mediator.Send(new CreateDriverCommand { DriverCreatingDto = userCreationDto });
+
+        var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+        return getResponse<BaseResponse<UserDriverDto>>(status, result);
+    }
+
 
 
     [HttpPut("{id}")]
