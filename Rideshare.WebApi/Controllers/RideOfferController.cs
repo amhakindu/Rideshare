@@ -71,7 +71,7 @@ public class RideOffersController : BaseApiController
 
     [HttpGet("Statistics")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetStats([FromQuery]RideOfferStatsDto StatsDto)
+    public async Task<IActionResult> GetStats([FromQuery]RideOfferStatsDto StatsDto, [FromQuery] string options)
     {
         var result = await _mediator.Send(new GetRideOfferStatsQuery{StatsDto = StatsDto});
 
@@ -81,7 +81,7 @@ public class RideOffersController : BaseApiController
 
     [HttpGet("Statistics/Status")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetStatsWithStatus([FromQuery]RideOfferStatsDto StatsDto)
+    public async Task<IActionResult> GetStatsWithStatus([FromQuery]RideOfferStatsDto StatsDto, [FromQuery] string options)
     {
         var result = await _mediator.Send(new GetRideOfferStatsWithStatusQuery{StatsDto = StatsDto});
 
