@@ -1,5 +1,4 @@
 using System.Net;
-using Hangfire;
 using Moq;
 using NetTopologySuite.Geometries;
 using Rideshare.Application.Contracts.Infrastructure;
@@ -8,11 +7,6 @@ namespace Rideshare.UnitTests.Mocks;
 
 public class MockServices
 {
-    public static Mock<IBackgroundJobClient> GetBackgroundJobClient()
-	{
-        return new Mock<IBackgroundJobClient>();
-    }
-
     public static Mock<IMapboxService> GetMapboxService(){
         var shortestPaths = new Dictionary<string, List<Point>>();
         double[][] coordinates = new double[][]
