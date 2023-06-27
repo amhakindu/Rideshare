@@ -8,7 +8,7 @@ using Rideshare.Domain.Entities;
 
 namespace Rideshare.Application.Features.RideRequests.Handlers;
 
-public class GetRideRequestAllListQueryHandler : IRequestHandler<GetRideRequestAllListQuery,BaseResponse<List<RideRequestDto>>>
+public class GetRideRequestAllListQueryHandler : IRequestHandler<GetRideRequestAllListQuery,BaseResponse<Dictionary<string, object>>>
 {
  
     private readonly IUnitOfWork _unitOfWork;
@@ -21,16 +21,18 @@ public class GetRideRequestAllListQueryHandler : IRequestHandler<GetRideRequestA
         _mapper = mapper;
     }
 
-    public async Task<BaseResponse<List<RideRequestDto>>> Handle(GetRideRequestAllListQuery request, CancellationToken cancellationToken)
+    public async Task<BaseResponse<Dictionary<string, object>>> Handle(GetRideRequestAllListQuery request, CancellationToken cancellationToken)
     {
-          var response = new BaseResponse<List<RideRequestDto>>();
+        var response = new BaseResponse<Dictionary<string,object>>();
         
 
-        var rideRequests = (List<RideRequest>)await _unitOfWork.RideRequestRepository.GetAll(request.PageNumber, request.PageSize);
+        var rideRequests = await _unitOfWork.RideRequestRepository.GetAllRequests(request.PageNumber, request.PageSize);
 
-        var  rides = _mapper.Map<List<RideRequest>, List<RideRequestDto>>(rideRequests);
+        
         response.Message = "Get Successful";
-        response.Value = rides;
+        response.Value = new Dictionary<string, object>(){
+                    {"count", rideRequests["count"]},
+                    {"riderequests", _mapper.Map<IReadOnlyList<RideRequest>, IReadOnlyList<RideRequestDto>>((IReadOnlyList<RideRequest>)rideRequests["riderequests"])}};
 
         return response;
     }

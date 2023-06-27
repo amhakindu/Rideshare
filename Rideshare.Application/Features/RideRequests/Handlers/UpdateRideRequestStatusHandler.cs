@@ -24,7 +24,7 @@ public class UpdateRideRequestStatusHandler : IRequestHandler<UpdateRideRequestS
         var response = new BaseResponse<Unit>();
         var rideRequest = await _unitOfWork.RideRequestRepository.Get(request.Id);
         if (rideRequest != null && rideRequest.UserId == request.UserId){
-            rideRequest.Status = Domain.Common.Status.CANCELED;
+            rideRequest.Status = Domain.Common.Status.CANCELLED;
            var value =  await _unitOfWork.RideRequestRepository.Update(rideRequest);
                 if ( value > 0)
                 {

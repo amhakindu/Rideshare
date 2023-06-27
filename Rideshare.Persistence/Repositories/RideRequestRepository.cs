@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Common;
@@ -82,12 +83,15 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
         Dictionary<int,int> rideRequests = new();
         if (type == "monthly"){
            rideRequests =  await _dbContext.Set<RideRequest>().AsNoTracking()
+                .Where(r => r.DateCreated.Year == year)
                 .GroupBy(item => item.DateCreated.Month)
                 .ToDictionaryAsync(g => g.Key,g => g.Count());
         }
         else if(type == "weekly"){
             rideRequests =  await _dbContext.Set<RideRequest>().AsNoTracking()
-                .GroupBy(item => item.DateCreated.Month)
+                .Where(r => r.DateCreated.Year == year)
+                .Where(r => r.DateCreated.Month == month)
+                .GroupBy(r => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(r.DateCreated, CalendarWeekRule.FirstDay, DayOfWeek.Sunday))
                 .ToDictionaryAsync(g => g.Key,g => g.Count());
         }
          else
@@ -99,47 +103,90 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
         return rideRequests;
     }
 
-    public Task<Dictionary<string, int>> GetAllByGivenStatus(string? type, int? year, int? month, Status? status)
+       public async Task<Dictionary<int,int>> GetRideRequestStatistics(string? type ,int? year, int? month,Status status)
     {
-        throw new NotImplementedException();
+        Dictionary<int,int> rideRequests = new();
+        if (type == "monthly"){
+           rideRequests =  await _dbContext.Set<RideRequest>().AsNoTracking()
+                .Where(r => r.Status == status)
+                .Where(r => r.DateCreated.Year == year)
+                .GroupBy(item => item.DateCreated.Month)
+                .ToDictionaryAsync(g => g.Key,g => g.Count());
+        }
+        else if(type == "weekly"){
+            rideRequests =  await _dbContext.Set<RideRequest>().AsNoTracking()
+                .Where(r => r.Status == status)
+                .Where(r => r.DateCreated.Year == year)
+                .Where(r => r.DateCreated.Month == month)
+                .GroupBy(r => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(r.DateCreated, CalendarWeekRule.FirstDay, DayOfWeek.Sunday))
+                .ToDictionaryAsync(g => g.Key,g => g.Count());
+        }
+         else
+         {
+           rideRequests =  await _dbContext.Set<RideRequest>().AsNoTracking()
+                .Where(r => r.Status == status)
+                .GroupBy(item => item.DateCreated.Year)
+                .ToDictionaryAsync(g => g.Key,g => g.Count());
+        }
+        return rideRequests;
     }
 
 
-
-    // public async Task<Dictionary<string, int>> GetAllByGivenStatus(string? type, int? year, int? month, Status? status)
-    // {
-    //     Dictionary<int,int> rideRequests = new();
-    //     if (type == "monthly"){
-    //        rideRequests =  await _dbContext.Set<RideRequest>().AsNoTracking()
-    //             .GroupBy(item => item.DateCreated.Month)
-    //             .ToDictionaryAsync(g => g.Key,g => g.Count());
-    //     }
-    //     else if(type == "weekly"){
-    //         rideRequests =  await _dbContext.Set<RideRequest>().AsNoTracking()
-    //             .GroupBy(item => item.DateCreated.Month)
-    //             .ToDictionaryAsync(g => g.Key,g => g.Count());
-    //     }
-    //      else
-    //      {
-    //        rideRequests =  await _dbContext.Set<RideRequest>().AsNoTracking()
-    //             .GroupBy(item => item.DateCreated.Year)
-    //             .ToDictionaryAsync(g => g.Key,g => g.Count());
-    //     }
-    //     // return rideRequests;
-
-    // }
-
-    public async Task<IReadOnlyList<RideRequest>> SearchByGivenParameter(int PageNumber, int PageSize, Status? status, int? fare, string name, string phoneNumber)
+    public async Task<Dictionary<string,object>> SearchByGivenParameter(int PageNumber, int PageSize, Status? status, int? fare, string? name, string? phoneNumber)
     {
-         return await _dbContext.Set<RideRequest>().AsNoTracking()
-        .Where(item => (item.Status == (status ?? item.Status)))
-        .Where(item => (item.User.PhoneNumber == (phoneNumber ?? item.User.PhoneNumber)))
-        .Where(item => (item.CurrentFare  <= (fare ?? item.CurrentFare)))
-        .Where(item => ( item.User.FullName == (name ?? item.User.FullName)))
+        var rideRequestQuery = _dbContext.Set<RideRequest>()
+            .Where(item => (item.Status == (status ?? item.Status)))
+            .Where(item => (item.User.PhoneNumber == (phoneNumber ?? item.User.PhoneNumber)))
+            .Where(item => (item.CurrentFare  <= (fare ?? item.CurrentFare)))
+            .Where(item => ( item.User.FullName == (name ?? item.User.FullName)));
+        Int64 count = await rideRequestQuery.CountAsync();
+        var rideRequests = await rideRequestQuery.Skip((PageNumber - 1) * PageSize)
             .Skip((PageNumber - 1) * PageSize)
             .Take(PageSize)
             .ToListAsync();
+          return new Dictionary<string, object>(){
+            {"count", count},
+            {"rideRequests", rideRequests}
+        };
 
+    }
+
+     public async Task<Dictionary<string, Dictionary<int, int>>> GetAllByGivenStatus(string? type, int? year, int? month)
+    {
+            return new Dictionary<string, Dictionary<int, int>>(){
+            {"failed", await GetRideRequestStatistics(type,year, month, Status.CANCELLED)},
+            {"completed", await GetRideRequestStatistics(type,year, month, Status.COMPLETED)}
+        };
+    }
+
+    public async Task<Dictionary<string, object>> GetAllRequests(int PageNumber, int PageSize)
+    {
+        var query = _dbContext.Set<RideRequest>()
+            .AsNoTracking();
+
+        var count = await query.CountAsync();
+        var rideRequests = await query.Skip((PageNumber - 1) * PageSize)
+            .Take(PageSize)
+            .ToListAsync();
+        return new Dictionary<string, object>(){
+            {"count", count},
+            {"riderequests", rideRequests}
+        };
+    }
+
+    public async Task<Dictionary<string, object>> GetAllUserRequests(int PageNumber, int PageSize, string UserId)
+    {
+         var query = _dbContext.Set<RideRequest>()
+         .Where(r => r.UserId == UserId)
+            .AsNoTracking();
+        var count = await query.CountAsync();
+        var rideRequests = await query.Skip((PageNumber - 1) * PageSize)
+            .Take(PageSize)
+            .ToListAsync();
+        return new Dictionary<string, object>(){
+            {"count", count},
+            {"riderequests", rideRequests}
+        }; 
     }
 
     public Task<IReadOnlyList<RideRequest>> SearchByGivenParameter(int PageNumber, int PageSize, Status? status, int fare, string name, string phoneNumber)

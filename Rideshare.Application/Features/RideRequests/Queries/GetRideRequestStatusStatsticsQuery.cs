@@ -4,7 +4,7 @@ using Rideshare.Application.Responses;
 
 namespace Rideshare.Application.Features.RideRequests.Queries;
 
-public class GetRideRequestByTimeQuery : IRequest<BaseResponse<Dictionary<int,int>>>
-{ 
-    public RideRequestStatDto? RideRequestStatDto { get; set; }
+public class GetRideRequestStatusStatsticsQuery : IRequest<BaseResponse<Dictionary<string,Dictionary<int,int>>>>
+{
+public RideRequestStatDto? RideRequestStatDto { get; set; }
 }

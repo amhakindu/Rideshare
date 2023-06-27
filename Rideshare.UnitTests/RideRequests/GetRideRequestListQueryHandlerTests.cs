@@ -36,6 +36,21 @@
 //         result.Value?.Count.ShouldBe(2);
 //     }
 
+    // [Fact]
+    // public async Task GetRideRequestListValid()
+    // {
+    //     var result = await _handler.Handle(new GetRideRequestListQuery() {}, CancellationToken.None);
+    //     result.Value.ShouldNotBeNull();
+    //     result.Value.Count.ShouldBe(4);
+    // }
+
+    // [Fact]
+    // public async Task GetRideRequestListInvalid()
+    // {
+    //     var result = await _handler.Handle(new GetRideRequestListQuery() {}, CancellationToken.None);
+    //     result.Value.ShouldNotBeNull();
+    //     result.Value.Count.ShouldBe(0);
+    // }
 //     [Fact]
 //     public async Task GetRideRequestListInvalid()
 //     {

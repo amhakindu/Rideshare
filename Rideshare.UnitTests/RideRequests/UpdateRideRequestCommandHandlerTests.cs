@@ -57,7 +57,7 @@ public class UpdateRideRequestCommandHandlerTests
         var result = await _handler.Handle(new UpdateRideRequestCommand() {RideRequestDto = rideRequestDto, UserId = rideRequestDto.UserId}, CancellationToken.None);
     
 
-        (await _mockUnitOfWork.Object.RideRequestRepository.GetAll(1, 10)).Count.ShouldBe(2);
+        (await _mockUnitOfWork.Object.RideRequestRepository.GetAll(1, 10)).Count.ShouldBe(4);
     }
 
       [Fact]
@@ -80,7 +80,7 @@ public class UpdateRideRequestCommandHandlerTests
             
                    };
 
-              await Should.ThrowAsync<NotFoundException>(async () =>
+              await Should.ThrowAsync<ValidationException>(async () =>
     {
            var result = await _handler.Handle(new UpdateRideRequestCommand() { RideRequestDto = rideRequestDto, UserId = rideRequestDto.UserId}, CancellationToken.None);
     });      

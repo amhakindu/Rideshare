@@ -28,9 +28,9 @@ public class UpdateRideRequestCommandHandler : IRequestHandler<UpdateRideRequest
 
         var response = new BaseResponse<Unit>();
         var validator = new UpdateRideRequestDtoValidator(_unitOfWork);
-        var validationResult = await validator.ValidateAsync(request.RideRequestDto);
+        var validationResult = await validator.ValidateAsync(request.RideRequestDto!);
 
-        if(!await _unitOfWork.RideRequestRepository.Exists(request.RideRequestDto.Id))
+        if(!await _unitOfWork.RideRequestRepository.Exists(request.RideRequestDto!.Id))
             throw new NotFoundException($"RideRequest with ID {request.RideRequestDto.Id} does not exist");
 
  

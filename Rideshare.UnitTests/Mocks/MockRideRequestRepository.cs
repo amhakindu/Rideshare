@@ -59,18 +59,6 @@ public class MockRideRequestRepository
                 NumberOfSeats = 1,
                 UserId = "user1"
             },
-            // new ()
-            // {
-            //     Id=1,
-            //     Origin = new Point(38.7547, 8.9975){SRID=4326},
-            //     Destination = new Point(38.7668, 9.0004){SRID=4326},
-            // },
-            // new ()
-            // {
-            //     Id=2,
-            //     Origin = new Point(38.7529, 9.0136){SRID=4326},
-            //     Destination = new Point(38.7631, 9.0101){SRID=4326},
-            // },
         };
         var mockRepo = new Mock<IRideRequestRepository>();
 
