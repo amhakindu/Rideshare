@@ -37,7 +37,7 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = 1,
+                DriverID = 2,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
                     Longitude=38.7445,

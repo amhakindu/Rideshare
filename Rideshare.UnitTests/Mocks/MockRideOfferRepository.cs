@@ -13,7 +13,7 @@ public class MockRideOfferRepository
         var rideOffers = new List<RideOffer>{
             new RideOffer{
                 Id = 1,
-                Driver= new Driver(),
+                Driver= new Driver(){Id=1},
                 Vehicle= new Vehicle(){Id=1},
                 CurrentLocation = new GeographicalLocation(){Coordinate=new Point(38.7478, 8.9945){SRID=4326}},
                 Destination = new GeographicalLocation(){Coordinate=new Point(38.7668, 9.0004){SRID=4326}},
@@ -21,7 +21,7 @@ public class MockRideOfferRepository
             },
             new RideOffer{
                 Id = 2,
-                Driver= new Driver(),
+                Driver= new Driver(){Id=1},
                 Vehicle= new Vehicle(){Id=1},
                 CurrentLocation = new GeographicalLocation(){Coordinate=new Point(38.7445, 9.0105){SRID=4326}},
                 Destination = new GeographicalLocation(){Coordinate=new Point(38.7667, 9.0106){SRID=4326}},
@@ -33,6 +33,16 @@ public class MockRideOfferRepository
         
         rideOfferRepo.Setup(repo => repo.Get(It.IsAny<int>())).ReturnsAsync((int id) => rideOffers.FirstOrDefault(o => o.Id == id));
         rideOfferRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(rideOffers);
+        rideOfferRepo.Setup(r => r.GetActiveRideOffers()).ReturnsAsync(rideOffers.Where(rideoffer => rideoffer.Status == Status.WAITING || rideoffer.Status == Status.ONROUTE).ToList());
+        rideOfferRepo.Setup(r => r.GetActiveRideOfferOfDriver(It.IsAny<int>())).ReturnsAsync((int Id) => {
+            var temp = rideOffers.Where(rideoffer => rideoffer.Driver.Id == Id).FirstOrDefault();
+            return temp;
+        });
+        rideOfferRepo.Setup(r => r.GetRideOffersOfDriver(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync((int id, int pageNumber, int pagesize) => {
+            return new Dictionary<string, object>(){
+                {"rideoffers", (IReadOnlyList<RideOffer>)rideOffers.Where(rideoffer => rideoffer.Driver.Id == id).ToList()}
+            };
+        });
         rideOfferRepo.Setup(repo => repo.Exists(It.IsAny<int>())).ReturnsAsync((int id) => rideOffers.Exists(o => o.Id == id));
 
         rideOfferRepo.Setup(repo => repo.Add(It.IsAny<RideOffer>())).ReturnsAsync((RideOffer rideOffer)=>{

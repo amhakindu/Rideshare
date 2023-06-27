@@ -36,7 +36,7 @@ public class RideshareMatchingService : IRideshareMatchingService
     }
     public async Task<bool> MatchWithRideoffer(RideRequest rideRequest)
     {
-        var rideOffers = await _unitOfWork.RideOfferRepository.GetAll(pageSize: int.MaxValue); 
+        var rideOffers = await _unitOfWork.RideOfferRepository.GetActiveRideOffers(); 
         RideOffer? matchedOffer = null;
         double optimumDetourDistance = double.MaxValue;
         foreach(RideOffer rideOffer in rideOffers){
@@ -74,7 +74,6 @@ public class RideshareMatchingService : IRideshareMatchingService
             }
         }
         if(matchedOffer != null){
-            matchedOffer.AvailableSeats -= 1;
             rideRequest.MatchedRide = matchedOffer;
             matchedOffer.Matches.Add(rideRequest);
             int operations = await _unitOfWork.RideOfferRepository.Update(matchedOffer);
