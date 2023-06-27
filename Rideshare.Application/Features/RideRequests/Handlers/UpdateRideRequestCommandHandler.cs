@@ -1,9 +1,9 @@
 using AutoMapper;
 using MediatR;
 using Rideshare.Application.Common.Dtos.RideRequests.Validators;
-using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Exceptions;
+using Rideshare.Application.Features.RideRequests.Commands;
 using Rideshare.Application.Features.Tests.Commands;
 using Rideshare.Application.Responses;
 
@@ -36,10 +36,9 @@ public class UpdateRideRequestCommandHandler : IRequestHandler<UpdateRideRequest
  
         if (validationResult.IsValid == true){
             var rideRequest = await _unitOfWork.RideRequestRepository.Get(request.RideRequestDto.Id);
-           rideRequest =  _mapper.Map(request.RideRequestDto, rideRequest);
-
-           if (rideRequest.UserId == request.UserId){
-                var value =  await _unitOfWork.RideRequestRepository.Update(rideRequest);
+           if (rideRequest!.UserId == request.UserId){
+            rideRequest =  _mapper.Map(request.RideRequestDto, rideRequest);
+           var value =  await _unitOfWork.RideRequestRepository.Update(rideRequest);
 
                 if ( value > 0)
                 {

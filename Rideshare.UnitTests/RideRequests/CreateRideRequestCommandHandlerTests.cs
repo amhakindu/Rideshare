@@ -2,6 +2,7 @@ using AutoMapper;
 using Moq;
 using Rideshare.Application.Common.Dtos;
 using Rideshare.Application.Common.Dtos.RideRequests;
+using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.RideRequests.Commands;
@@ -21,6 +22,7 @@ public class CreateRideRequestCommandHandlerTests
     private IMapper _mapper { get; set; }
        private Mock<IUnitOfWork> _mockUnitOfWork { get; set; }
        private CreateRideRequestCommandHandler _handler { get; set; }
+       private Mock<IUserRepository> _mockUserRepository {get;set;}
 
        
        
@@ -93,4 +95,8 @@ public class CreateRideRequestCommandHandlerTests
            var result = await _handler.Handle(new CreateRideRequestCommand() { RideRequestDto = rideRequestDto }, CancellationToken.None);
     });   
        }
+
+
+       
+        
 }

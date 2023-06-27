@@ -5,8 +5,8 @@ using Rideshare.Application.Common.Dtos;
 using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Exceptions;
+using Rideshare.Application.Features.RideRequests.Commands;
 using Rideshare.Application.Features.RideRequests.Handlers;
-using Rideshare.Application.Features.Tests.Commands;
 using Rideshare.Application.Profiles;
 using Rideshare.UnitTests.Mocks;
 using Shouldly;
@@ -34,55 +34,81 @@ public class UpdateRideRequestCommandHandlerTests
 
 
     [Fact]
-    public async Task UpdateCommentValid()
-    {
-
-        // UpdateRideRequestDto rideRequestDto = new()
-        // {
-        //     Id=1,
-        //     Origin = new LocationDto(){
-                   
-        //             Latitude = 24,
-        //             Longitude = 20
-        //         },
-        //         Destination = new LocationDto(){
-        //             Latitude = 10,
-        //             Longitude = 10
-        //         },            
-        //            };
-
-        // var result = await _handler.Handle(new UpdateRideRequestCommand() {RideRequestDto = rideRequestDto }, CancellationToken.None);
-
-        // var updatedRideRequest = await _mockUnitOfWork.Object.RideRequestRepository.Get(rideRequestDto.Id);
-
-        // updatedRideRequest.CurrentFare.ShouldBe(rideRequestDto.CurrentFare);
-    
-
-        // (await _mockUnitOfWork.Object.RideRequestRepository.GetAll(1, 10)).Count.ShouldBe(4);
-        // (await _mockUnitOfWork.Object.RideRequestRepository.GetAll()).Count.ShouldBe(3);
-    }
-
-      [Fact]
-    public async Task UpdateCommentInValid()
+    public async Task UpdateRideRequestValid()
     {
 
         UpdateRideRequestDto rideRequestDto = new()
         {
             Id=1,
             Origin = new LocationDto(){
-                Latitude = 20,
-                Longitude = 20
-            },
-            Destination = new LocationDto(){
-                Latitude = 20,
-                Longitude = 20
-            },            
-                };
+                   
+                    Latitude = 24,
+                    Longitude = 20
+                },
+                Destination = new LocationDto(){
+                    Latitude = 10,
+                    Longitude = 10
+                },
+            NumberOfSeats = 1,
+            UserId = "user1"
+            
+                   };
 
-         await Should.ThrowAsync<ValidationException>(async () =>
+        var result = await _handler.Handle(new UpdateRideRequestCommand() {RideRequestDto = rideRequestDto, UserId = rideRequestDto.UserId}, CancellationToken.None);
+    
+
+        (await _mockUnitOfWork.Object.RideRequestRepository.GetAll(1, 10)).Count.ShouldBe(2);
+    }
+
+      [Fact]
+    public async Task UpdateRideRequestInValid()
     {
-           var result = await _handler.Handle(new UpdateRideRequestCommand() { RideRequestDto = rideRequestDto,UserId = "sura123" }, CancellationToken.None);
-    });    
-        
+
+        UpdateRideRequestDto rideRequestDto = new()
+        {
+            Id=1,
+            Origin = new LocationDto(){
+                    Latitude = 20,
+                    Longitude = 20
+                },
+                Destination = new LocationDto(){
+                    Latitude = 20,
+                    Longitude = 20
+                },
+            NumberOfSeats = 1,
+            UserId = "user1"
+            
+                   };
+
+              await Should.ThrowAsync<NotFoundException>(async () =>
+    {
+           var result = await _handler.Handle(new UpdateRideRequestCommand() { RideRequestDto = rideRequestDto, UserId = rideRequestDto.UserId}, CancellationToken.None);
+    });      
+    }
+
+    [Fact]
+    public async Task UpdateRideRequestInValidTwo()
+    {
+
+        UpdateRideRequestDto rideRequestDto = new()
+        {
+            Id=1,
+            Origin = new LocationDto(){
+                   
+                    Latitude = 24,
+                    Longitude = 20
+                },
+                Destination = new LocationDto(){
+                    Latitude = 10,
+                    Longitude = 10
+                },
+            UserId = "user2"
+            
+                   };
+
+              await Should.ThrowAsync<NotFoundException>(async () =>
+    {
+           var result = await _handler.Handle(new UpdateRideRequestCommand() { RideRequestDto = rideRequestDto, UserId = rideRequestDto.UserId}, CancellationToken.None);
+    });  
     }
 }

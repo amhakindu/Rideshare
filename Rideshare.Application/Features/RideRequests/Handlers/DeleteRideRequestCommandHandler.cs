@@ -2,7 +2,7 @@ using AutoMapper;
 using MediatR;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Exceptions;
-using Rideshare.Application.Features.Tests.Commands;
+using Rideshare.Application.Features.RideRequests.Commands;
 using Rideshare.Application.Responses;
 
 namespace Rideshare.Application.Features.RideRequests.Handlers;

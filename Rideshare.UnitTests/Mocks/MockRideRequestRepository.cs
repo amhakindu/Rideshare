@@ -2,7 +2,9 @@ using Moq;
 using NetTopologySuite.Geometries;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Common;
+using Rideshare.Application.UnitTests.Mocks;
 using Rideshare.Domain.Entities;
+using Rideshare.Application.Exceptions;
 
 namespace Rideshare.UnitTests.Mocks;
 
@@ -10,8 +12,10 @@ public class MockRideRequestRepository
 {
 
 
+
     public static Mock<IRideRequestRepository> GetRideRequestRepository()
     {
+        var mockUserRepo = new MockUserRepository();
         var rideRequests = new List<RideRequest>
         {
             new ()
@@ -74,19 +78,15 @@ public class MockRideRequestRepository
         
         mockRepo.Setup(r => r.Add(It.IsAny<RideRequest>())).ReturnsAsync((RideRequest rideRequest) =>
         {
-            rideRequest.Id = rideRequests.Count() + 1;
-            rideRequests.Add(rideRequest);
-            return 1;
+                rideRequest.Id = rideRequests.Count() + 1;
+                rideRequests.Add(rideRequest);
+                return 1;
+
         });
 
         mockRepo.Setup(r => r.Update(It.IsAny<RideRequest>())).ReturnsAsync((RideRequest rideRequest) =>
         {
-            var newRideRequests = rideRequests.Where((r) => r.Id != rideRequest.Id);
-            if (rideRequests.Count() == newRideRequests.Count())
-            {
-                return 0;
-            }
-            rideRequests = newRideRequests.ToList();
+            rideRequests.Remove(rideRequests.Find(r => r.Id != rideRequest.Id)!);
             rideRequests.Add(rideRequest);
             return 1;
         });
@@ -94,7 +94,7 @@ public class MockRideRequestRepository
         mockRepo.Setup(r => r.Delete(It.IsAny<RideRequest>())).ReturnsAsync((RideRequest rideRequest) =>
 
         {
-            if (rideRequests.Exists(b => b.Id == rideRequest.Id))
+            if (rideRequests.Exists(b => b.Id == rideRequest.Id && b.UserId == rideRequest.UserId))
             {
                 rideRequests.Remove(rideRequests.Find(b => b.Id == rideRequest.Id)!);
                 return 1;
@@ -109,11 +109,10 @@ public class MockRideRequestRepository
        });
 
 
-        mockRepo.Setup(r => r.Get(It.IsAny<int>()))!.ReturnsAsync((int id) =>
+        mockRepo.Setup(r => r.Get(It.IsAny<int>())).ReturnsAsync((int id) =>
         {
             return rideRequests.FirstOrDefault((r) => r.Id == id);
         });
-
         return mockRepo;
     }
 }

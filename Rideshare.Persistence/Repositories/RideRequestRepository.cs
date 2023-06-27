@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Domain.Common;
 using Rideshare.Domain.Entities;
 using static Rideshare.Application.Common.Constants.Utils;
 using Rideshare.Application.Common.Dtos.RideRequests;
@@ -74,5 +75,74 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
             .Take(5)
             .ToDictionaryAsync(user => user.UserId, user => user.RideRequestCount);
         return topUsers;
+    }
+    public async Task<Dictionary<int,int>> GetAllByGivenParameter(string? type ,int? year, int? month)
+    {
+        Dictionary<int,int> rideRequests = new();
+        if (type == "monthly"){
+           rideRequests =  await _dbContext.Set<RideRequest>().AsNoTracking()
+                .GroupBy(item => item.DateCreated.Month)
+                .ToDictionaryAsync(g => g.Key,g => g.Count());
+        }
+        else if(type == "weekly"){
+            rideRequests =  await _dbContext.Set<RideRequest>().AsNoTracking()
+                .GroupBy(item => item.DateCreated.Month)
+                .ToDictionaryAsync(g => g.Key,g => g.Count());
+        }
+         else
+         {
+           rideRequests =  await _dbContext.Set<RideRequest>().AsNoTracking()
+                .GroupBy(item => item.DateCreated.Year)
+                .ToDictionaryAsync(g => g.Key,g => g.Count());
+        }
+        return rideRequests;
+    }
+
+    public Task<Dictionary<string, int>> GetAllByGivenStatus(string? type, int? year, int? month, Status? status)
+    {
+        throw new NotImplementedException();
+    }
+
+
+
+    // public async Task<Dictionary<string, int>> GetAllByGivenStatus(string? type, int? year, int? month, Status? status)
+    // {
+    //     Dictionary<int,int> rideRequests = new();
+    //     if (type == "monthly"){
+    //        rideRequests =  await _dbContext.Set<RideRequest>().AsNoTracking()
+    //             .GroupBy(item => item.DateCreated.Month)
+    //             .ToDictionaryAsync(g => g.Key,g => g.Count());
+    //     }
+    //     else if(type == "weekly"){
+    //         rideRequests =  await _dbContext.Set<RideRequest>().AsNoTracking()
+    //             .GroupBy(item => item.DateCreated.Month)
+    //             .ToDictionaryAsync(g => g.Key,g => g.Count());
+    //     }
+    //      else
+    //      {
+    //        rideRequests =  await _dbContext.Set<RideRequest>().AsNoTracking()
+    //             .GroupBy(item => item.DateCreated.Year)
+    //             .ToDictionaryAsync(g => g.Key,g => g.Count());
+    //     }
+    //     // return rideRequests;
+
+    // }
+
+    public async Task<IReadOnlyList<RideRequest>> SearchByGivenParameter(int PageNumber, int PageSize, Status? status, int? fare, string name, string phoneNumber)
+    {
+         return await _dbContext.Set<RideRequest>().AsNoTracking()
+        .Where(item => (item.Status == (status ?? item.Status)))
+        .Where(item => (item.User.PhoneNumber == (phoneNumber ?? item.User.PhoneNumber)))
+        .Where(item => (item.CurrentFare  <= (fare ?? item.CurrentFare)))
+        .Where(item => ( item.User.FullName == (name ?? item.User.FullName)))
+            .Skip((PageNumber - 1) * PageSize)
+            .Take(PageSize)
+            .ToListAsync();
+
+    }
+
+    public Task<IReadOnlyList<RideRequest>> SearchByGivenParameter(int PageNumber, int PageSize, Status? status, int fare, string name, string phoneNumber)
+    {
+        throw new NotImplementedException();
     }
 }

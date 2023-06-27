@@ -2,6 +2,7 @@
 using Moq;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Exceptions;
+using Rideshare.Application.Features.RideRequests.Commands;
 using Rideshare.Application.Features.RideRequests.Handlers;
 using Rideshare.Application.Features.Tests.Commands;
 using Rideshare.Application.Profiles;
@@ -37,7 +38,6 @@ public class DeleteRideRequestCommandHandlerTests
               
                var result = await _handler.Handle(new DeleteRideRequestCommand() {  Id =  1,UserId = "user1"}, CancellationToken.None);
                
-              
               (await _mockUnitOfWork.Object.RideRequestRepository.GetAll()).Count.ShouldBe(prevCount-1);
        }
        
@@ -48,6 +48,17 @@ public class DeleteRideRequestCommandHandlerTests
                  await Should.ThrowAsync<NotFoundException>(async () =>
     {
            var result = await _handler.Handle(new DeleteRideRequestCommand() { Id = 30 ,UserId = "user1"}, CancellationToken.None);
+    });    
+       }
+
+       [Fact]
+       public async Task DeleteRideRequestInvalidTwo()
+       {
+              
+                 await Should.ThrowAsync<NotFoundException>(async () =>
+    {
+           var result = await _handler.Handle(new DeleteRideRequestCommand() { Id = 1 ,UserId = "user2"}, CancellationToken.None);
+           
     });    
        }
 }

@@ -28,14 +28,10 @@ public class GetRideRequestQueryHandler : IRequestHandler<GetRideRequestQuery, B
         if (rideRequest != null && rideRequest.UserId == request.UserId){
             response.Message = "Get Successful";
             response.Value = _mapper.Map<RideRequestDto>(rideRequest);
-
         }
         else{
             throw new NotFoundException($"RideRequest with {request.Id} not found");
         }
-
         return response;
-
-
     }
 }

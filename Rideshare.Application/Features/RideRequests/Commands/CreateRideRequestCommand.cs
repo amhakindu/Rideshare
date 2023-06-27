@@ -6,6 +6,5 @@ namespace Rideshare.Application.Features.RideRequests.Commands;
 
 public class CreateRideRequestCommand : IRequest<BaseResponse<Dictionary<string, object>>>
 {
-
-    public CreateRideRequestDto RideRequestDto { get; set; }
+    public CreateRideRequestDto? RideRequestDto { get; set; }
 }
