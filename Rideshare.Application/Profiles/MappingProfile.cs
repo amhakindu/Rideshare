@@ -71,6 +71,8 @@ public class MappingProfile : Profile
                     .ReverseMap();
         CreateMap<ApplicationUser, UserCreationDto>()
        .ReverseMap();
+        CreateMap<ApplicationUser, DriverCreatingDto>()
+       .ReverseMap();
         CreateMap<ApplicationUser, UserCreationDto>()
        .ReverseMap();
         CreateMap<ApplicationUser, UserUpdatingDto>()
