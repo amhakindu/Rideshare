@@ -10,4 +10,5 @@ namespace Rideshare.Application.Contracts.Services;
 public interface IRideShareHubClient
 {
     Task MatchFound();
+    Task Accepted(int rideOfferId);
 }

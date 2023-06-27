@@ -25,22 +25,34 @@ public class RideShareHub : Hub<IRideShareHubClient>
         _userAccessor = userAccessor;
     }
 
-    public async Task SendLocation(LocationDto locationDto)
+    public async Task UpdateLocation(LocationDto location)
     {
-        var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(_userAccessor.GetUserId());
-        var driverOffers = (IReadOnlyList<RideOffer>)(await _unitOfWork.RideOfferRepository.GetRideOffersOfDriver(driver.Id, PageSize: int.MaxValue))["rideoffers"];
-        foreach (RideOffer offer in driverOffers)
-        {
-            var newCoordinate = new Point(locationDto.Latitude, locationDto.Longitude);
-            var geocode = await _mapboxService.GetAddressFromCoordinates(newCoordinate);
-            var newLocation = new GeographicalLocation(){
-                Coordinate = newCoordinate,
-                Address = geocode
-            };
-            await _unitOfWork.RideOfferRepository.UpdateCurrentLocation(offer, newLocation);
-        }
-        
+        var id = _userAccessor.GetUserId();
+        var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(id);
+        var geolocation = _mapper.Map<GeographicalLocation>(location);
+        var rideOffer = await _unitOfWork.RideOfferRepository.GetActiveRideOfferByDriverId(driver.Id);
+        await _unitOfWork.RideOfferRepository.UpdateCurrentLocation(rideOffer, geolocation);
     }
+
+    public async Task AddPassenger(int rideRequestId)
+    {
+        var id = _userAccessor.GetUserId();
+        var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(id);
+        var rideOffer = await _unitOfWork.RideOfferRepository.GetActiveRideOfferByDriverId(driver.Id);
+        var rideRequest = await _unitOfWork.RideRequestRepository.Get(rideRequestId);
+        rideRequest.AddStatus = true;
+        rideOffer.AvailableSeats -= rideRequest.NumberOfSeats;
+        await _unitOfWork.RideOfferRepository.Update(rideOffer);
+        await _unitOfWork.RideRequestRepository.Update(rideRequest);
+        var userId = rideRequest.UserId;
+        var connections = await _unitOfWork.ConnectionRepository.GetByUserId(userId);
+
+        foreach (var connection in connections)
+        {
+            Clients.Client(connection.Id).Accepted(rideOffer.Id);
+        }
+    }
+
 
     public async override Task OnConnectedAsync()
     {
