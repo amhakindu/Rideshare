@@ -6,8 +6,8 @@ namespace Rideshare.Domain.Models;
 public class ApplicationUser : IdentityUser
 {
   
-    public int Age { get; set; }
-    public string FullName { get; set; } = string.Empty;
+	public int Age { get; set; }
+	public string FullName { get; set; } = string.Empty;
 
     public string? ProfilePicture { get; set; } = string.Empty;
     public DateTime? LastLogin {get;set;} 
