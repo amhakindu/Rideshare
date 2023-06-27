@@ -14,4 +14,5 @@ public class RideRequest : BaseEntity
     public ApplicationUser User { get; set; }
     public Status Status { get; set; } = Status.WAITING;
     public RideOffer? MatchedRide { get; set; } = null;
+    public bool Accepted { get; set; } = false;    
 }

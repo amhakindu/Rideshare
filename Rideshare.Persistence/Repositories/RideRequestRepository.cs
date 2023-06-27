@@ -3,8 +3,6 @@ using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Entities;
 using static Rideshare.Application.Common.Constants.Utils;
 using Rideshare.Application.Common.Dtos.RideRequests;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Domain.Entities;
 using Rideshare.Domain.Models;
 
 namespace Rideshare.Persistence.Repositories;
@@ -27,7 +25,6 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
             .Include(ro => ro.Destination)
             .FirstOrDefault(ro => ro.Id == id);
     }
-
     public async Task<int> Add(RideRequest entity)
     {
         var locations = await _dbContext.Locations.ToListAsync();
