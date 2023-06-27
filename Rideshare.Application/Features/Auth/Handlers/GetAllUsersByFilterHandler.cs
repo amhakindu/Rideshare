@@ -57,22 +57,22 @@ namespace Rideshare.Application.Features.Auth.Handlers
 
             if (!string.IsNullOrEmpty(request.PhoneNumber))
             {
-                filteredUsers = (List<UserDtoForAdmin>)filteredUsers.Where(u => u.PhoneNumber.Contains(request.PhoneNumber));
+                filteredUsers = filteredUsers.Where(u => u.PhoneNumber.StartsWith(request.PhoneNumber)).ToList();
             }
 
             if (!string.IsNullOrEmpty(request.RoleName))
             {
-                filteredUsers = (List<UserDtoForAdmin>)filteredUsers.Where(u => u.Roles.Any(r => r.Name.Contains(request.RoleName)));
+                filteredUsers = filteredUsers.Where(u => u.Roles.Any(r => r.Name.Contains(request.RoleName))).ToList();
             }
 
             if (!string.IsNullOrEmpty(request.FullName))
             {
-                filteredUsers = (List<UserDtoForAdmin>)filteredUsers.Where(u => u.FullName.Contains(request.FullName));
+                filteredUsers = filteredUsers.Where(u => u.FullName.StartsWith(request.FullName, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
             if (!string.IsNullOrEmpty(request.Status))
             {
-                filteredUsers = (List<UserDtoForAdmin>)filteredUsers.Where(u => u.StatusByLogin.Equals(request.Status));
+                filteredUsers = filteredUsers.Where(u => u.StatusByLogin.Equals(request.Status)).ToList();
             }
 
             var paginatedResponse = new PaginatedUserList
