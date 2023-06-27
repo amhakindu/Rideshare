@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Rideshare.WebApi;
 using Rideshare.Infrastructure;
-using Hangfire;
 using Rideshare.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,10 +52,6 @@ app.UseAuthorization();
 // Use Serilog for logging
 app.UseSerilogRequestLogging();
 app.UseMiddleware<ExceptionHandler>();
-
-// Use HangFire for processing background jobs
-app.UseHangfireDashboard();
-app.MapHangfireDashboard();
 
 app.MapControllers();
 

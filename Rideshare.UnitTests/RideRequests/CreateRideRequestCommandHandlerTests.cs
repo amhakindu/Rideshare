@@ -28,13 +28,11 @@ public class CreateRideRequestCommandHandlerTests
        public CreateRideRequestCommandHandlerTests()
        {
               _mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
-              var mockBackgroundJobClient = MockServices.GetBackgroundJobClient();
               var mockMapboxService = MockServices.GetMapboxService();
 
               _matchingService = new RideshareMatchingService(
                      _mockUnitOfWork.Object,
                      mockMapboxService.Object,
-                     mockBackgroundJobClient.Object,
                      500
               );
               
