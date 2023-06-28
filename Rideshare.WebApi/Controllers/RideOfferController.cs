@@ -99,7 +99,7 @@ public class RideOffersController : BaseApiController
     }
     
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Driver,Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _mediator.Send(new DeleteRideOfferCommand { RideOfferID = id });
@@ -107,9 +107,19 @@ public class RideOffersController : BaseApiController
         var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.NotFound;
         return getResponse<BaseResponse<Unit>>(status, result);
     }
-
+    
+    [HttpDelete("Cancel/{id}")]
+    [Authorize(Roles = "Driver")]
+    public async Task<IActionResult> CancelRideOffer(int id)
+    {
+        var result = await _mediator.Send(new CancelRideOfferCommand { RideOfferId= id });
+        
+        var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.NotFound;
+        return getResponse<BaseResponse<Unit>>(status, result);
+    }
 
     [HttpGet("TopFiveDrivers")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetTopFiveDrivers()
     {
         var result = await _mediator.Send(new GetTopDriversWithStatsRequest { });

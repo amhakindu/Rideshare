@@ -30,7 +30,6 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
             .Include(ro => ro.Destination)
             .FirstOrDefault(ro => ro.Id == id);
     }
-
     public async Task<int> Add(RideRequest entity)
     {
         var locations = await _dbContext.Locations.ToListAsync();

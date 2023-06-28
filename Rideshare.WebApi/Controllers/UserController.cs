@@ -2,6 +2,7 @@ using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Common.Dtos.Tests;
 using Rideshare.Application.Contracts.Persistence;
@@ -27,6 +28,7 @@ public class UserController : BaseApiController
 
     [HttpPost("login")]
     [AllowAnonymous]
+    [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Login(LoginRequest loginRequest)
     {
 
@@ -39,6 +41,7 @@ public class UserController : BaseApiController
 
     [HttpPost("admin/login")]
     [AllowAnonymous]
+    [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> LoginAdmin(LoginRequestByAdmin loginRequest)
     {
 
@@ -51,6 +54,7 @@ public class UserController : BaseApiController
 
     [HttpPost]
     [AllowAnonymous]
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status201Created)]
     public async Task<IActionResult> Post([FromForm] UserCreationDto userCreationDto)
     {
         var result = await _mediator.Send(new CreateUserCommand { UserCreationDto = userCreationDto });
@@ -61,6 +65,7 @@ public class UserController : BaseApiController
 
     [HttpPost("admin")]
     [AllowAnonymous]
+    [ProducesResponseType(typeof(AdminUserDto), StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateUser([FromForm] AdminCreationDto userCreationDto)
     {
         var result = await _mediator.Send(new CreateAdminUserCommand { AdminCreationDto = userCreationDto });
@@ -71,6 +76,7 @@ public class UserController : BaseApiController
 
     [HttpPost("driver")]
     [AllowAnonymous]
+    [ProducesResponseType(typeof(UserDriverDto), StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateDriverUser([FromForm] DriverCreatingDto userCreationDto)
     {
         var result = await _mediator.Send(new CreateDriverCommand { DriverCreatingDto = userCreationDto });
@@ -82,7 +88,7 @@ public class UserController : BaseApiController
 
 
     [HttpPut("{id}")]
-
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(string id, [FromForm] UserUpdatingDto userUpdatingDto)
     {
         var result = await _mediator.Send(new UpdateUserCommand { UserId = id, User = userUpdatingDto });
@@ -92,7 +98,7 @@ public class UserController : BaseApiController
     }
 
     [HttpPut("admin/{id}")]
-
+    [ProducesResponseType(typeof(AdminUserDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdateAdmin(string id, [FromBody] AdminUpdatingDto userUpdatingDto)
     {
         var result = await _mediator.Send(new UpdateAdminUserCommand { UserId = id, UpdatingDto = userUpdatingDto });
@@ -102,6 +108,7 @@ public class UserController : BaseApiController
     }
 
     [HttpGet()]
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
 
     public async Task<IActionResult> GetUserId()
     {
@@ -112,6 +119,7 @@ public class UserController : BaseApiController
     }
 
     [HttpGet("withAGiven/{id}")]
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
 
     public async Task<IActionResult> GetUserById(string id)
     {
@@ -124,6 +132,7 @@ public class UserController : BaseApiController
 
     }
     [HttpGet("Top5Commuter")]
+    [ProducesResponseType(typeof( List<CommuterWithRideRequestCntDto>), StatusCodes.Status200OK)]
 
     public async Task<IActionResult> GetTop5Commuter()
     {
@@ -134,6 +143,7 @@ public class UserController : BaseApiController
     }
 
     [HttpGet("all")]
+    [ProducesResponseType(typeof(PaginatedUserList), StatusCodes.Status200OK)]
 
     public async Task<IActionResult> GetAllUser([FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10)
@@ -147,6 +157,7 @@ public class UserController : BaseApiController
     }
     [HttpGet("by-role")]
     [Authorize(Roles = "Admin")]
+    [ProducesResponseType(typeof(PaginatedUserList), StatusCodes.Status200OK)]
 
     public async Task<IActionResult> GetUsersByRole([FromQuery] string role, [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10)
@@ -161,6 +172,7 @@ public class UserController : BaseApiController
 
     [HttpGet("roles/all")]
     [AllowAnonymous]
+    [ProducesResponseType(typeof(List<RoleDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllRoles()
     {
 

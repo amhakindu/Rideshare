@@ -12,6 +12,7 @@ using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Common.Dtos.Drivers.Validators;
 using Rideshare.Domain.Entities;
 using Rideshare.Application.Exceptions;
+using Rideshare.Application.Common.Dtos.Security.Validators;
 
 namespace Rideshare.Application.Features.Auth.Handlers;
 
@@ -36,7 +37,19 @@ public class CreateDriverCommandHandler : IRequestHandler<CreateDriverCommand, B
     public async Task<BaseResponse<UserDriverDto>> Handle(CreateDriverCommand request, CancellationToken cancellationToken)
     {
 
-        var role = request.DriverCreatingDto.Roles;
+         var userValidator = new DriverCreationDtoValidators();
+
+         var validationResultForUser = await userValidator.ValidateAsync(request.DriverCreatingDto);
+        if (!validationResultForUser.IsValid)
+            throw new ValidationException(validationResultForUser.Errors.Select(q => q.ErrorMessage).ToList().First());
+
+        var role = new RoleDto
+        {
+            Id = "9f4ca49c-f74f-4a97-b90c-b66f40eb9a5f",
+            Name = "Driver"
+        };
+
+      
         List<RoleDto> temp = new();
         temp.Add(role);
 
@@ -53,11 +66,14 @@ public class CreateDriverCommandHandler : IRequestHandler<CreateDriverCommand, B
 
         var validator = new CreateDriverDtoValidator();
 
+       
+
         var validationResult = await validator.ValidateAsync(request.DriverCreatingDto.DriverDto);
 
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());
+       
 
 
 

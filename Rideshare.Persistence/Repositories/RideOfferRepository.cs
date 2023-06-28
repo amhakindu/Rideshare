@@ -18,6 +18,37 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
     {
         _dbContext = dbContext;
     }
+    public async Task<RideOffer> AcceptRideRequest(int riderequestId){
+        var rideRequest = _dbContext.Set<RideRequest>()
+            .Include(rideoffer => rideoffer.MatchedRide)
+            .FirstOrDefault(rideoffer => rideoffer.Id == riderequestId);
+
+        rideRequest.Accepted = true;
+        var matchedRideOffer = rideRequest.MatchedRide;
+        matchedRideOffer.AvailableSeats -= rideRequest.NumberOfSeats;
+
+        _dbContext.Update(rideRequest);
+        _dbContext.Update(matchedRideOffer);
+
+        await _dbContext.SaveChangesAsync();
+
+        return matchedRideOffer;
+    }
+    public async Task<int> CancelRideOffer(int rideOfferId){
+        var rideOffer = await _dbContext.Set<RideOffer>()
+            .Include(rideoffer => rideoffer.Matches).FirstOrDefaultAsync();
+
+        foreach (RideRequest riderequest in rideOffer.Matches){
+            riderequest.MatchedRide = null;
+            riderequest.Accepted = false;
+            _dbContext.Update(riderequest);
+            await _dbContext.SaveChangesAsync();
+        }
+        rideOffer.Status = Status.CANCELLED;
+        _dbContext.Update(rideOffer);
+
+        return await _dbContext.SaveChangesAsync();
+    }
     public async Task<RideOffer?> Get(int id)
     {
         return _dbContext.Set<RideOffer>()
@@ -26,6 +57,21 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
             .Include(ro => ro.CurrentLocation)
             .Include(ro => ro.Destination)
             .FirstOrDefault(ro => ro.Id == id);
+    }
+    public async Task<IReadOnlyList<RideOffer>> GetActiveRideOffers(){
+        return await _dbContext.Set<RideOffer>()
+            .AsNoTracking()
+            .Include(ro => ro.CurrentLocation)
+            .Include(ro => ro.Destination)
+            .Where(rideoffer => rideoffer.Status == Status.ONROUTE || rideoffer.Status == Status.WAITING)
+            .ToListAsync();
+    }
+    public async Task<RideOffer?> GetActiveRideOfferOfDriver(int DriverId){
+        return await _dbContext.Set<RideOffer>()
+            .Include(ro => ro.CurrentLocation)
+            .Include(ro => ro.Destination)
+            .Where(ro => ro.Driver.Id == DriverId)
+            .FirstOrDefaultAsync();
     }
     public async Task<IReadOnlyList<RideOffer>> GetAll(int pageNumber, int pageSize)
     {

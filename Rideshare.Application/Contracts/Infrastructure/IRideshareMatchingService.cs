@@ -4,5 +4,5 @@ namespace Rideshare.Application.Contracts.Infrastructure;
 
 public interface IRideshareMatchingService
 {
-    public Task<bool> MatchWithRideoffer(RideRequest rideRequest);
+    public Task<RideOffer?> MatchWithRideoffer(RideRequest rideRequest);
 }

@@ -12,5 +12,6 @@ public class UserDriverDto
     public string StatusByLogin { get; set; }
     public int DriverId { get; set; }
     public string UserId { get; set; }
+    public string? ProfilePicture { get; set; } = string.Empty;
 
 }

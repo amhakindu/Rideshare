@@ -38,6 +38,7 @@ public sealed class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, 
                 FullName = u.FullName,
                 PhoneNumber = u.PhoneNumber,
                 Age = u.Age,
+                ProfilePicture = u.ProfilePicture
                 
                 
 

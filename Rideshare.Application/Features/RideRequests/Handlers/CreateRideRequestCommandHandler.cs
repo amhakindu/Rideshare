@@ -1,9 +1,11 @@
 using AutoMapper;
 using MediatR;
 using Rideshare.Application.Common.Dtos.RideOffers;
+using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Common.Dtos.RideRequests.Validators;
 using Rideshare.Application.Contracts.Infrastructure;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Contracts.Services;
 using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.RideRequests.Commands;
 using Rideshare.Application.Responses;
@@ -16,12 +18,14 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IRideshareMatchingService _matchingService;
+    private readonly IRideShareHubService _hubService;
 
-    public  CreateRideRequestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IRideshareMatchingService matchingService)
+    public  CreateRideRequestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IRideshareMatchingService matchingService, IRideShareHubService rideShareHubService)
     {
         _unitOfWork =  unitOfWork;
         _mapper = mapper;
         _matchingService = matchingService;
+        _hubService = rideShareHubService;
     }
     public async Task<BaseResponse<Dictionary<string, object>>> Handle(CreateRideRequestCommand request, CancellationToken cancellationToken)
     {
@@ -39,14 +43,18 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
             var value =  await _unitOfWork.RideRequestRepository.Add(rideRequest);
             if (value > 0)
             {
-                bool noMatchFound = !await _matchingService.MatchWithRideoffer(rideRequest);
-                if(noMatchFound)
+                var matchedRideOffer = await _matchingService.MatchWithRideoffer(rideRequest);
+                if(matchedRideOffer == null)
                     throw new ValidationException($"No RideOffer Found That Can Complete This Request. Try Again Later");
                 response.Message = "Creation Successful";
                 response.Value = new Dictionary<string, object>{
                     {"Id", rideRequest.Id},
                     {"MatchedRide", _mapper.Map<RideOfferDto>(rideRequest.MatchedRide)}
                 };
+
+                var userId = matchedRideOffer.Driver.UserId;
+                var rideRequestDto = _mapper.Map<RideRequestDto>(rideRequest);
+                _hubService.MatchFound(userId, rideRequestDto);
             }
             else
             {

@@ -8,6 +8,8 @@ using Rideshare.Application.Responses;
 using Rideshare.Application.Common.Dtos.Security;
 using System.Text;
 using Rideshare.Application.Contracts.Services;
+using Rideshare.Application.Common.Dtos.Security.Validators;
+using Rideshare.Application.Exceptions;
 
 namespace Rideshare.Application.Features.Auth.Handlers;
 
@@ -28,6 +30,14 @@ public class CreateAdminUserCommandHanlder : IRequestHandler<CreateAdminUserComm
 
     public async Task<BaseResponse<AdminUserDto>> Handle(CreateAdminUserCommand request, CancellationToken cancellationToken)
     {
+
+        var validator = new AdminCreationDtoValidators();
+        
+        var validationResult = await validator.ValidateAsync(request.AdminCreationDto);
+
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());
 
 
         var role = new RoleDto
