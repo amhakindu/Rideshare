@@ -9,4 +9,6 @@ public interface IGenericRepository<T> where T : class
     Task<bool> Exists(int id);
     Task<int> Update(T entity);
     Task<int> Delete(T entity);
+    Task<double> GetLastWeekPercentageChange();
+    Task<int> Count();
 }

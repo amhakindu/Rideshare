@@ -7,6 +7,7 @@ namespace Rideshare.Application.Contracts.Persistence;
 
 public interface IRideOfferRepository: IGenericRepository<RideOffer>
 {
+    Task<RideOffer?> GetRideOfferWithDetail(int Id);
     Task<Dictionary<string, object>> GetAllPaginated(int pageNumber=1, int pageSize=10);
     Task<Dictionary<string, object>> GetRideOffersOfDriver(int DriverID, int PageNumber=1, int PageSize=10);
     Task<IReadOnlyList<RideOffer>> GetActiveRideOffers();
