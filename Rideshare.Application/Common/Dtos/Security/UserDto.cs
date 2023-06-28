@@ -11,5 +11,6 @@ public class UserDto
     public string PhoneNumber { get; set; } = string.Empty;
     public int Age { get; set; }
     public string StatusByLogin {get;set;}
+    public string ProfilePicture { get; set; } = string.Empty;
 
 }

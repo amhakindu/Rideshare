@@ -8,7 +8,8 @@ using Rideshare.Application.Responses;
 using Rideshare.Application.Common.Dtos.Security;
 using System.Text;
 using Rideshare.Application.Contracts.Services;
-
+using Rideshare.Application.Common.Dtos.Security.Validators;
+using Rideshare.Application.Exceptions;
 namespace Rideshare.Application.Features.Auth.Handlers;
 
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, BaseResponse<UserDto>>
@@ -29,6 +30,14 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, BaseR
 
     public async Task<BaseResponse<UserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+
+        var validator = new UserCreationDtoValidators();
+        
+        var validationResult = await validator.ValidateAsync(request.UserCreationDto);
+
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());
 
         var role = request.UserCreationDto.Roles;
         List<RoleDto> temp = new() ;
