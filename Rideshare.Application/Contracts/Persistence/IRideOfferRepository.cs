@@ -13,6 +13,7 @@ public interface IRideOfferRepository: IGenericRepository<RideOffer>
     Task<RideOffer?> GetActiveRideOfferOfDriver(int DriverId);
     Task<RideOffer> AcceptRideRequest(int riderequestId);
     Task<int> CancelRideOffer(int rideOfferId);
+    Task<List<GeographicalLocation>> GetPopularDestinationsOfDriver(int driverId, int limit);
     Task<IReadOnlyList<ModelAndCountDto>> NoTopModelOffers();
     Task<List<DriverStatsDto>> GetTopDriversWithStats();
     Task<int> UpdateCurrentLocation(RideOffer rideoffer, GeographicalLocation location);

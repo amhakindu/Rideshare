@@ -2,8 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Entities;
 using static Rideshare.Application.Common.Constants.Utils;
-using Rideshare.Application.Common.Dtos.RideRequests;
-using Rideshare.Domain.Models;
+using Rideshare.Domain.Common;
 
 namespace Rideshare.Persistence.Repositories;
 
@@ -71,5 +70,16 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
             .Take(5)
             .ToDictionaryAsync(user => user.UserId, user => user.RideRequestCount);
         return topUsers;
+    }
+
+    public Task<List<GeographicalLocation>> GetPopularDestinationsOfCommuter(string UserId, int limit)
+    {
+        return _dbContext.Set<RideRequest>()
+            .Where(riderequest => riderequest.UserId == UserId)
+            .GroupBy(riderequest => riderequest.Destination)
+            .OrderByDescending(group => group.Count())
+            .Select(group => group.Key)
+            .Take(limit)
+            .ToListAsync();
     }
 }
