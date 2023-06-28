@@ -34,7 +34,7 @@ public class RideshareMatchingService : IRideshareMatchingService
     {
         return degrees * Math.PI / 180;
     }
-    public async Task<bool> MatchWithRideoffer(RideRequest rideRequest)
+    public async Task<RideOffer?> MatchWithRideoffer(RideRequest rideRequest)
     {
         var rideOffers = await _unitOfWork.RideOfferRepository.GetActiveRideOffers(); 
         RideOffer? matchedOffer = null;
@@ -81,6 +81,6 @@ public class RideshareMatchingService : IRideshareMatchingService
             if(operations < 2)
                 throw new InternalServerErrorException("Unable To Make Update Matched RideOffer and RideRequest");
         }
-        return matchedOffer != null;
+        return matchedOffer;
     }
 }

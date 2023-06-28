@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using NetTopologySuite.Geometries;
 using Rideshare.Application.Common.Dtos;
+using Rideshare.Application.Common.Dtos.RideOffers;
+using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Contracts.Infrastructure;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Contracts.Services;
@@ -17,12 +20,14 @@ public class RideShareHub : Hub<IRideShareHubClient>
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapboxService _mapboxService;
     private readonly IUserAccessor _userAccessor;
+    private readonly IMapper _mapper;
 
-    public RideShareHub(IUnitOfWork unitOfWork, IMapboxService mapboxService, IUserAccessor userAccessor)
+    public RideShareHub(IUnitOfWork unitOfWork, IMapboxService mapboxService, IUserAccessor userAccessor, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapboxService = mapboxService;
         _userAccessor = userAccessor;
+        _mapper = mapper;
     }
 
     public async Task UpdateLocation(LocationDto location)
@@ -30,7 +35,7 @@ public class RideShareHub : Hub<IRideShareHubClient>
         var id = _userAccessor.GetUserId();
         var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(id);
         var geolocation = _mapper.Map<GeographicalLocation>(location);
-        var rideOffer = await _unitOfWork.RideOfferRepository.GetActiveRideOfferByDriverId(driver.Id);
+        var rideOffer = await _unitOfWork.RideOfferRepository.GetActiveRideOfferOfDriver(driver.Id);
         await _unitOfWork.RideOfferRepository.UpdateCurrentLocation(rideOffer, geolocation);
     }
 
@@ -38,18 +43,20 @@ public class RideShareHub : Hub<IRideShareHubClient>
     {
         var id = _userAccessor.GetUserId();
         var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(id);
-        var rideOffer = await _unitOfWork.RideOfferRepository.GetActiveRideOfferByDriverId(driver.Id);
+        var rideOffer = await _unitOfWork.RideOfferRepository.GetActiveRideOfferOfDriver(driver.Id);
         var rideRequest = await _unitOfWork.RideRequestRepository.Get(rideRequestId);
-        rideRequest.AddStatus = true;
+        rideRequest.Accepted = true;
         rideOffer.AvailableSeats -= rideRequest.NumberOfSeats;
         await _unitOfWork.RideOfferRepository.Update(rideOffer);
         await _unitOfWork.RideRequestRepository.Update(rideRequest);
         var userId = rideRequest.UserId;
         var connections = await _unitOfWork.ConnectionRepository.GetByUserId(userId);
 
+        var rideOfferDto = _mapper.Map<RideOfferDto>(rideOffer);
+
         foreach (var connection in connections)
         {
-            Clients.Client(connection.Id).Accepted(rideOffer.Id);
+            await Clients.Client(connection.Id).Accepted(rideOfferDto);
         }
     }
 

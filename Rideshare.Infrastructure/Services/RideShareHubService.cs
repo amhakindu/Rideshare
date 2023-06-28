@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Rideshare.Application.Common.Dtos.RideOffers;
+using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Contracts.Services;
 using System;
@@ -26,12 +27,12 @@ public class RideShareHubService : IRideShareHubService
         return connections.Any();
     }
 
-    public async Task MatchFound(string applicationUserId)
+    public async Task MatchFound(string applicationUserId, RideRequestDto rideRequestDto)
     {
         var connections = await _unitOfWork.ConnectionRepository.GetByUserId(applicationUserId);
         foreach (var connection in connections)
         {
-            await _context.Clients.Client(connection.Id).MatchFound();
+            await _context.Clients.Client(connection.Id).MatchFound(rideRequestDto);
         }
     }
 }

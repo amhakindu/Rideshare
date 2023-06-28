@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿/* using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NetTopologySuite.Geometries;
@@ -76,7 +76,7 @@ public class MatchingController : BaseApiController
     public async Task<IActionResult> IntenalPost(string Id)
     {
         Thread.Sleep(5000); // TODO: handler with matching algorithm call goes here
-        await _rideShareHubService.MatchFound(Id);
+        await _rideShareHubService.MatchFound(Id, rideRequestDto);
         return NoContent();
     }
 }
@@ -104,3 +104,4 @@ class Passenger
     public LocationDto destination { get; set; }
     public int seatsAllocated { get; set; }
 }
+*/

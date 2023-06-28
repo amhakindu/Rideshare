@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Rideshare.Application.Common.Dtos.RideOffers;
+using Rideshare.Application.Common.Dtos.RideRequests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ using System.Threading.Tasks;
 namespace Rideshare.Application.Contracts.Services;
 public interface IRideShareHubClient
 {
-    Task MatchFound();
-    Task Accepted(int rideOfferId);
+    Task MatchFound(RideRequestDto rideRequestDto);
+    Task Accepted(RideOfferDto rideOffer);
 }
