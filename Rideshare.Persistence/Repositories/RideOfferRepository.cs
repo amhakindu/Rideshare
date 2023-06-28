@@ -258,6 +258,19 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
             .GroupBy(ride => ride.Status)
             .ToDictionaryAsync(group => Enum.GetName(typeof(Status), group.Key) ?? "", group => group.Count());
     }
+
+    public async Task<RideOffer?> GetRideOfferWithDetail(int Id)
+    {
+        return await _dbContext.Set<RideOffer>()
+            .AsNoTracking()
+            .Include(ro => ro.Driver)
+                .ThenInclude(driver => driver.User)
+            .Include(ro => ro.Vehicle)
+            .Include(ro => ro.CurrentLocation)
+            .Include(ro => ro.Destination)
+            .Include(ro => ro.Matches)
+            .FirstOrDefaultAsync(ro => ro.Id == Id);
+    }
 }
 
     
