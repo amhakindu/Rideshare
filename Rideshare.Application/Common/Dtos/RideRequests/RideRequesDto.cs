@@ -12,4 +12,5 @@ public class RideRequestDto : IRideRequestDto
     public Status Status { get; set; } 
     public int NumberOfSeats { get; set; }
     public string UserId { get; set; }
+    public bool Accepted { get; set; }
 }

@@ -9,6 +9,10 @@ public interface IRideOfferRepository: IGenericRepository<RideOffer>
 {
     Task<Dictionary<string, object>> GetAllPaginated(int pageNumber=1, int pageSize=10);
     Task<Dictionary<string, object>> GetRideOffersOfDriver(int DriverID, int PageNumber=1, int PageSize=10);
+    Task<IReadOnlyList<RideOffer>> GetActiveRideOffers();
+    Task<RideOffer?> GetActiveRideOfferOfDriver(int DriverId);
+    Task<RideOffer> AcceptRideRequest(int riderequestId);
+    Task<int> CancelRideOffer(int rideOfferId);
     Task<IReadOnlyList<ModelAndCountDto>> NoTopModelOffers();
     Task<List<DriverStatsDto>> GetTopDriversWithStats();
     Task<int> UpdateCurrentLocation(RideOffer rideoffer, GeographicalLocation location);
