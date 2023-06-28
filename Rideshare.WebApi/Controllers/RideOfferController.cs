@@ -24,7 +24,7 @@ public class RideOffersController : BaseApiController
     [Authorize(Roles = "Driver")]
     public async Task<IActionResult> Post([FromBody] CreateRideOfferDto createRideOfferDto)
     {
-        var result = await _mediator.Send(new CreateRideOfferCommand { RideOfferDto = createRideOfferDto });
+        var result = await _mediator.Send(new CreateRideOfferCommand { RideOfferDto = createRideOfferDto, UserId = _userAccessor.GetUserId() });
         
         var status = result.Success ? HttpStatusCode.Created: HttpStatusCode.BadRequest;
         return getResponse<BaseResponse<int>>(status, result);
@@ -108,11 +108,11 @@ public class RideOffersController : BaseApiController
         return getResponse<BaseResponse<Unit>>(status, result);
     }
     
-    [HttpDelete("Cancel/{id}")]
+    [HttpPatch("Cancel/{id}")]
     [Authorize(Roles = "Driver")]
     public async Task<IActionResult> CancelRideOffer(int id)
     {
-        var result = await _mediator.Send(new CancelRideOfferCommand { RideOfferId= id });
+        var result = await _mediator.Send(new CancelRideOfferCommand { RideOfferId= id , UserId=_userAccessor.GetUserId()});
         
         var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.NotFound;
         return getResponse<BaseResponse<Unit>>(status, result);

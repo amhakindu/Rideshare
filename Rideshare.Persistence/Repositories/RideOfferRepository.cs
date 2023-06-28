@@ -36,9 +36,11 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
     }
     public async Task<int> CancelRideOffer(int rideOfferId){
         var rideOffer = await _dbContext.Set<RideOffer>()
+            .Where(rideoffer => rideoffer.Id == rideOfferId)
             .Include(rideoffer => rideoffer.Matches).FirstOrDefaultAsync();
 
-        foreach (RideRequest riderequest in rideOffer.Matches){
+        ICollection<RideRequest> rideoffers = rideOffer.Matches.ToList();
+        foreach (RideRequest riderequest in rideoffers){
             riderequest.MatchedRide = null;
             riderequest.Accepted = false;
             _dbContext.Update(riderequest);
@@ -47,7 +49,7 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
         rideOffer.Status = Status.CANCELLED;
         _dbContext.Update(rideOffer);
 
-        return await _dbContext.SaveChangesAsync();
+        return await _dbContext.SaveChangesAsync(); 
     }
     public async Task<RideOffer?> Get(int id)
     {
@@ -71,6 +73,7 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
             .Include(ro => ro.CurrentLocation)
             .Include(ro => ro.Destination)
             .Where(ro => ro.Driver.Id == DriverId)
+            .Where(ro => (ro.Status == Status.WAITING) || (ro.Status == Status.ONROUTE))
             .FirstOrDefaultAsync();
     }
     public async Task<IReadOnlyList<RideOffer>> GetAll(int pageNumber, int pageSize)

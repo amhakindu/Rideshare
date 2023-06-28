@@ -1,3 +1,4 @@
+using System.Data;
 using MediatR;
 using AutoMapper;
 using Rideshare.Domain.Entities;
@@ -25,12 +26,12 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
             
             if(!await _unitOfWork.VehicleRepository.Exists(command.RideOfferDto.VehicleID))
                 throw new NotFoundException($"Vehicle with ID {command.RideOfferDto.VehicleID} does not exist");
+            var driver = _unitOfWork.DriverRepository.GetDriverByUserId(command.UserId);
+            if(driver == null)
+                throw new OperationFailure($"Only A Driver Can Create A RideOffer");
 
-            if(!await _unitOfWork.DriverRepository.Exists(command.RideOfferDto.DriverID))
-                throw new NotFoundException($"Driver with ID {command.RideOfferDto.DriverID} does not exist");
-
-            if(await _unitOfWork.RideOfferRepository.GetActiveRideOfferOfDriver(command.RideOfferDto.DriverID) != null)
-                throw new ValidationException("A Driver Can Only Provide One RideOffer At a Time");
+            if(await _unitOfWork.RideOfferRepository.GetActiveRideOfferOfDriver(driver.Id) != null)
+                throw new OperationFailure("A Driver Can Only Provide One RideOffer At a Time");
 
             var validator = new CreateRideOfferDtoValidator();
             var validationResult = await validator.ValidateAsync(command.RideOfferDto);

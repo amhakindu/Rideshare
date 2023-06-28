@@ -6,6 +6,7 @@ namespace Rideshare.Application.Features.RideOffers.Commands;
 
 public class CreateRideOfferCommand: IRequest<BaseResponse<int>>
 {
+    public string UserId { get; set; }
     public CreateRideOfferDto RideOfferDto { get; set; }  
 }
 
