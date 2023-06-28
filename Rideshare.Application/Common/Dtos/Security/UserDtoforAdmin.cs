@@ -13,5 +13,6 @@ public class UserDtoForAdmin
     public int Age { get; set; }
     public string StatusByLogin {get;set;}
     public string ProfilePicture { get; set; } = string.Empty;
+    
 
 }

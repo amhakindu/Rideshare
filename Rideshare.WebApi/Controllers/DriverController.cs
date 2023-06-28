@@ -46,6 +46,15 @@ namespace Rideshare.WebApi.Controllers
             var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
             return getResponse(status, result);
         }
+        [HttpGet("admin/{id}")]
+        [Authorize(Roles ="Driver,Admin")]
+        public async Task<IActionResult> GetUser(string id)
+        {
+            var result = await _mediator.Send(new GetDriverByUserIdQuery { Id = id });
+
+            var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+            return getResponse(status, result);
+        }
         
         [HttpPost]
         [Authorize(Roles = "Driver")]

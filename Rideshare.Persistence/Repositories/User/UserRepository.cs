@@ -49,11 +49,11 @@ public class UserRepository : IUserRepository
           .Skip((pageNumber - 1) * pageSize)
           .Take(pageSize)
           .ToList();
-        var paginatedResponse = new PaginatedResponse 
+        var paginatedResponse = new PaginatedResponse
         {
             PaginatedUsers = filteredUsers,
             Count = usersInRole.Count
-           
+
         };
         return paginatedResponse;
     }
@@ -271,6 +271,17 @@ public class UserRepository : IUserRepository
             throw new Exception(result.ToString());
         }
     }
+
+    public async Task<int> GetCommuterCount(DateTime date)
+    {
+        var role = "Commuter";
+
+        var usersInRole = await _userManager.GetUsersInRoleAsync(role);
+        var count = usersInRole.Count(u => u.CreatedAt.Date == date.Date);
+
+        return count;
+    }
+
 
 
 
