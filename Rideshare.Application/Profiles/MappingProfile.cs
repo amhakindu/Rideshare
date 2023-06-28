@@ -60,7 +60,9 @@ public class MappingProfile : Profile
         #region rideRequest Mappings
 
         CreateMap<RideRequest, RideRequestDto>()
-            .ForMember(dto => dto.Status, opt => opt.MapFrom(riderequest => Enum.GetName(typeof(Status), riderequest.Status)));
+            .ForMember(dto => dto.Status, opt => opt.MapFrom(riderequest => Enum.GetName(typeof(Status), riderequest.Status)))
+            .ForMember(dto => dto.Origin, opt => opt.MapFrom(src => new LocationDto(){Longitude=src.Origin.Coordinate.X, Latitude=src.Origin.Coordinate.Y}))
+            .ForMember(dto => dto.Destination, opt => opt.MapFrom(src => new LocationDto(){Longitude=src.Destination.Coordinate.X, Latitude=src.Destination.Coordinate.Y}));
         CreateMap<CreateRideRequestDto, RideRequest>();
         CreateMap<UpdateRideRequestDto, RideRequest>();
 
@@ -117,7 +119,18 @@ public class MappingProfile : Profile
         CreateMap<RideOffer, RideOfferDto>()
             .ForMember(dto => dto.OriginAddress, opt => opt.MapFrom(rideoffer => rideoffer.CurrentLocation.Address))
             .ForMember(dto => dto.DestinationAddress, opt => opt.MapFrom(rideoffer => rideoffer.Destination.Address))
+            .ForMember(dto => dto.CurrentLocation, opt => opt.MapFrom(src => new LocationDto(){Longitude=src.CurrentLocation.Coordinate.X, Latitude=src.CurrentLocation.Coordinate.Y}))
+            .ForMember(dto => dto.Destination, opt => opt.MapFrom(src => new LocationDto(){Longitude=src.Destination.Coordinate.X, Latitude=src.Destination.Coordinate.Y}))
             .ForMember(dto => dto.Status, opt => opt.MapFrom(rideoffer => Enum.GetName(typeof(Status), rideoffer.Status)));
+
+        CreateMap<RideOffer, CommuterViewOfRideOfferDto>()
+            .ForMember(dto => dto.DriverName, opt => opt.MapFrom(rideoffer => rideoffer.Driver.User.FullName))
+            .ForMember(dto => dto.DriverImageUrl, opt => opt.MapFrom(rideoffer => rideoffer.Driver.User.ProfilePicture))
+            .ForMember(dto => dto.AverageRate, opt => opt.MapFrom(rideoffer => rideoffer.Driver.Rate.Last()))
+            .ForMember(dto => dto.VehicleModel, opt => opt.MapFrom(rideoffer => rideoffer.Vehicle.Model))
+            .ForMember(dto => dto.VehiclePlateNumber, opt => opt.MapFrom(rideoffer => rideoffer.Vehicle.PlateNumber))
+            .ForMember(dto => dto.DriverPhoneNumber, opt => opt.MapFrom(rideoffer => rideoffer.Driver.User.PhoneNumber))
+            .ForMember(dto => dto.CurrentLocation, opt => opt.MapFrom(src => new LocationDto(){Longitude=src.CurrentLocation.Coordinate.X, Latitude=src.CurrentLocation.Coordinate.Y}));
 
         CreateMap<RideOffer, RideOfferListDto>()
             .ForMember(dto => dto.OriginAddress, opt => opt.MapFrom(rideoffer => rideoffer.CurrentLocation.Address))

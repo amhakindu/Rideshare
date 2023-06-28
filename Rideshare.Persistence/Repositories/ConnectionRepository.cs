@@ -9,10 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Rideshare.Persistence.Repositories;
-public class ConnectionRepository : GenericRepository<Connection>, IConnectionRepository
+public class ConnectionRepository : IConnectionRepository
 {
     private readonly RideshareDbContext _dbContext;
-    public ConnectionRepository(RideshareDbContext dbContext) : base(dbContext)
+    public ConnectionRepository(RideshareDbContext dbContext)
     {
         _dbContext = dbContext;
     }
@@ -24,4 +24,17 @@ public class ConnectionRepository : GenericRepository<Connection>, IConnectionRe
             .ToListAsync();
         return connections;
     }
+
+    public async Task<int> Add(Connection connection)
+    {
+        await _dbContext.AddAsync(connection);
+        return await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<int> Delete(Connection connection)
+    {
+        _dbContext.Set<Connection>().Remove(connection);
+        return await _dbContext.SaveChangesAsync();
+    }
+
 }

@@ -10,6 +10,8 @@ public class RideOfferDto
     public int Id { get; set; }
     public DriverDetailDto Driver { get; set; }
     public VehicleDto Vehicle;    
+    public LocationDto CurrentLocation { get; set; }
+    public LocationDto Destination { get; set; }  
     public string OriginAddress { get; set; }
     public string DestinationAddress { get; set; }
     public string Status { get; set; }
