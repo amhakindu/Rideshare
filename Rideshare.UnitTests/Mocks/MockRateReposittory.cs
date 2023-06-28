@@ -1,6 +1,7 @@
 using Rideshare.Application.Contracts.Persistence;
 using Moq;
 using Rideshare.Domain.Entities;
+using Rideshare.Application.Common.Dtos.Security;
 
 namespace Rideshare.UnitTests.Mocks
 {
@@ -42,8 +43,19 @@ namespace Rideshare.UnitTests.Mocks
 
 			var mockRepo = new Mock<IRateRepository>();
 
-			mockRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(rates);
-			
+mockRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync((int pageNumber, int pageSize) => {
+
+                var response = new PaginatedResponse<RateEntity>();
+                var result = rates.AsQueryable().Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+                response.Count = rates.Count();
+                response.Paginated = result;
+                return response;
+
+            }
+                );			
 			mockRepo.Setup(r => r.Add(It.IsAny<RateEntity>())).ReturnsAsync((RateEntity rate) =>
 			{
 				rates.Add(rate);

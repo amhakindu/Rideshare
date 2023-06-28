@@ -44,8 +44,8 @@ public class RideOffersController : BaseApiController
     public async Task<IActionResult> Get(int id)
     {
         var result = await _mediator.Send(new GetRideOfferWithDetailsQuery { RideOfferID = id });
-        
-        var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.NotFound;
+
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse<BaseResponse<RideOfferDto>>(status, result);
     }
     [HttpGet("NoRideOfferForTop10Model")]
@@ -53,7 +53,7 @@ public class RideOffersController : BaseApiController
     [ProducesResponseType(typeof(BaseResponse<IReadOnlyList<ModelAndCountDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetNumberOfVihcle()
     {
-        var result = await _mediator.Send(new GetNoTopModelRideOffferQuery {});
+        var result = await _mediator.Send(new GetNoTopModelRideOffferQuery { });
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);
@@ -64,11 +64,11 @@ public class RideOffersController : BaseApiController
     [ProducesResponseType(typeof(BaseResponse<Dictionary<string, IReadOnlyList<RideOfferListDto>>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetDriverRideOffers([FromQuery] int PageNumber=1, [FromQuery] int PageSize=10)
     {
-        var result = await _mediator.Send(new GetRideOffersOfDriverQuery {UserId=_userAccessor.GetUserId(), PageNumber=PageNumber, PageSize=PageSize});
+        var result = await _mediator.Send(new GetRideOffersOfDriverQuery { UserId = _userAccessor.GetUserId(), PageNumber = PageNumber, PageSize = PageSize });
 
-        var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.NotFound;
-        return getResponse<BaseResponse<Dictionary<string, object>>>(status, result);
-    } 
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+        return getResponse(status, result);
+    }
 
     [HttpGet("Search")]
     [Authorize(Roles = "Admin")]
@@ -76,22 +76,22 @@ public class RideOffersController : BaseApiController
     [ProducesResponseType(typeof(BaseResponse<Dictionary<string, int>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchAndFilter([FromQuery]SearchAndFilterDto SearchDto, [FromQuery] int PageNumber=1, [FromQuery] int PageSize=10)
     {
-        var result = await _mediator.Send(new SearchAndFilterQuery{ PageNumber=PageNumber, PageSize=PageSize, SearchDto = SearchDto});
+        var result = await _mediator.Send(new SearchAndFilterQuery { PageNumber = PageNumber, PageSize = PageSize, SearchDto = SearchDto });
 
-        var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.NotFound;
-        return getResponse<BaseResponse<Dictionary<string, object>>>(status, result);
-    } 
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+        return getResponse(status, result);
+    }
 
     [HttpGet("Statistics")]
     [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(BaseResponse<Dictionary<int, int>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetStats([FromQuery]RideOfferStatsDto StatsDto, [FromQuery] string options)
     {
-        var result = await _mediator.Send(new GetRideOfferStatsQuery{StatsDto = StatsDto});
+        var result = await _mediator.Send(new GetRideOfferStatsQuery { StatsDto = StatsDto });
 
-        var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.NotFound;
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse<BaseResponse<Dictionary<int, int>>>(status, result);
-    } 
+    }
 
     [HttpGet("Statistics/Status")]
     [Authorize(Roles = "Admin")]
@@ -120,11 +120,11 @@ public class RideOffersController : BaseApiController
     [ProducesResponseType(typeof(BaseResponse<Unit>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Patch([FromBody] UpdateRideOfferDto updateRideOfferDto){
         var result = await _mediator.Send(new UpdateRideOfferCommand { RideOfferDto = updateRideOfferDto });
-        
-        var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.Accepted;
+
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.Accepted;
         return getResponse<BaseResponse<Unit>>(status, result);
     }
-    
+
     [HttpDelete("{id}")]
     [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(BaseResponse<Unit>), StatusCodes.Status200OK)]

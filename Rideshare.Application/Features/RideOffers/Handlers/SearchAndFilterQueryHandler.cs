@@ -9,10 +9,11 @@ using Rideshare.Application.Contracts.Infrastructure;
 using Rideshare.Application.Common.Dtos.RideOffers.Validators;
 using Rideshare.Application.Exceptions;
 using Rideshare.Domain.Common;
+using Rideshare.Application.Common.Dtos.Pagination;
 
 namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
 {
-    public class SearchAndFilterQueryHandler: IRequestHandler<SearchAndFilterQuery, BaseResponse<Dictionary<string, object>>>
+    public class SearchAndFilterQueryHandler: IRequestHandler<SearchAndFilterQuery, BaseResponse<PaginatedResponseDto<RideOfferDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -24,8 +25,9 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
             _mapper = mapper;
         }
 
-        public async Task<BaseResponse<Dictionary<string, object>>> Handle(SearchAndFilterQuery command, CancellationToken cancellationToken)
+        public async Task<BaseResponse<PaginatedResponseDto<RideOfferDto>>> Handle(SearchAndFilterQuery command, CancellationToken cancellationToken)
         {
+            var response = new BaseResponse<PaginatedResponseDto<RideOfferDto>>();
             var validator = new SearchAndFilterDtoValidator();
             var validationResult = await validator.ValidateAsync(command.SearchDto);
             if (validationResult.IsValid == false)
@@ -33,16 +35,17 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
             Status? status = null;
             if(command.SearchDto.Status != null)
                 status = (Status)Enum.Parse(typeof(Status), command.SearchDto.Status);
-            var driverRideOffers = await _unitOfWork.RideOfferRepository.SearchAndFilter(command.SearchDto.MinCost, command.SearchDto.MaxCost, command.SearchDto.DriverName, command.SearchDto.PhoneNumber, status, command.PageNumber, command.PageSize);
+            var result = await _unitOfWork.RideOfferRepository.SearchAndFilter(command.SearchDto.MinCost, command.SearchDto.MaxCost, command.SearchDto.DriverName, command.SearchDto.PhoneNumber, status, command.PageNumber, command.PageSize);
 
-            return new BaseResponse<Dictionary<string, object>>{
-                Success = true,
-                Message = "RideOffers Fetching Successful",
-                Value = new Dictionary<string, object>(){
-                    {"count", driverRideOffers["count"]},
-                    {"rideoffers", _mapper.Map<IReadOnlyList<RideOffer>, IReadOnlyList<RideOfferListDto>>((IReadOnlyList<RideOffer>)driverRideOffers["rideoffers"])}
-                }
-            };
+            response.Success = true;
+            response.Message = "RideOffers Fetching Successful";
+            response.Value= new PaginatedResponseDto<RideOfferDto>();
+            response.Value.PageNumber = command.PageNumber;
+            response.Value.PageSize = command.PageSize;
+            response.Value.Paginated = _mapper.Map<IReadOnlyList<RideOfferDto>>(result.Paginated);
+            response.Value.Count = result.Count;
+            return response;
+            
         }
     }
 }

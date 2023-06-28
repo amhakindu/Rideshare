@@ -27,7 +27,7 @@ namespace Rideshare.Application.Features.Auth.Handlers
             var allApplicationUsers = await _userRepository.GetUsersAsync(request.PageNumber, request.PageSize);
 
             var usersWithRoles = new List<UserDtoForAdmin>();
-            foreach (var u in allApplicationUsers.PaginatedUsers)
+            foreach (var u in allApplicationUsers.Paginated)
             {
                 var user = new UserDtoForAdmin
                 {
