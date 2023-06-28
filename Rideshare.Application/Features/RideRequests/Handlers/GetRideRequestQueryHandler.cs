@@ -23,19 +23,12 @@ public class GetRideRequestQueryHandler : IRequestHandler<GetRideRequestQuery, B
     }
     public async Task<BaseResponse<RideRequestDto>> Handle(GetRideRequestQuery request, CancellationToken cancellationToken)
     {
-        var response = new BaseResponse<RideRequestDto>();
         var rideRequest = await _unitOfWork.RideRequestRepository.Get(request.Id);
-        if (rideRequest != null && rideRequest.UserId == request.UserId){
-            response.Message = "Get Successful";
-            response.Value = _mapper.Map<RideRequestDto>(rideRequest);
-
-        }
-        else{
+        if(rideRequest == null)
             throw new NotFoundException($"RideRequest with {request.Id} not found");
-        }
-
-        return response;
-
-
+        return new BaseResponse<RideRequestDto>(){
+            Message = "Get Successful",
+            Value = _mapper.Map<RideRequestDto>(rideRequest),
+        };
     }
 }

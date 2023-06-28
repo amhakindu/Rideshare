@@ -46,8 +46,10 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
             if (value > 0)
             {
                 var matchedRideOffer = await _matchingService.MatchWithRideoffer(rideRequest);
-                if(matchedRideOffer == null)
+                if(matchedRideOffer == null){
+                    await _unitOfWork.RideRequestRepository.Delete(rideRequest);
                     throw new OperationFailure($"No RideOffer Found That Can Complete This Request. Try Again Later");
+                }
                 response.Message = "Creation Successful";
                 response.Value = new Dictionary<string, object>{
                     {"Id", rideRequest.Id},
@@ -56,7 +58,7 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
 
                 var userId = matchedRideOffer.Driver.UserId;
                 var rideRequestDto = _mapper.Map<RideRequestDto>(rideRequest);
-                _hubService.MatchFound(userId, rideRequestDto);
+                await _hubService.MatchFound(userId, rideRequestDto);
             }
             else
             {

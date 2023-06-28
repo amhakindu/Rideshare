@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Rideshare.Application.Common.Dtos.Drivers;
 using Rideshare.Application.Common.Dtos.RideOffers;
@@ -242,15 +241,35 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
         }; 
     }
 
-    public Task<List<GeographicalLocation>> GetPopularDestinationsOfDriver(int driverId, int limit)
+    public async Task<List<GeographicalLocation>> GetPopularDestinationsOfDriver(int driverId, int limit)
     {
-        return _dbContext.Set<RideOffer>()
+        return await _dbContext.Set<RideOffer>()
             .Where(ride => ride.Driver.Id == driverId)
             .GroupBy(ride => ride.Destination)
             .OrderByDescending(group => group.Count())
             .Select(group => group.Key)
             .Take(limit)
             .ToListAsync();
+    }
+
+    public async Task<Dictionary<string, int>> GetRideOfferCountForEachStatus()
+    {
+        return await _dbContext.Set<RideOffer>()
+            .GroupBy(ride => ride.Status)
+            .ToDictionaryAsync(group => Enum.GetName(typeof(Status), group.Key) ?? "", group => group.Count());
+    }
+
+    public async Task<RideOffer?> GetRideOfferWithDetail(int Id)
+    {
+        return await _dbContext.Set<RideOffer>()
+            .AsNoTracking()
+            .Include(ro => ro.Driver)
+                .ThenInclude(driver => driver.User)
+            .Include(ro => ro.Vehicle)
+            .Include(ro => ro.CurrentLocation)
+            .Include(ro => ro.Destination)
+            .Include(ro => ro.Matches)
+            .FirstOrDefaultAsync(ro => ro.Id == Id);
     }
 }
 
