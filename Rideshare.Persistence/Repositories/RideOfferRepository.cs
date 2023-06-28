@@ -269,6 +269,7 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
             .Include(ro => ro.CurrentLocation)
             .Include(ro => ro.Destination)
             .Include(ro => ro.Matches)
+                .ThenInclude(rr => rr.User)
             .FirstOrDefaultAsync(ro => ro.Id == Id);
     }
 }
