@@ -11,5 +11,5 @@ namespace Rideshare.Application.Contracts.Services;
 public interface IRideShareHubClient
 {
     Task MatchFound(RideRequestDto rideRequestDto);
-    Task Accepted(RideOfferDto rideOffer);
+    Task Accepted(CommuterViewOfRideOfferDto commuterViewOfRideOfferDto);
 }
