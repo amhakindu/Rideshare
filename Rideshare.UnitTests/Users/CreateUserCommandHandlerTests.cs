@@ -34,7 +34,7 @@ namespace Rideshare.UnitTests.Users
                    { Id = "role1", Name = "Role 1" },
                     
                     FullName = "testuser",
-                    PhoneNumber = "1234567890",
+                    PhoneNumber = "+251234567890",
                     Age = 30
                 }
             };

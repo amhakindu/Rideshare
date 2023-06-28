@@ -237,6 +237,17 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
             {"completed", await GetRideOfferStatistics(year, month, Status.COMPLETED)}
         }; 
     }
+
+    public Task<List<GeographicalLocation>> GetPopularDestinationsOfDriver(int driverId, int limit)
+    {
+        return _dbContext.Set<RideOffer>()
+            .Where(ride => ride.Driver.Id == driverId)
+            .GroupBy(ride => ride.Destination)
+            .OrderByDescending(group => group.Count())
+            .Select(group => group.Key)
+            .Take(limit)
+            .ToListAsync();
+    }
 }
 
     
