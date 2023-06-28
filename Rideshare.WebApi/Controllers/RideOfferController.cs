@@ -55,7 +55,7 @@ public class RideOffersController : BaseApiController
 
     [HttpGet]
     [Authorize(Roles = "Driver")]
-    [ProducesResponseType(typeof(BaseResponse<Dictionary<string, IReadOnlyList<RideOfferDto>>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<Dictionary<string, IReadOnlyList<RideOfferListDto>>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetDriverRideOffers([FromQuery] int PageNumber=1, [FromQuery] int PageSize=10)
     {
         var result = await _mediator.Send(new GetRideOffersOfDriverQuery {UserId=_userAccessor.GetUserId(), PageNumber=PageNumber, PageSize=PageSize});
@@ -66,7 +66,8 @@ public class RideOffersController : BaseApiController
 
     [HttpGet("Search")]
     [Authorize(Roles = "Admin")]
-    [ProducesResponseType(typeof(BaseResponse<Dictionary<string, IReadOnlyList<RideOfferDto>>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<Dictionary<string, IReadOnlyList<RideOfferListDto>>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<Dictionary<string, int>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchAndFilter([FromQuery]SearchAndFilterDto SearchDto, [FromQuery] int PageNumber=1, [FromQuery] int PageSize=10)
     {
         var result = await _mediator.Send(new SearchAndFilterQuery{ PageNumber=PageNumber, PageSize=PageSize, SearchDto = SearchDto});
@@ -95,6 +96,17 @@ public class RideOffersController : BaseApiController
 
         var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.NotFound;
         return getResponse<BaseResponse<Dictionary<string, Dictionary<int, int>>>>(status, result);
+    } 
+
+    [HttpGet("Statistics/Status/Count")]
+    [Authorize(Roles = "Admin")]
+    [ProducesResponseType(typeof(BaseResponse<Dictionary<string, int>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetCountForEachStatus()
+    {
+        var result = await _mediator.Send(new GetCountForEachStatusQuery{});
+
+        var status = result.Success ? HttpStatusCode.OK: HttpStatusCode.NotFound;
+        return getResponse<BaseResponse<Dictionary<string, int>>>(status, result);
     } 
 
     [HttpPatch]  
