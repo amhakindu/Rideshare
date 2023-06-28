@@ -53,7 +53,7 @@ namespace Rideshare.Application.Features.Rates.Handlers
 			double total, count;
 			total = driver.Rate[0];
 			count = driver.Rate[1];
-			double average = (total / count);
+            double average = Math.Round(total / count, 2);  
 			driver.Rate[2] = average;
 			
 			if  (await _unitOfWork.DriverRepository.Update(driver) == 0)

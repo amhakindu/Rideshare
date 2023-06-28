@@ -8,5 +8,4 @@ public class UpdateRateDto
 	public double Rate { get; set; }
 	public string Description { get; set; }
 	
-	// I assume DriverId and Rater to be uneditable.
 }
