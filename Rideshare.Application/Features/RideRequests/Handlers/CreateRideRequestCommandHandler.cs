@@ -56,7 +56,7 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
 
                 var userId = matchedRideOffer.Driver.UserId;
                 var rideRequestDto = _mapper.Map<RideRequestDto>(rideRequest);
-                _hubService.MatchFound(userId, rideRequestDto);
+                await _hubService.MatchFound(userId, rideRequestDto);
             }
             else
             {
