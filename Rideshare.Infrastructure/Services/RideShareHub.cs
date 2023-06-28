@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using NetTopologySuite.Geometries;
 using Rideshare.Application.Common.Dtos;
+using Rideshare.Application.Common.Dtos.RideOffers;
+using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Contracts.Infrastructure;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Contracts.Services;
@@ -17,30 +20,46 @@ public class RideShareHub : Hub<IRideShareHubClient>
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapboxService _mapboxService;
     private readonly IUserAccessor _userAccessor;
+    private readonly IMapper _mapper;
 
-    public RideShareHub(IUnitOfWork unitOfWork, IMapboxService mapboxService, IUserAccessor userAccessor)
+    public RideShareHub(IUnitOfWork unitOfWork, IMapboxService mapboxService, IUserAccessor userAccessor, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapboxService = mapboxService;
         _userAccessor = userAccessor;
+        _mapper = mapper;
     }
 
-    public async Task SendLocation(LocationDto locationDto)
+    public async Task UpdateLocation(LocationDto location)
     {
-        var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(_userAccessor.GetUserId());
-        var driverOffers = (IReadOnlyList<RideOffer>)(await _unitOfWork.RideOfferRepository.GetRideOffersOfDriver(driver.Id, PageSize: int.MaxValue))["rideoffers"];
-        foreach (RideOffer offer in driverOffers)
-        {
-            var newCoordinate = new Point(locationDto.Latitude, locationDto.Longitude);
-            var geocode = await _mapboxService.GetAddressFromCoordinates(newCoordinate);
-            var newLocation = new GeographicalLocation(){
-                Coordinate = newCoordinate,
-                Address = geocode
-            };
-            await _unitOfWork.RideOfferRepository.UpdateCurrentLocation(offer, newLocation);
-        }
-        
+        var id = _userAccessor.GetUserId();
+        var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(id);
+        var geolocation = _mapper.Map<GeographicalLocation>(location);
+        var rideOffer = await _unitOfWork.RideOfferRepository.GetActiveRideOfferOfDriver(driver.Id);
+        await _unitOfWork.RideOfferRepository.UpdateCurrentLocation(rideOffer, geolocation);
     }
+
+    public async Task AddPassenger(int rideRequestId)
+    {
+        var id = _userAccessor.GetUserId();
+        var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(id);
+        var rideOffer = await _unitOfWork.RideOfferRepository.GetActiveRideOfferOfDriver(driver.Id);
+        var rideRequest = await _unitOfWork.RideRequestRepository.Get(rideRequestId);
+        rideRequest.Accepted = true;
+        rideOffer.AvailableSeats -= rideRequest.NumberOfSeats;
+        await _unitOfWork.RideOfferRepository.Update(rideOffer);
+        await _unitOfWork.RideRequestRepository.Update(rideRequest);
+        var userId = rideRequest.UserId;
+        var connections = await _unitOfWork.ConnectionRepository.GetByUserId(userId);
+
+        var rideOfferDto = _mapper.Map<RideOfferDto>(rideOffer);
+
+        foreach (var connection in connections)
+        {
+            await Clients.Client(connection.Id).Accepted(rideOfferDto);
+        }
+    }
+
 
     public async override Task OnConnectedAsync()
     {
