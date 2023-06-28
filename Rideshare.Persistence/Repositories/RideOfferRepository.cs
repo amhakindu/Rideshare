@@ -63,6 +63,7 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
     public async Task<IReadOnlyList<RideOffer>> GetActiveRideOffers(){
         return await _dbContext.Set<RideOffer>()
             .AsNoTracking()
+            .Include(ro => ro.Driver)
             .Include(ro => ro.CurrentLocation)
             .Include(ro => ro.Destination)
             .Where(rideoffer => rideoffer.Status == Status.ONROUTE || rideoffer.Status == Status.WAITING)
