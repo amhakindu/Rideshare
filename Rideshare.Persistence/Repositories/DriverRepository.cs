@@ -43,6 +43,12 @@ namespace Rideshare.Persistence.Repositories
             return driver;
         }
 
+         public async Task<Driver> GetDriverWithDetailsByUser(string id)
+        {
+            var driver = await _dbContext.Drivers.Include(driver => driver.User).FirstOrDefaultAsync(driver => driver.UserId == id);
+            return driver;
+        }
+
 
 
 

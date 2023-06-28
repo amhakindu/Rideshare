@@ -25,5 +25,6 @@ public interface IUserRepository
     Task<TokenDto?> RefreshToken(TokenDto tokenDto);
     Task<PaginatedResponse> GetUsersByRoleAsync(string role,  int pageNumber = 1,
         int pageSize = 10);
+    Task<int> GetCommuterCount(DateTime date);
 
 }

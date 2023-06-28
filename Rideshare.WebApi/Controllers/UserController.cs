@@ -184,6 +184,7 @@ public class UserController : BaseApiController
     }
 
     [HttpGet("filter")]
+    [ProducesResponseType(typeof(PaginatedUserList), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUsersByFilter(
            [FromQuery] string? phoneNumber,
            [FromQuery] string? roleName,
@@ -208,6 +209,7 @@ public class UserController : BaseApiController
         return getResponse<BaseResponse<PaginatedUserList>>(statuss, result);
     }
     [HttpDelete("{id}")]
+    [ProducesResponseType(typeof(Double), StatusCodes.Status200OK)]
 
     public async Task<IActionResult> Delete(string id)
     {
@@ -215,6 +217,17 @@ public class UserController : BaseApiController
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse<BaseResponse<Double>>(status, result);
+    }
+     [HttpGet("statstics/week")]
+     [Authorize(Roles ="Admin")]
+     [ProducesResponseType(typeof(CommuterCountDto), StatusCodes.Status200OK)]
+
+    public async Task<IActionResult> Handle()
+    {
+        var result = await _mediator.Send(new GetCommuterCountQuery {  });
+
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+        return getResponse<BaseResponse<CommuterCountDto>>(status, result);
     }
 }
 
