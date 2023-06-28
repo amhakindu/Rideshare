@@ -4,7 +4,7 @@ using Rideshare.Application.Responses;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.RideOffers.Commands;
 using Rideshare.Application.Exceptions;
-using Rideshare.Domain.Common;
+
 
 namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
 {
@@ -26,6 +26,10 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
             if (rideOffer == null)
                 throw new NotFoundException($"RideOffer with ID {command.RideOfferId} does not exist");
 
+            var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(command.UserId);
+            if(driver == null || driver.Id != rideOffer.Driver.Id)
+                throw new NotAllowedException("Only Owners Can Cancel Their RideOffers");
+
             var dbOperations = await _unitOfWork.RideOfferRepository.CancelRideOffer(command.RideOfferId);
 
             if (dbOperations == 0)
@@ -33,7 +37,7 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
 
             return new BaseResponse<Unit>{
                 Success = true,
-                Message = "RideOffer Deletion Successful",
+                Message = "RideOffer Cancellation Successful",
                 Value = Unit.Value,
             };
         }

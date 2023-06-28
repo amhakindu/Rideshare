@@ -39,23 +39,15 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
             try
             {
                 rideRequest = _mapper.Map<RideRequest>(request.RideRequestDto);
-            }
-            catch
-            {
-                throw new ValidationException("No Valid Address Found");
+            }catch{
+                throw new OperationFailure("No Valid Address Found");
             }
             var value = await _unitOfWork.RideRequestRepository.Add(rideRequest);
             if (value > 0)
             {
                 var matchedRideOffer = await _matchingService.MatchWithRideoffer(rideRequest);
-                if (matchedRideOffer == null)
-                {
-
-                    response.Success = false;
-                    response.Message = "No RideOffer Found That Can Complete This Request. Try Again Later";
-                    return response;
-
-                }
+                if(matchedRideOffer == null)
+                    throw new OperationFailure($"No RideOffer Found That Can Complete This Request. Try Again Later");
                 response.Message = "Creation Successful";
                 response.Value = new Dictionary<string, object>{
                     {"Id", rideRequest.Id},

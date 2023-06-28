@@ -218,7 +218,8 @@ public class DriverResolver : IValueResolver<CreateRideOfferDto, RideOffer, Driv
     }
     public Driver Resolve(CreateRideOfferDto source, RideOffer destination, Driver destMember, ResolutionContext context)
     {
-        return Task.Run(() => _unitOfWork.DriverRepository.Get(source.DriverID)).GetAwaiter().GetResult();
+        var vehicle =Task.Run(() => _unitOfWork.VehicleRepository.Get(source.VehicleID)).GetAwaiter().GetResult();
+        return Task.Run(() => _unitOfWork.DriverRepository.Get(vehicle.DriverId)).GetAwaiter().GetResult();
     }
 }
 

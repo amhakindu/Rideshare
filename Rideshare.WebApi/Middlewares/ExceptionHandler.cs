@@ -40,7 +40,24 @@ public class ExceptionHandler : IMiddleware
                     Errors=new List<string>{exception.Message}
                 }
             );
-        }else if(exception is NotFoundException){
+        }else if(exception is OperationFailure){
+            context.Response.StatusCode = (int)HttpStatusCode.OK;
+            await context.Response.WriteAsJsonAsync<BaseResponse<Unit>>(
+                new BaseResponse<Unit>{
+                    Success=false,
+                    Message=$"{exception.Message}",
+                }
+            );
+        }else if(exception is NotAllowedException){
+            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            await context.Response.WriteAsJsonAsync<BaseResponse<Unit>>(
+                new BaseResponse<Unit>{
+                    Success=false,
+                    Message=$"{exception.Message}",
+                }
+            );
+        }
+        else if(exception is NotFoundException){
             context.Response.StatusCode = (int)HttpStatusCode.NotFound;
             await context.Response.WriteAsJsonAsync<BaseResponse<Unit>>(
                 new BaseResponse<Unit>{
