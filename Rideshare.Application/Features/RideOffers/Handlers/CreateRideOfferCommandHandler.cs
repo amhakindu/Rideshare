@@ -27,11 +27,19 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
             if(!await _unitOfWork.VehicleRepository.Exists(command.RideOfferDto.VehicleID))
                 throw new NotFoundException($"Vehicle with ID {command.RideOfferDto.VehicleID} does not exist");
             var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(command.UserId);
-            if(driver == null)
-                throw new OperationFailure($"Only A Driver Can Create A RideOffer");
+            if(driver == null){
+                return new BaseResponse<int>(){
+                    Success=false,
+                    Message="Only A Driver Can Create A RideOffer",
+                };
+            }
 
-            if(await _unitOfWork.RideOfferRepository.GetActiveRideOfferOfDriver(driver.Id) != null)
-                throw new OperationFailure("A Driver Can Only Provide One RideOffer At a Time");
+            if(await _unitOfWork.RideOfferRepository.GetActiveRideOfferOfDriver(driver.Id) != null){
+                return new BaseResponse<int>(){
+                    Success=false,
+                    Message="A Driver Can Only Provide One RideOffer At a Time",
+                };
+            }
 
             var validator = new CreateRideOfferDtoValidator();
             var validationResult = await validator.ValidateAsync(command.RideOfferDto);
@@ -40,8 +48,12 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
 
             var rideOffer = _mapper.Map<RideOffer>(command.RideOfferDto);
 
-            if(rideOffer.EstimatedFare == 0 && rideOffer.EstimatedDuration.TotalSeconds == 0)
-                throw new ValidationException("No Route Found For The Given Origin and Destination");
+            if(rideOffer.EstimatedFare == 0 && rideOffer.EstimatedDuration.TotalSeconds == 0){
+                return new BaseResponse<int>(){
+                    Success=false,
+                    Message="No Route Found For The Given Origin and Destination",
+                };
+            }
 
             var dbOperations = await _unitOfWork.RideOfferRepository.Add(rideOffer);
 
