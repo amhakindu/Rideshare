@@ -26,6 +26,12 @@ public class RideOffersController : BaseApiController
     [ProducesResponseType(typeof(BaseResponse<int>), StatusCodes.Status201Created)]
     public async Task<IActionResult> Post([FromBody] CreateRideOfferDto createRideOfferDto)
     {
+        
+        Console.WriteLine($" LONG CURRENT{createRideOfferDto.CurrentLocation.Longitude}");
+        Console.WriteLine($"latURRENT {createRideOfferDto.CurrentLocation.Latitude}");
+        Console.WriteLine(createRideOfferDto.Destination.Longitude);
+        Console.WriteLine(createRideOfferDto.Destination.Latitude);
+        
         var result = await _mediator.Send(new CreateRideOfferCommand { RideOfferDto = createRideOfferDto, UserId = _userAccessor.GetUserId() });
         
         var status = result.Success ? HttpStatusCode.Created: HttpStatusCode.BadRequest;
