@@ -43,6 +43,7 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
                 return new BaseResponse<Dictionary<string, object>>(){
                     Success=false,
                     Message=$"No Valid Address Found",
+                    Value = { },
                 };
             }
             var value = await _unitOfWork.RideRequestRepository.Add(rideRequest);
@@ -54,6 +55,7 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
                     return new BaseResponse<Dictionary<string, object>>(){
                         Success=false,
                         Message=$"No RideOffer Found That Can Complete This Request. Try Again Later",
+                        Value = { },
                     };
                 }
                 response.Message = "Creation Successful";

@@ -31,6 +31,7 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
                 return new BaseResponse<int>(){
                     Success=false,
                     Message="Only A Driver Can Create A RideOffer",
+                    Value = 0
                 };
             }
 
@@ -38,6 +39,7 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
                 return new BaseResponse<int>(){
                     Success=false,
                     Message="A Driver Can Only Provide One RideOffer At a Time",
+                    Value = 0,
                 };
             }
 
@@ -52,6 +54,7 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
                 return new BaseResponse<int>(){
                     Success=false,
                     Message="No Route Found For The Given Origin and Destination",
+                    Value = 0
                 };
             }
 
