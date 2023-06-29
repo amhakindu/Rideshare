@@ -43,8 +43,10 @@ public class GetRideRequestListQueryHandler : IRequestHandler<GetRideRequestList
         var rides = _mapper.Map<List<RideRequest>, List<RideRequestDto>>(rideReqs);
         response.Message = "Fetch Successful";
         response.Value = new PaginatedResponseDto<RideRequestDto>();
+
         response.Value.PageNumber = request.PageNumber;
         response.Value.PageSize = request.PageSize;
+        response.Value.Count = result.Count;
         response.Value.Paginated = rides;
 
         return response;

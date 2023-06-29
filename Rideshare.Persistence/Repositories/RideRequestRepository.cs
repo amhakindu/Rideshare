@@ -3,6 +3,7 @@ using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Entities;
 using static Rideshare.Application.Common.Constants.Utils;
 using Rideshare.Domain.Common;
+using Rideshare.Application.Common.Dtos.Security;
 
 namespace Rideshare.Persistence.Repositories;
 
@@ -20,9 +21,9 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
     {
         return _dbContext.Set<RideRequest>()
             .AsNoTracking()
-            .Include(ro => ro.Origin)
-            .Include(ro => ro.Destination)
-            .FirstOrDefault(ro => ro.Id == id);
+            .Include(rr => rr.Origin)
+            .Include(rr => rr.Destination)
+            .FirstOrDefault(rr => rr.Id == id);
     }
     public async Task<int> Add(RideRequest entity)
     {
@@ -47,15 +48,20 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
         return await Update(entity);
     }
 
-    public async Task<IReadOnlyList<RideRequest>> GetAll(int pageNumber=1, int pageSize=10)
+    public async Task<PaginatedResponse<RideRequest>> GetAll(int pageNumber=1, int pageSize=10)
     {
-        return await _dbContext.Set<RideRequest>()
+        var response = new PaginatedResponse<RideRequest>();
+        
+        var rideRequests = await _dbContext.Set<RideRequest>()
             .AsNoTracking()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-            .Include(ro => ro.Origin)
-            .Include(ro => ro.Destination)
+            .Include(rr => rr.Origin)
+            .Include(rr => rr.Destination)
             .ToListAsync();
+        response.Count = await _dbContext.RideRequests.CountAsync();
+        response.Paginated = rideRequests;
+        return response;
     }
     public async Task<Dictionary<string, int>> GetTop5Commuter()
     {
@@ -87,9 +93,9 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
     {
         return await _dbContext.Set<RideRequest>()
             .AsNoTracking()
-            .Include(ro => ro.Origin)
-            .Include(ro => ro.Destination)
+            .Include(rr => rr.Origin)
+            .Include(rr => rr.Destination)
             .Include(rr => rr.User)
-            .FirstOrDefaultAsync(ro => ro.Id == riderequestId);
+            .FirstOrDefaultAsync(rr => rr.Id == riderequestId);
     }
 }
