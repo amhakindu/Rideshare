@@ -29,23 +29,23 @@ namespace Rideshare.UnitTests.Users
             {
                 UserCreationDto = new UserCreationDto
                 {
-                    
-                     Roles = new RoleDto
-                   { Id = "role1", Name = "Role 1" },
-                    
+
+                    Roles = new RoleDto
+                    { Id = "role1", Name = "Role 1" },
+
                     FullName = "testuser",
-                    PhoneNumber = "1234567890",
+                    PhoneNumber = "+251123456789",
                     Age = 30
                 }
             };
 
-           
+
             var expectedUser = new ApplicationUser();
             var expectedUserDto = new UserDto();
             mapperMock.Setup(mapper => mapper.Map<ApplicationUser>(command.UserCreationDto)).Returns(expectedUser);
             mapperMock.Setup(mapper => mapper.Map<UserDto>(expectedUser)).Returns(expectedUserDto);
 
-            
+
             var response = await handler.Handle(command, CancellationToken.None);
 
             Assert.True(response.Success);
