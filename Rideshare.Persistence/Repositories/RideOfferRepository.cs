@@ -229,24 +229,41 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
         DbSet<RideOffer> rideOffers = _dbContext.Set<RideOffer>();
         if(month != null && year != null){
             // Weekly
-            return await rideOffers.Where(rideoffer => rideoffer.Status == (status ?? rideoffer.Status))
+            var temp = await rideOffers.Where(rideoffer => rideoffer.Status == (status ?? rideoffer.Status))
                 .Where(rideoffer => rideoffer.DateCreated.Year == year)
                 .Where(rideoffer => rideoffer.DateCreated.Month == month)
-                .GroupBy(rideoffer => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(rideoffer.DateCreated, CalendarWeekRule.FirstDay, DayOfWeek.Sunday))
+                .GroupBy(rideoffer => rideoffer.DateCreated.Day / 7 + 1)
                 .ToDictionaryAsync(group => group.Key, group => group.Count());
-
+            for (int i = 1; i <= 5; i++)
+            {
+                if(!temp.ContainsKey(i))
+                    temp.Add(i, 0);
+            }
+            return temp;
         }else if(month == null && year == null){
             // Yearly
-            return await rideOffers
+            var temp = await rideOffers
                 .Where(rideoffer => rideoffer.Status == (status ?? rideoffer.Status))
                 .GroupBy(rideoffer => rideoffer.DateCreated.Year)
                 .ToDictionaryAsync(g => g.Key, g => g.Count());
+            for (int i = 2023; i <= DateTime.Now.Year; i++)
+            {
+                if(!temp.ContainsKey(i))
+                    temp.Add(i, 0);
+            }
+            return temp;
         }else{   
             // Monthly
-            return await rideOffers.Where(rideoffer => rideoffer.Status == (status ?? rideoffer.Status))
+            Dictionary<int, int> temp = await rideOffers.Where(rideoffer => rideoffer.Status == (status ?? rideoffer.Status))
                 .Where(rideoffer => rideoffer.DateCreated.Year == year)
                 .GroupBy(rideoffer => rideoffer.DateCreated.Month)
                 .ToDictionaryAsync(g => g.Key, g => g.Count());
+            for (int i = 1; i < 13; i++)
+            {
+                if(!temp.ContainsKey(i))
+                    temp.Add(i, 0);
+            }
+            return temp;
         }
     }
     public async Task<Dictionary<string, Dictionary<int, int>>> GetRideOfferStatisticsWithStatus(int? year, int? month){

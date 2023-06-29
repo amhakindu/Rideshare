@@ -23,6 +23,7 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
             var rideofferChange = await _unitOfWork.RideOfferRepository.GetLastWeekPercentageChange();
             var riderequestChange = await _unitOfWork.RideRequestRepository.GetLastWeekPercentageChange();
             var driverChange = await _unitOfWork.DriverRepository.GetLastWeekPercentageChange();
+            var vehicleChange = await _unitOfWork.VehicleRepository.GetLastWeekPercentageChange();
             
             return new BaseResponse<IList<EntityCountChangeDto>>{
                 Success = true,
@@ -39,9 +40,14 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
                         PercentageChange=riderequestChange
                     },
                     new EntityCountChangeDto(){
-                        Name="rideoffers",
+                        Name="drivers",
                         CurrentCount=await _unitOfWork.DriverRepository.Count(),
                         PercentageChange=driverChange
+                    },
+                    new EntityCountChangeDto(){
+                        Name="vehicles",
+                        CurrentCount=await _unitOfWork.DriverRepository.Count(),
+                        PercentageChange=vehicleChange
                     },
                 }
             };
