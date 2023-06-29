@@ -114,21 +114,40 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
                  .Where(r => r.DateCreated.Year == year)
                  .GroupBy(item => item.DateCreated.Month)
                  .ToDictionaryAsync(g => g.Key, g => g.Count());
+
+            for(int i = 1; i < 13; i++  ){
+            if (!rideRequests.ContainsKey(i)){
+                rideRequests.Add(i,0);
+            }
+            }
         }
-        else if (type == "weekly")
+        if (type == "weekly")
         {
             rideRequests = await _dbContext.Set<RideRequest>().AsNoTracking()
                 .Where(r => r.DateCreated.Year == year)
                 .Where(r => r.DateCreated.Month == month)
-                .GroupBy(r => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(r.DateCreated, CalendarWeekRule.FirstDay, DayOfWeek.Sunday))
+                .GroupBy(r => r.DateCreated.Day / 7 + 1)
                 .ToDictionaryAsync(g => g.Key, g => g.Count());
+          for(int i = 1; i < 6; i++  ){
+            if (!rideRequests.ContainsKey(i)){
+                rideRequests.Add(i,0);
+            }
+            }
         }
-        else
+         if (type == "yearly")
         {
             rideRequests = await _dbContext.Set<RideRequest>().AsNoTracking()
                  .GroupBy(item => item.DateCreated.Year)
                  .ToDictionaryAsync(g => g.Key, g => g.Count());
+
+            for(int i = 2023; i < DateTime.Now.Year; i++  ){
+            if (!rideRequests.ContainsKey(i)){
+                rideRequests.Add(i,0);
+            }
+            }
         }
+
+      
         return rideRequests;
     }
 
@@ -142,33 +161,57 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
                  .Where(r => r.DateCreated.Year == year)
                  .GroupBy(item => item.DateCreated.Month)
                  .ToDictionaryAsync(g => g.Key, g => g.Count());
+
+
+                   for(int i = 1; i < 13; i++  ){
+            if (!rideRequests.ContainsKey(i)){
+                rideRequests.Add(i,0);
+            }
+            }
         }
-        else if (type == "weekly")
+        if (type == "weekly")
         {
             rideRequests = await _dbContext.Set<RideRequest>().AsNoTracking()
                 .Where(r => r.Status == status)
                 .Where(r => r.DateCreated.Year == year)
                 .Where(r => r.DateCreated.Month == month)
-                .GroupBy(r => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(r.DateCreated, CalendarWeekRule.FirstDay, DayOfWeek.Sunday))
+                .GroupBy(r => r.DateCreated.Day / 7 + 1)
                 .ToDictionaryAsync(g => g.Key, g => g.Count());
+
+            for(int i = 1; i < 6; i++  ){
+            if (!rideRequests.ContainsKey(i)){
+                rideRequests.Add(i,0);
+            }
+            }
         }
-        else
+        if (type == "yearly")
         {
             rideRequests = await _dbContext.Set<RideRequest>().AsNoTracking()
                  .Where(r => r.Status == status)
                  .GroupBy(item => item.DateCreated.Year)
-                 .ToDictionaryAsync(g => g.Key, g => g.Count());
+          
+               .ToDictionaryAsync(g => g.Key, g => g.Count());
         }
+
+         for(int i = 2023; i < DateTime.Now.Year; i++  ){
+            if (!rideRequests.ContainsKey(i)){
+                rideRequests.Add(i,0);
+            }
+            }
         return rideRequests;
     }
 
 
-    public async Task<PaginatedResponse<RideRequest>> SearchByGivenParameter(int PageNumber, int PageSize, Status? status, int? fare, string? name, string? phoneNumber)
+    public async Task<PaginatedResponse<RideRequest>> SearchByGivenParameter(int PageNumber, int PageSize, Status? status, double? fare, string? name, string? phoneNumber)
     {
 
         var response = new PaginatedResponse<RideRequest>();
 
         var rideRequestQuery = _dbContext.Set<RideRequest>()
+            .AsNoTracking()
+            .Include(rr => rr.Origin)
+            .Include(rr => rr.Destination)
+            .Include(rr => rr.User)
             .Where(item => (item.Status == (status ?? item.Status)))
             .Where(item => (item.User.PhoneNumber == (phoneNumber ?? item.User.PhoneNumber)))
             .Where(item => (item.CurrentFare <= (fare ?? item.CurrentFare)))
@@ -200,8 +243,9 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
 
         var response = new PaginatedResponse<RideRequest>();
         var query = _dbContext.Set<RideRequest>()
-        .Where(r => r.UserId == UserId)
-           .AsNoTracking();
+            .AsNoTracking()
+            .Where(r => r.UserId == UserId);
+           
         var count = await query.CountAsync();
         var rideRequests = await query.Skip((PageNumber - 1) * PageSize)
             .Take(PageSize)

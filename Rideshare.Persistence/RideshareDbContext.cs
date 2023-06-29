@@ -62,6 +62,9 @@ public class RideshareDbContext: IdentityDbContext<ApplicationUser,ApplicationRo
         modelBuilder.Entity<RideOffer>()
             .HasOne<GeographicalLocation>(rideoffer => rideoffer.CurrentLocation);
 
+        modelBuilder.Entity<RideRequest>()
+            .HasOne<ApplicationUser>(rideRequest => rideRequest.User)
+            .WithMany();
         modelBuilder.Entity<RideOffer>()
             .HasOne<GeographicalLocation>(rideoffer => rideoffer.Destination);
 

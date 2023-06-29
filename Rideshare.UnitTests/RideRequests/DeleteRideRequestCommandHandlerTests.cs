@@ -36,7 +36,7 @@ public class DeleteRideRequestCommandHandlerTests
        {
               int prevCount = (await _mockUnitOfWork.Object.RideRequestRepository.GetAll()).Count;
               
-               var result = await _handler.Handle(new DeleteRideRequestCommand() {  Id =  1,UserId = "user1"}, CancellationToken.None);
+               var result = await _handler.Handle(new DeleteRideRequestCommand() {  Id =  1}, CancellationToken.None);
                
               (await _mockUnitOfWork.Object.RideRequestRepository.GetAll()).Count.ShouldBe(prevCount-1);
        }
@@ -47,7 +47,7 @@ public class DeleteRideRequestCommandHandlerTests
               
                  await Should.ThrowAsync<NotFoundException>(async () =>
     {
-           var result = await _handler.Handle(new DeleteRideRequestCommand() { Id = 30 ,UserId = "user1"}, CancellationToken.None);
+           var result = await _handler.Handle(new DeleteRideRequestCommand() { Id = 30 }, CancellationToken.None);
     });    
        }
 
@@ -57,7 +57,7 @@ public class DeleteRideRequestCommandHandlerTests
               
                  await Should.ThrowAsync<NotFoundException>(async () =>
     {
-           var result = await _handler.Handle(new DeleteRideRequestCommand() { Id = 1 ,UserId = "user2"}, CancellationToken.None);
+           var result = await _handler.Handle(new DeleteRideRequestCommand() { Id = 1 }, CancellationToken.None);
            
     });    
        }

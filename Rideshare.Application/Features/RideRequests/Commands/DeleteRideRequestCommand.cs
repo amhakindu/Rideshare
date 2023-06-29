@@ -7,5 +7,4 @@ namespace Rideshare.Application.Features.RideRequests.Commands;
 public class DeleteRideRequestCommand : IRequest<BaseResponse<Unit>>
 {
     public int Id{ get; set; } 
-    public string?  UserId { get; set; }
 }
