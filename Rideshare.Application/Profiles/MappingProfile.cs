@@ -160,7 +160,12 @@ public class GeocodingResolver : IValueResolver<LocationDto, GeographicalLocatio
     public string Resolve(LocationDto source, GeographicalLocation destination, string destMember, ResolutionContext context)
     {
         Point loc = new Point(source.Longitude, source.Latitude);
+        Point loc2 = new Point(source.Longitude, source.Latitude) { SRID = 4326 };
+        Console.WriteLine("lattitude", source.Longitude, "longtude", source.Latitude);
+        Console.WriteLine("lattitude1", loc.X, "longtude1", loc.Y);
+        Console.WriteLine("lattitude2", loc2.X, "longtude2", loc2.Y);
         var address = Task.Run(() => _mapboxService.GetAddressFromCoordinates(loc)).GetAwaiter().GetResult();
+        Console.WriteLine("address", address);
         return address;
     }
 }
