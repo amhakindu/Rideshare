@@ -6,6 +6,7 @@ using static Rideshare.Application.Common.Constants.Utils;
 using Rideshare.Domain.Entities;
 using Rideshare.Domain.Common;
 using System.Globalization;
+using Rideshare.Application.Common.Dtos.Security;
 
 namespace Rideshare.Persistence.Repositories;
 
@@ -76,9 +77,11 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
             .Where(ro => (ro.Status == Status.WAITING) || (ro.Status == Status.ONROUTE))
             .FirstOrDefaultAsync();
     }
-    public async Task<IReadOnlyList<RideOffer>> GetAll(int pageNumber, int pageSize)
+    public async Task<PaginatedResponse<RideOffer>> GetAll(int pageNumber, int pageSize)
     {
-        return await _dbContext.Set<RideOffer>()
+        var response = new PaginatedResponse<RideOffer>();
+        
+        var rideOffers = await _dbContext.Set<RideOffer>()
             .AsNoTracking()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
@@ -86,24 +89,28 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
             .Include(ro => ro.CurrentLocation)
             .Include(ro => ro.Destination)
             .ToListAsync();
+        response.Count = await _dbContext.RideOffers.CountAsync();
+        response.Paginated = rideOffers;
+        return response;
     }
     
-    public async Task<Dictionary<string, object>> GetAllPaginated(int pageNumber=1, int pageSize=10)
+    public async Task<PaginatedResponse<RideOffer>> GetAllPaginated(int pageNumber=1, int pageSize=10)
     {
+        var response = new PaginatedResponse<RideOffer>();
         var query = _dbContext.Set<RideOffer>()
             .AsNoTracking();
 
-        var count = await query.CountAsync();
         var rideoffers = await query.Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .Include(ro => ro.Driver)
             .Include(ro => ro.CurrentLocation)
             .Include(ro => ro.Destination)
             .ToListAsync();
-        return new Dictionary<string, object>(){
-            {"count", count},
-            {"rideoffers", rideoffers}
-        };
+
+        response.Count = await query.CountAsync();
+        response.Paginated = rideoffers;
+        return response;
+        
     }
     public async Task<int> UpdateCurrentLocation(RideOffer rideoffer, GeographicalLocation location){
         var locations = await _dbContext.Locations.ToListAsync();
@@ -140,8 +147,10 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
         return await Update(entity);
     }
 
-    public async Task<Dictionary<string, object>> GetRideOffersOfDriver(int DriverID, int PageNumber=1, int PageSize=10)
+    public async Task<PaginatedResponse<RideOffer>> GetRideOffersOfDriver(int DriverID, int PageNumber=1, int PageSize=10)
     {
+
+        var response = new PaginatedResponse<RideOffer>();
         var query = _dbContext.Set<RideOffer>()
             .AsNoTracking()
             .Where(rideOffer => rideOffer.Driver.Id == DriverID);
@@ -155,10 +164,12 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
             .Include(ro => ro.Destination)
             .ToListAsync();
 
-        return new Dictionary<string, object>(){
-            {"count", count},
-            {"rideoffers", rideoffers}
-        };
+        response.Count = await query.CountAsync();
+        response.Paginated = rideoffers;
+
+        return response;
+        
+        
     }
 
     public async Task<IReadOnlyList<ModelAndCountDto>> NoTopModelOffers()
@@ -189,7 +200,10 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
 
         return result;
     }
-    public async Task<Dictionary<string, object>> SearchAndFilter(double MinCost, double MaxCost, string? driverName, string? driverPhoneNumber, Status? status, int PageNumber=1, int PageSize=10){
+    public async Task<PaginatedResponse<RideOffer>> SearchAndFilter(double MinCost, double MaxCost, string? driverName, string? driverPhoneNumber, Status? status, int PageNumber=1, int PageSize=10){
+
+        var response = new PaginatedResponse<RideOffer>();
+
         var query = _dbContext.Set<RideOffer>()
             .Where(rideoffer => rideoffer.Driver.User.FullName == (driverName ?? rideoffer.Driver.User.FullName))
             .Where(rideoffer => rideoffer.Driver.User.PhoneNumber == (driverPhoneNumber ?? rideoffer.Driver.User.PhoneNumber))
@@ -204,10 +218,10 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
             .Include(ro => ro.CurrentLocation)
             .Include(ro => ro.Destination)
             .ToListAsync();
-        return new Dictionary<string, object>(){
-            {"count", count},
-            {"rideoffers", rideoffers}
-        };
+        
+        response.Count = await query.CountAsync();
+        response.Paginated = rideoffers;
+        return response;
     }
 
     public async Task<Dictionary<int, int>> GetRideOfferStatistics(int? year, int? month, Status? status){

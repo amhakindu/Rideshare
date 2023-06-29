@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Common;
 
@@ -35,12 +36,21 @@ namespace Rideshare.Persistence.Repositories;
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public async Task<IReadOnlyList<T>> GetAll(int pageNumber=1, int pageSize=10)
+        public async Task<PaginatedResponse<T>> GetAll(int pageNumber=1, int pageSize=10)
         {
-            return await _dbContext.Set<T>().AsNoTracking()
+            var response = new PaginatedResponse<T>(){
+
+                Paginated = await _dbContext.Set<T>().AsNoTracking()
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToListAsync(),
+                Count = await _dbContext.Set<T>().CountAsync()
+                
+
+            };
+
+            return response;
+            
         }
 
         public async Task<int> Update(T entity)

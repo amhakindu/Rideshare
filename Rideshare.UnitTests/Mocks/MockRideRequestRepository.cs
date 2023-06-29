@@ -1,5 +1,6 @@
 using Moq;
 using NetTopologySuite.Geometries;
+using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Common;
 using Rideshare.Domain.Entities;
@@ -34,7 +35,7 @@ public class MockRideRequestRepository
                 NumberOfSeats = 1,
                 UserId = "user1"
             },
-            
+
             new ()
             {
                 Id=3,
@@ -70,8 +71,20 @@ public class MockRideRequestRepository
         };
         var mockRepo = new Mock<IRideRequestRepository>();
 
-        mockRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(rideRequests);
-        
+        mockRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync((int pageNumber, int pageSize) =>
+        {
+
+            var response = new PaginatedResponse<RideRequest>();
+            var result = rideRequests.AsQueryable().Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+            response.Count = rideRequests.Count();
+            response.Paginated = result;
+            return response;
+
+        }
+                        );
         mockRepo.Setup(r => r.Add(It.IsAny<RideRequest>())).ReturnsAsync((RideRequest rideRequest) =>
         {
             rideRequest.Id = rideRequests.Count() + 1;

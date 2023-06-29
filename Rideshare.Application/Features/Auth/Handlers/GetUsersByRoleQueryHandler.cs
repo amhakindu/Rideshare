@@ -28,7 +28,7 @@ public sealed class GetUsersByRoleQueryHandler : IRequestHandler<GetUsersByRoleQ
 
 
         var usersWithRoles = new List<UserDtoForAdmin>();
-        foreach (var u in allApplicationUsers.PaginatedUsers)
+        foreach (var u in allApplicationUsers.Paginated)
         {
             var user = new UserDtoForAdmin
             {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Moq;
+using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.UnitTests.Mocks;
@@ -48,7 +49,19 @@ namespace Rideshare.UnitTests.Mocks
 
             var mockRepo = new Mock<IDriverRepository>();
 
-            mockRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(drivers);
+            mockRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync((int pageNumber, int pageSize) => {
+
+                var response = new PaginatedResponse<Driver>();
+                var result = drivers.AsQueryable().Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+                response.Count = drivers.Count();
+                response.Paginated = result;
+                return response;
+
+            }
+                );
             mockRepo.Setup(r => r.Get(It.IsAny<int>())).ReturnsAsync((int id) => drivers.FirstOrDefault(d => d.Id == id));
             mockRepo.Setup(r => r.Add(It.IsAny<Driver>())).ReturnsAsync((Driver driver) =>
             {
@@ -102,6 +115,7 @@ namespace Rideshare.UnitTests.Mocks
             mockRepo.Setup(r => r.GetDriversWithDetails(It.IsAny<int>(), It.IsAny<int>()))
             .ReturnsAsync((int pageNumber, int pageSize) =>
             {
+                var response = new PaginatedResponse<Driver>();
                 var paginatedDrivers = drivers
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
@@ -113,7 +127,11 @@ namespace Rideshare.UnitTests.Mocks
                     })
                     .ToList();
 
-                return paginatedDrivers;
+                response.Count = drivers.Count;
+                response.Paginated = paginatedDrivers;
+
+
+                return response;
             });
 
             return mockRepo;
