@@ -33,7 +33,7 @@ public class GetYearlyCommuterCountQueryHandler : IRequestHandler<GetYearlyCommu
 		{
 			var startDate = new DateTime(year, 1, 1);
 			var endDate = startDate.AddYears(1).AddDays(-1);
-			var count = commuters.PaginatedUsers.Count(u => u.CreatedAt >= startDate && u.CreatedAt <= endDate);
+			var count = commuters.Paginated.Count(u => u.CreatedAt >= startDate && u.CreatedAt <= endDate);
 			yearlyCounts.YearlyCounts.Add(year.ToString(), count);
 		}
 
