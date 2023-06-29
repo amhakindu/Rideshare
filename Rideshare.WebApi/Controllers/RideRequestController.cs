@@ -7,13 +7,14 @@ using Rideshare.Application.Features.RideRequests.Commands;
 using Rideshare.Application.Features.RideRequests.Commands;
 using Rideshare.Application.Features.RideRequests.Queries;
 using Rideshare.Application.Features.Userss;
+using Rideshare.Application.Responses;
 using Rideshare.Domain.Common;
 using Rideshare.Domain.Common;
 
 namespace Rideshare.WebApi.Controllers;
 
 
-// [ApiController]
+[ApiController]
 [Authorize]
 [Route("api/[controller]")]
 
@@ -24,19 +25,21 @@ public class RideRequestController : BaseApiController
     }
 
    
-    [Authorize(Roles = "Commuter,Admin")]
+    
     [HttpGet("{id}")]
-
+    [Authorize(Roles = "Commuter")]
+    [ProducesResponseType(typeof(BaseResponse<RideRequestDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get(int id)
     {
         var result = await _mediator.Send(new GetRideRequestQuery { Id = id,UserId = _userAccessor.GetUserId() });
-
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
-        return getResponse(status, result);
+        return getResponse<BaseResponse<RideRequestDto>>(status, result);
     }
 
-    [Authorize(Roles = "Commuter,Admin")]
-    [HttpGet("search")]
+    
+    [HttpGet("Search")]
+    [Authorize(Roles = "Admin")]
+    [ProducesResponseType(typeof(BaseResponse<Dictionary<string, IReadOnlyList<RideRequestDto>>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCommuterRequests([FromQuery] SearchAndFilterDto searchAndFilterDto,[FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
      var result = await _mediator.Send(new GetRideRequestListQuery{ SearchAndFilterDto = searchAndFilterDto,PageNumber=pageNumber, PageSize = pageSize});
@@ -45,8 +48,9 @@ public class RideRequestController : BaseApiController
         return getResponse(status, result);
     }
 
-    [Authorize(Roles = "Commuter,Admin")]
-    [HttpGet("search")]
+    
+    [HttpGet("User/requests")]
+    [Authorize(Roles = "Commuter")]
     public async Task<IActionResult> GetUserRequests([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
      var result = await _mediator.Send(new GetRideRequestUserQuery {PageNumber=pageNumber, PageSize = pageSize,UserId = _userAccessor.GetUserId() });
@@ -54,9 +58,8 @@ public class RideRequestController : BaseApiController
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);
     }
-
-
-
+    
+    
     [HttpGet("all")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
@@ -91,10 +94,10 @@ public class RideRequestController : BaseApiController
 
     
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Commuter")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
-        var result = await _mediator.Send(new DeleteRideRequestCommand { Id = id ,UserId = _userAccessor.GetUserId()});
+        var result = await _mediator.Send(new DeleteRideRequestCommand { Id = id });
 
         var status = result.Success ? HttpStatusCode.NoContent : HttpStatusCode.NotFound;
         return getResponse(status, result);
@@ -111,7 +114,7 @@ public class RideRequestController : BaseApiController
         return getResponse(status, result);
     }
 
-    [HttpGet("stat/status")]
+    [HttpGet("status/statstics")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAllStatStatus([FromQuery] RideRequestStatDto rideRequestStatDto)
     {
@@ -121,7 +124,7 @@ public class RideRequestController : BaseApiController
         return getResponse(status, result);
     }
 
-    [HttpGet("stat")]
+    [HttpGet("statstics")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAllStat([FromQuery] RideRequestStatDto rideRequestStatDto)
     {
