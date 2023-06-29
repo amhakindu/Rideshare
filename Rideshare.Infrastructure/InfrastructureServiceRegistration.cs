@@ -33,22 +33,14 @@ public  static class InfrastructureServiceRegistration
         
         services.AddScoped<IRideshareMatchingService>(
             provider => {
-                double doubleValue = 500.0;
+                double doubleValue = 5000.0;
 
                 var unitOfWork = provider.GetRequiredService<IUnitOfWork>();
                 var mapboxService = provider.GetRequiredService<IMapboxService>();
 
                 return new RideshareMatchingService(unitOfWork, mapboxService, doubleValue);
-                // }
             }
         );
         return services;
     }
-
-    // public static void UseInfrastructureServices(this IApplicationBuilder app)
-    // {
-
-
-    // }
-
 }

@@ -47,12 +47,13 @@ public class VehicleRepository : GenericRepository<Vehicle>, IVehicleRepository
         var vehicleCounts = await _dbContext.Vehicles
             .Where(v => v.DateCreated.Year == year)
             .GroupBy(v => v.DateCreated.Month)
-            .Select(g => new
+            .ToDictionaryAsync(g => g.Key, g => g.Count());
+
+            for (int month = 1; month <= 12; month++)
             {
-                Month = g.Key,
-                Count = g.Count()
-            })
-            .ToDictionaryAsync(g => g.Month, g => g.Count);
+                if(!vehicleCounts.ContainsKey(month))
+                    vehicleCounts.Add(month, 0);
+            }
 
         return vehicleCounts;
     }
@@ -68,23 +69,27 @@ public class VehicleRepository : GenericRepository<Vehicle>, IVehicleRepository
             })
             .ToDictionaryAsync(g => g.Year, g => g.Count);
 
+        for (int year = 2023; year <= DateTime.Now.Year; year++)
+        {
+            if(!vehicleCounts.ContainsKey(year))
+                vehicleCounts.Add(year, 0);
+        }
+
         return vehicleCounts;
     }
 
     private async Task<Dictionary<int, int>> GetNoVehicleByWeek(int year, int month)
     {
-        var vehicles = await _dbContext.Vehicles
+        var vehicleCounts = await _dbContext.Vehicles
             .Where(v => v.DateCreated.Year == year && v.DateCreated.Month == month)
-            .ToListAsync();
+            .GroupBy(v => (int)(v.DateCreated.Day / 7) + 1)
+            .ToDictionaryAsync(group => group.Key, group =>group.Count());
 
-        var vehicleCounts = vehicles
-            .GroupBy(v => CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(v.DateCreated, CalendarWeekRule.FirstDay, DayOfWeek.Sunday))
-            .Select(g => new
+            for (int week = 1; week <= 5; week++)
             {
-                Week = g.Key,
-                Count = g.Count()
-            })
-            .ToDictionary(g => g.Week, g => g.Count);
+                if(!vehicleCounts.ContainsKey(week))
+                    vehicleCounts.Add(week, 0);
+            }
 
         return vehicleCounts;
     }
