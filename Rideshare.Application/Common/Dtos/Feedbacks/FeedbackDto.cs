@@ -10,5 +10,6 @@ namespace Rideshare.Application.Common.Dtos.Feedbacks
     public class FeedbackDto: CommonDto
     {
         public string UserId { get; set; }
+        public DateTime DateCreated {get; set;}
     }
 }

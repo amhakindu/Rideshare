@@ -35,6 +35,7 @@ namespace Rideshare.UnitTests.Users
 
                     FullName = "testuser",
                     PhoneNumber = "+251123456789",
+                    PhoneNumber = "+251234567890",
                     Age = 30
                 }
             };

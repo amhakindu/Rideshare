@@ -29,7 +29,7 @@ public sealed class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, 
 
 
         var usersWithRoles = new List<UserDtoForAdmin>();
-        foreach (var u in allApplicationUsers.PaginatedUsers)
+        foreach (var u in allApplicationUsers.Paginated)
         {
             var user = new UserDtoForAdmin
             {

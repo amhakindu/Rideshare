@@ -1,5 +1,7 @@
 using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Domain.Common;
+using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Domain.Common;
 using Rideshare.Domain.Entities;
 using Rideshare.Domain.Models;
 
@@ -14,5 +16,9 @@ public interface IRideRequestRepository : IGenericRepository<RideRequest>
     Task<Dictionary<string,object>> GetAllRequests(int PageNumber, int PageSize);
     Task<Dictionary<string,object>> GetAllUserRequests(int PageNumber, int PageSize,string UserId);
 
+
+    Task<List<GeographicalLocation>> GetPopularDestinationsOfCommuter(string UserId, int limit);
+    Task<RideRequest?> GetRideRequestWithDetail(int riderequestId);
+    Task<PaginatedResponse<RideRequest>> GetAll(int pageNumber=1, int pageSize=10);
 
 }

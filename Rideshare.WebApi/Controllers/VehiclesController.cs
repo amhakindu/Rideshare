@@ -53,7 +53,7 @@ public class VehiclesController : BaseApiController
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Driver")]
     public async Task<IActionResult> Post([FromForm] CreateVehicleDto createVehicleDto)
     {
         var result = await _mediator.Send(new CreateVehicleCommand { VehicleDto = createVehicleDto });

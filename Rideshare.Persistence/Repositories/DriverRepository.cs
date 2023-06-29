@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Entities;
 using System;
@@ -28,18 +29,27 @@ namespace Rideshare.Persistence.Repositories
 
         }
 
-        public async Task<List<Driver>> GetDriversWithDetails(int pageNumber, int pageSize)
+        public async Task<PaginatedResponse<Driver>> GetDriversWithDetails(int pageNumber, int pageSize)
         {
+            var response = new PaginatedResponse<Driver>();
             var drivers = await _dbContext.Drivers.Include(driver => driver.User)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
-            return drivers;
+            response.Count = await _dbContext.Drivers.CountAsync();
+            response.Paginated = drivers;
+            return response;
         }
 
         public async Task<Driver> GetDriverWithDetails(int id)
         {
             var driver = await _dbContext.Drivers.Include(driver => driver.User).FirstOrDefaultAsync(driver => driver.Id == id);
+            return driver;
+        }
+
+         public async Task<Driver> GetDriverWithDetailsByUser(string id)
+        {
+            var driver = await _dbContext.Drivers.Include(driver => driver.User).FirstOrDefaultAsync(driver => driver.UserId == id);
             return driver;
         }
 

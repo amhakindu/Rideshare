@@ -43,20 +43,15 @@ public class RideShareHub : Hub<IRideShareHubClient>
     {
         var id = _userAccessor.GetUserId();
         var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(id);
-        var rideOffer = await _unitOfWork.RideOfferRepository.GetActiveRideOfferOfDriver(driver.Id);
+        var rideOffer = await _unitOfWork.RideOfferRepository.GetRideOfferWithDetail(driver.Id);
         var rideRequest = await _unitOfWork.RideRequestRepository.Get(rideRequestId);
-        rideRequest.Accepted = true;
-        rideOffer.AvailableSeats -= rideRequest.NumberOfSeats;
-        await _unitOfWork.RideOfferRepository.Update(rideOffer);
-        await _unitOfWork.RideRequestRepository.Update(rideRequest);
+        await _unitOfWork.RideOfferRepository.AcceptRideRequest(rideRequestId);
         var userId = rideRequest.UserId;
         var connections = await _unitOfWork.ConnectionRepository.GetByUserId(userId);
-
-        var rideOfferDto = _mapper.Map<RideOfferDto>(rideOffer);
-
+        var commuterViewOfRideOfferDto = _mapper.Map<CommuterViewOfRideOfferDto>(rideOffer);
         foreach (var connection in connections)
         {
-            await Clients.Client(connection.Id).Accepted(rideOfferDto);
+            await Clients.Client(connection.Id).Accepted(commuterViewOfRideOfferDto);
         }
     }
 
