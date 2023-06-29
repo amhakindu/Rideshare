@@ -10,6 +10,8 @@ using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.RideRequests.Commands;
 using Rideshare.Application.Responses;
 using Rideshare.Domain.Entities;
+using System.Net;
+using System;
 
 namespace Rideshare.Application.Features.Tests.Handlers;
 
@@ -40,29 +42,19 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
             {
                 rideRequest = _mapper.Map<RideRequest>(request.RideRequestDto);
             }catch{
-                return new BaseResponse<Dictionary<string, object>>(){
-                    Success=false,
-                    Message=$"No Valid Address Found",
-                    Value = new Dictionary<string, object>{
-                    {"Id", 1},
-                   
-                },
+
+
+                throw new ValidationException("No Valid Address Found");
                 };
-            }
+        
             var value = await _unitOfWork.RideRequestRepository.Add(rideRequest);
             if (value > 0)
             {
                 var matchedRideOffer = await _matchingService.MatchWithRideoffer(rideRequest);
                 if(matchedRideOffer == null){
                     await _unitOfWork.RideRequestRepository.Delete(rideRequest);
-                    return new BaseResponse<Dictionary<string, object>>(){
-                        Success=false,
-                        Message=$"No RideOffer Found That Can Complete This Request. Try Again Later",
-                        Value = new Dictionary<string, object>{
-                    {"Id", rideRequest.Id},
-                    {"MatchedRide", _mapper.Map<RideOfferDto>(rideRequest.MatchedRide)}
-                },
-                    };
+                    throw new ValidationException("No RideOffer Found That Can Complete This Request. Try Again Later");
+                  
                 }
                 response.Message = "Creation Successful";
                 response.Value = new Dictionary<string, object>{
