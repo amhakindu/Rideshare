@@ -48,7 +48,7 @@ namespace Rideshare.Application.Features.Commuters.Handlers
 				var endDate = currentDay.AddDays(6) < lastDayOfMonth ? currentDay.AddDays(6) : lastDayOfMonth;
 				Console.WriteLine($"\n\n\n\n\n\n {(startDate, endDate)}, \n\n\n\n\n\n\n\n");
 				
-				var count = commuters.PaginatedUsers.Count(u => u.CreatedAt >= startDate && u.CreatedAt <= endDate.AddDays(1));
+				var count = commuters.Paginated.Count(u => u.CreatedAt >= startDate && u.CreatedAt <= endDate.AddDays(1));
 				weeklyCounts.WeeklyCounts.Add(weekNumber, count);
 				currentDay = currentDay.AddDays(7);
 				weekNumber++;

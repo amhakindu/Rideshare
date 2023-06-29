@@ -46,7 +46,7 @@ public class GetMonthlyCommuterCountQueryHandler : IRequestHandler<GetMonthlyCom
 			var startDate = new DateTime(request.Year, month, 1);
 			var endDate = startDate.AddMonths(1).AddDays(-1);
 			
-			var count = commuters.PaginatedUsers.Count(u => u.CreatedAt >= startDate && u.CreatedAt <= endDate);
+			var count = commuters.Paginated.Count(u => u.CreatedAt >= startDate && u.CreatedAt <= endDate);
 			monthlyCounts.MonthlyCounts.Add(month, count);
 		}
 
