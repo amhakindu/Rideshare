@@ -50,6 +50,7 @@ public class RideShareHub : Hub<IRideShareHubClient>
         var userId = rideRequest.UserId;
         var connections = await _unitOfWork.ConnectionRepository.GetByUserId(userId);
         var commuterViewOfRideOfferDto = _mapper.Map<CommuterViewOfRideOfferDto>(rideOffer);
+        Console.WriteLine($"Driver Name: {commuterViewOfRideOfferDto.DriverName}, DriverPhone number: {commuterViewOfRideOfferDto.DriverPhoneNumber}");
         foreach (var connection in connections)
         {
             await Clients.Client(connection.Id).Accepted(commuterViewOfRideOfferDto);
