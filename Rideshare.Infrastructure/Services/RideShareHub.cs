@@ -47,6 +47,7 @@ public class RideShareHub : Hub<IRideShareHubClient>
         Console.WriteLine($"Id found name: {driver.Id}");
         var rideOffer = await _unitOfWork.RideOfferRepository.GetRideOfferWithDetail(driver.Id);
      ;
+      Console.WriteLine($"Id found name: {rideOffer.Id}");
         var rideRequest = await _unitOfWork.RideRequestRepository.Get(rideRequestId);
         await _unitOfWork.RideOfferRepository.AcceptRideRequest(rideRequestId);
         var userId = rideRequest.UserId;
