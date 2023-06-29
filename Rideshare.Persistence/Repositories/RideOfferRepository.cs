@@ -284,7 +284,7 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
             .Include(ro => ro.Destination)
             .Include(ro => ro.Matches)
                 .ThenInclude(rr => rr.User)
-            .FirstOrDefaultAsync(ro => ro.Id == Id);
+            .FirstOrDefaultAsync(ro => ro.Driver.Id == Id);
     }
 }
 
