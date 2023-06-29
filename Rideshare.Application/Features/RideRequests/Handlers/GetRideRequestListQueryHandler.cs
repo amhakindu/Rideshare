@@ -24,19 +24,13 @@ public class GetRideRequestListQueryHandler : IRequestHandler<GetRideRequestList
 
 
     public async Task<BaseResponse<PaginatedResponseDto<RideRequestDto>>> Handle(GetRideRequestListQuery request, CancellationToken cancellationToken)
-    {
+    { 
 
-
+ 
         var response = new BaseResponse<PaginatedResponseDto<RideRequestDto>>();
 
         var result = await _unitOfWork.RideRequestRepository.SearchByGivenParameter(request.PageNumber, request.PageSize, request.SearchAndFilterDto!.status, request.SearchAndFilterDto.fare, request.SearchAndFilterDto.name!, request.SearchAndFilterDto.phoneNumber!);
-
-
-
-
-
-
-
+ 
         response.Message = "Fetch Successful";
         response.Value = new PaginatedResponseDto<RideRequestDto>();
 

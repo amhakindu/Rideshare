@@ -47,9 +47,9 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
 
         await _dbContext.AddAsync(entity);
 
-        if (entity.Origin == null)
+        if(entity.Origin == null)
             entity.Origin = temp1;
-        if (entity.Destination == null)
+        if(entity.Destination == null)
             entity.Destination = temp2;
         await _dbContext.SaveChangesAsync();
         return await Update(entity);

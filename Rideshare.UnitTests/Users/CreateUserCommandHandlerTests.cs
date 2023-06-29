@@ -29,10 +29,9 @@ namespace Rideshare.UnitTests.Users
             {
                 UserCreationDto = new UserCreationDto
                 {
-
+                    
                     Roles = new RoleDto
                     { Id = "role1", Name = "Role 1" },
-
                     FullName = "testuser",
                     PhoneNumber = "+251123456789",
                     Age = 30
