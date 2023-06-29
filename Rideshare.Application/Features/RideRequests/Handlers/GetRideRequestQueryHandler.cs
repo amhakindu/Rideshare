@@ -23,7 +23,7 @@ public class GetRideRequestQueryHandler : IRequestHandler<GetRideRequestQuery, B
     }
     public async Task<BaseResponse<RideRequestDto>> Handle(GetRideRequestQuery request, CancellationToken cancellationToken)
     {
-        var rideRequest = await _unitOfWork.RideRequestRepository.Get(request.Id);
+        var rideRequest = await _unitOfWork.RideRequestRepository.GetRideRequestWithDetail(request.Id);
         if(rideRequest == null)
             throw new NotFoundException($"RideRequest with {request.Id} not found");
         return new BaseResponse<RideRequestDto>(){

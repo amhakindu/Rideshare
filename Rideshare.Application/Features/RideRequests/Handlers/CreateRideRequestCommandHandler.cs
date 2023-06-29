@@ -40,7 +40,10 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
             {
                 rideRequest = _mapper.Map<RideRequest>(request.RideRequestDto);
             }catch{
-                throw new OperationFailure("No Valid Address Found");
+                return new BaseResponse<Dictionary<string, object>>(){
+                    Success=false,
+                    Message=$"No Valid Address Found",
+                };
             }
             var value = await _unitOfWork.RideRequestRepository.Add(rideRequest);
             if (value > 0)
@@ -48,7 +51,10 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
                 var matchedRideOffer = await _matchingService.MatchWithRideoffer(rideRequest);
                 if(matchedRideOffer == null){
                     await _unitOfWork.RideRequestRepository.Delete(rideRequest);
-                    throw new OperationFailure($"No RideOffer Found That Can Complete This Request. Try Again Later");
+                    return new BaseResponse<Dictionary<string, object>>(){
+                        Success=false,
+                        Message=$"No RideOffer Found That Can Complete This Request. Try Again Later",
+                    };
                 }
                 response.Message = "Creation Successful";
                 response.Value = new Dictionary<string, object>{
@@ -57,6 +63,7 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
                 };
 
                 var userId = matchedRideOffer.Driver.UserId;
+                rideRequest = await _unitOfWork.RideRequestRepository.GetRideRequestWithDetail(rideRequest.Id);
                 var rideRequestDto = _mapper.Map<RideRequestDto>(rideRequest);
                 await _hubService.MatchFound(userId, rideRequestDto);
             }

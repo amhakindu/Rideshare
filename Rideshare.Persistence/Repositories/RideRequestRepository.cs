@@ -39,9 +39,9 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
 
         await _dbContext.AddAsync(entity);
 
-        if(temp1 != null)
+        if(entity.Origin == null)
             entity.Origin = temp1;
-        if(temp2 != null)
+        if(entity.Destination == null)
             entity.Destination = temp2;
         await _dbContext.SaveChangesAsync();
         return await Update(entity);
@@ -81,5 +81,15 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
             .Select(group => group.Key)
             .Take(limit)
             .ToListAsync();
+    }
+
+    public async Task<RideRequest?> GetRideRequestWithDetail(int riderequestId)
+    {
+        return await _dbContext.Set<RideRequest>()
+            .AsNoTracking()
+            .Include(ro => ro.Origin)
+            .Include(ro => ro.Destination)
+            .Include(rr => rr.User)
+            .FirstOrDefaultAsync(ro => ro.Id == riderequestId);
     }
 }

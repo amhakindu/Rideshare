@@ -12,5 +12,5 @@ public class CommuterViewOfRideOfferDto
     public string VehiclePlateNumber { get; set; }
     public string DriverPhoneNumber { get; set; }
     public LocationDto CurrentLocation { get; set; }
-    public List<RideRequestDto> Matches;
+    public List<RideRequestDto> Matches { get; set; }
 }

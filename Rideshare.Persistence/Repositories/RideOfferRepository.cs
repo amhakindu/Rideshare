@@ -132,9 +132,9 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
             entity.Destination = null;
 
         await _dbContext.AddAsync(entity);
-        if(temp1 != null)
+        if(entity.CurrentLocation == null)
             entity.CurrentLocation = temp1;
-        if(temp2 != null)
+        if(entity.Destination == null)
             entity.Destination = temp2;
         int id = await _dbContext.SaveChangesAsync();
         return await Update(entity);
