@@ -59,6 +59,15 @@ public class RideShareHub : Hub<IRideShareHubClient>
         }
     }
 
+    public async Task Drop(string userID)
+    {
+        var connections = await _unitOfWork.ConnectionRepository.GetByUserId(userID);
+        foreach (var connection in connections)
+        {
+            await Clients.Client(connection.Id).OnDrop();
+        }
+    }
+
 
     public async override Task OnConnectedAsync()
     {
