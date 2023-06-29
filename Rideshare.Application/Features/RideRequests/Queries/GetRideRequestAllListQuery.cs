@@ -6,9 +6,8 @@ using Rideshare.Domain.Common;
 
 namespace Rideshare.Application.Features.RideRequests.Queries;
 
-public class GetRideRequestListQuery : IRequest<BaseResponse<PaginatedResponseDto<RideRequestDto>>>
+public class GetRideRequestAllListQuery :  IRequest<BaseResponse<PaginatedResponseDto<RideRequestDto>>>
 {
-    public SearchAndFilterDto? SearchAndFilterDto { get; set; }
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
-}
+    }

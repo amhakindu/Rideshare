@@ -37,7 +37,16 @@ public class GetRideRequestQueryHandlerTests
     }
        
     [Fact]
-    public async Task GetRideRequestInvalid()
+    public async Task GetRideRequestInvalidOne()
+    {
+         await Should.ThrowAsync<NotFoundException>(async () =>
+    {
+             await _handler.Handle(new GetRideRequestQuery() { Id = 30,UserId = "user1"}, CancellationToken.None);
+    });
+    }
+
+    [Fact]
+      public async Task GetRideRequestInvalidTwo()
     {
          await Should.ThrowAsync<NotFoundException>(async () =>
     {

@@ -72,9 +72,7 @@ public class RideOffersController : BaseApiController
 
     [HttpGet("Search")]
     [Authorize(Roles = "Admin")]
-    [ProducesResponseType(typeof(BaseResponse<Dictionary<string, IReadOnlyList<RideOfferListDto>>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(BaseResponse<Dictionary<string, int>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> SearchAndFilter([FromQuery]SearchAndFilterDto SearchDto, [FromQuery] int PageNumber=1, [FromQuery] int PageSize=10)
+    public async Task<IActionResult> SearchAndFilter([FromQuery] SearchAndFilterDto SearchDto, [FromQuery] int PageNumber=1, [FromQuery] int PageSize=10)
     {
         var result = await _mediator.Send(new SearchAndFilterQuery { PageNumber = PageNumber, PageSize = PageSize, SearchDto = SearchDto });
 

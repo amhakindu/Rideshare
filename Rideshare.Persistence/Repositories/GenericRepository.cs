@@ -9,32 +9,32 @@ namespace Rideshare.Persistence.Repositories;
     {
         private readonly RideshareDbContext _dbContext;
 
-        public GenericRepository(RideshareDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-        public async Task<int> Add(T entity)
-        {
-            await _dbContext.AddAsync(entity);
-            return await _dbContext.SaveChangesAsync();
-        }
+    public GenericRepository(RideshareDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+    public async Task<int> Add(T entity)
+    {
+        await _dbContext.AddAsync(entity);
+        return await _dbContext.SaveChangesAsync();
+    }
 
-        public async Task<int> Delete(T entity)
-        {
-            _dbContext.Set<T>().Remove(entity);
-            return await _dbContext.SaveChangesAsync();
-        }
+    public async Task<int> Delete(T entity)
+    {
+        _dbContext.Set<T>().Remove(entity);
+        return await _dbContext.SaveChangesAsync();
+    }
 
-        public async Task<bool> Exists(int id)
-        {
-            var entity = await Get(id);
-            return entity != null;
-        }
+    public async Task<bool> Exists(int id)
+    {
+        var entity = await Get(id);
+        return entity != null;
+    }
 
-        public async Task<T?> Get(int id)
-        {
-            return await _dbContext.Set<T>().FindAsync(id);
-        }
+    public async Task<T?> Get(int id)
+    {
+        return await _dbContext.Set<T>().FindAsync(id);
+    }
 
         public async Task<PaginatedResponse<T>> GetAll(int pageNumber=1, int pageSize=10)
         {
@@ -48,7 +48,6 @@ namespace Rideshare.Persistence.Repositories;
                 
 
             };
-
             return response;
             
         }

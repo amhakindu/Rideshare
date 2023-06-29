@@ -3,8 +3,6 @@ using Rideshare.Application;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Rideshare.WebApi.Middlewares;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
 using Rideshare.WebApi;
 using Rideshare.Infrastructure;
 using Rideshare.Infrastructure.Services;

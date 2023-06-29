@@ -57,7 +57,6 @@ public class RideshareMatchingService : IRideshareMatchingService
             var onPathNearRRdestination = shortestPath.Where(
                 point => HaversineDistance(point, rideRequest.Destination.Coordinate) < _radius
             ).ToList();
-
             foreach(var source in onPathNearRRorigin){
                 foreach(var sink in onPathNearRRdestination){
                     //Check if they are traveling in the same direction

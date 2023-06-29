@@ -33,7 +33,7 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
     {
         var response = new BaseResponse<Dictionary<string, object>>();
         var validator = new CreateRideRequestDtoValidator();
-        var validationResult = await validator.ValidateAsync(request.RideRequestDto);
+        var validationResult = await validator.ValidateAsync(request.RideRequestDto!);
 
         if (validationResult.IsValid == true)
         {
