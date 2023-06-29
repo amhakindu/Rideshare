@@ -213,8 +213,5 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
 
     }
 
-    Task<PaginatedResponse<RideRequest>> IRideRequestRepository.GetAll(int pageNumber, int pageSize)
-    {
-        throw new NotImplementedException();
-    }
+    
 }
