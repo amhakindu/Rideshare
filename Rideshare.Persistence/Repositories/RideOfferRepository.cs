@@ -1,3 +1,4 @@
+using System.ComponentModel.Design.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Rideshare.Application.Common.Dtos.Drivers;
 using Rideshare.Application.Common.Dtos.RideOffers;
@@ -283,8 +284,10 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
             .Include(ro => ro.CurrentLocation)
             .Include(ro => ro.Destination)
             .Include(ro => ro.Matches)
-                .ThenInclude(rr => rr.User)
-            .FirstOrDefaultAsync(ro => ro.Driver.Id == Id);
+                .ThenInclude(rr => rr.Origin)
+            .Include(ro => ro.Matches)
+                .ThenInclude(rr => rr.Destination)
+            .FirstOrDefaultAsync(ro => ro.Id == Id);
     }
 }
 
