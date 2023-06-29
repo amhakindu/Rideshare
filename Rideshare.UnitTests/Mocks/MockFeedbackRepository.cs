@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Moq;
+using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Entities;
 using System;
@@ -34,7 +35,19 @@ namespace Rideshare.UnitTests.Mocks
 
             var mockRepo = new Mock<IFeedbackRepository>();
 
-            mockRepo.Setup(r => r.GetAll(1, 10)).ReturnsAsync(feedbacks);
+            mockRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync((int pageNumber, int pageSize) => {
+
+                var response = new PaginatedResponse<Feedback>();
+                var result = feedbacks.AsQueryable().Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+                response.Count = feedbacks.Count();
+                response.Paginated = result;
+                return response;
+
+            }
+                );
 
             mockRepo.Setup(r => r.Add(It.IsAny<Feedback>())).ReturnsAsync((Feedback feedback) =>
             {

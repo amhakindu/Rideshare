@@ -1,8 +1,8 @@
 using Rideshare.Domain.Models;
 
 namespace Rideshare.Application.Common.Dtos.Security;
-public class PaginatedResponse
+public class PaginatedResponse<T>
     {
         public int Count { get; set; }
-        public List<ApplicationUser> PaginatedUsers { get; set; }
+        public IReadOnlyList<T> Paginated { get; set; }
     }

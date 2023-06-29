@@ -37,7 +37,6 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = 2,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
                     Longitude=38.7445,
@@ -64,7 +63,6 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = 1,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
                     Longitude=2.0,
@@ -85,7 +83,6 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = 1,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
                     Longitude=195.0,
@@ -106,7 +103,6 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = 1,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
                     Longitude=2.0,
@@ -127,7 +123,6 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = 1,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
                     Longitude=2.0,
@@ -148,7 +143,6 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = 1,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
                     Longitude=1.0,
@@ -169,7 +163,6 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = 45678,
                 VehicleID = 1,
                 CurrentLocation = new LocationDto{
                     Longitude=2.0,
@@ -189,7 +182,6 @@ public class CreateRideOfferCommandHandlerTests
         var command = new CreateRideOfferCommand
         {
             RideOfferDto = new CreateRideOfferDto{
-                DriverID = 1,
                 VehicleID = 1000,
                 CurrentLocation = new LocationDto{
                     Longitude=2.0,

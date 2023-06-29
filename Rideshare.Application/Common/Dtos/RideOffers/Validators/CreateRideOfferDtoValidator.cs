@@ -8,9 +8,6 @@ public class CreateRideOfferDtoValidator : AbstractValidator<CreateRideOfferDto>
 
     public CreateRideOfferDtoValidator()
     {
-        RuleFor(dto => dto.DriverID)
-            .NotEmpty().WithMessage("Driver ID is required");
-
         RuleFor(dto => dto.VehicleID)
             .NotEmpty().WithMessage("Vehicle ID is required");
 

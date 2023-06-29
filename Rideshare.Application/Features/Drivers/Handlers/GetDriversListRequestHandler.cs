@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Rideshare.Application.Common.Dtos.Drivers;
+using Rideshare.Application.Common.Dtos.Pagination;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Drivers.Queries;
 using Rideshare.Application.Responses;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Rideshare.Application.Features.Drivers.Handlers
 {
-    public class GetDriversListRequestHandler : IRequestHandler<GetDriversListRequest, BaseResponse<List<DriverDetailDto>>>
+    public class GetDriversListRequestHandler : IRequestHandler<GetDriversListRequest, BaseResponse<PaginatedResponseDto<DriverDetailDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -23,15 +24,19 @@ namespace Rideshare.Application.Features.Drivers.Handlers
             _unitOfWork = unitOfWork;
 
         }
-        public async Task<BaseResponse<List<DriverDetailDto>>> Handle(GetDriversListRequest request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<PaginatedResponseDto<DriverDetailDto>>> Handle(GetDriversListRequest request, CancellationToken cancellationToken)
         {
-            var response = new BaseResponse<List<DriverDetailDto>>();
-            var drivers = await _unitOfWork.DriverRepository.GetDriversWithDetails(request.PageNumber, request.PageSize);
+            var response = new BaseResponse<PaginatedResponseDto<DriverDetailDto>>();
+            var result = await _unitOfWork.DriverRepository.GetDriversWithDetails(request.PageNumber, request.PageSize);
 
 
             response.Success = true;
             response.Message = "Fetch Succesful";
-            response.Value = _mapper.Map<List<DriverDetailDto>>(drivers);
+            response.Value = new PaginatedResponseDto<DriverDetailDto>();
+            response.Value.Count = result.Count;
+            response.Value.PageNumber = request.PageNumber;
+            response.Value.PageSize = request.PageSize;
+            response.Value.Paginated = _mapper.Map<List<DriverDetailDto>>(result.Paginated);
 
 
             return response;

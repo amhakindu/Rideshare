@@ -10,6 +10,8 @@ using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.RideRequests.Commands;
 using Rideshare.Application.Responses;
 using Rideshare.Domain.Entities;
+using System.Net;
+using System;
 
 namespace Rideshare.Application.Features.Tests.Handlers;
 
@@ -20,9 +22,9 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
     private readonly IRideshareMatchingService _matchingService;
     private readonly IRideShareHubService _hubService;
 
-    public  CreateRideRequestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IRideshareMatchingService matchingService, IRideShareHubService rideShareHubService)
+    public CreateRideRequestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IRideshareMatchingService matchingService, IRideShareHubService rideShareHubService)
     {
-        _unitOfWork =  unitOfWork;
+        _unitOfWork = unitOfWork;
         _mapper = mapper;
         _matchingService = matchingService;
         _hubService = rideShareHubService;
@@ -33,19 +35,27 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
         var validator = new CreateRideRequestDtoValidator();
         var validationResult = await validator.ValidateAsync(request.RideRequestDto!);
 
-        if (validationResult.IsValid == true){
+        if (validationResult.IsValid == true)
+        {
             RideRequest rideRequest;
-            try{
+            try
+            {
                 rideRequest = _mapper.Map<RideRequest>(request.RideRequestDto);
             }catch{
+
+
                 throw new ValidationException("No Valid Address Found");
-            }
-            var value =  await _unitOfWork.RideRequestRepository.Add(rideRequest);
+                };
+        
+            var value = await _unitOfWork.RideRequestRepository.Add(rideRequest);
             if (value > 0)
             {
                 var matchedRideOffer = await _matchingService.MatchWithRideoffer(rideRequest);
-                if(matchedRideOffer == null)
-                    throw new ValidationException($"No RideOffer Found That Can Complete This Request. Try Again Later");
+                if(matchedRideOffer == null){
+                    await _unitOfWork.RideRequestRepository.Delete(rideRequest);
+                    throw new ValidationException("No RideOffer Found That Can Complete This Request. Try Again Later");
+                  
+                }
                 response.Message = "Creation Successful";
                 response.Value = new Dictionary<string, object>{
                     {"Id", rideRequest.Id},
@@ -53,8 +63,9 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
                 };
 
                 var userId = matchedRideOffer.Driver.UserId;
+                rideRequest = await _unitOfWork.RideRequestRepository.GetRideRequestWithDetail(rideRequest.Id);
                 var rideRequestDto = _mapper.Map<RideRequestDto>(rideRequest);
-                _hubService.MatchFound(userId, rideRequestDto);
+                await _hubService.MatchFound(userId, rideRequestDto);
             }
             else
             {
@@ -63,10 +74,10 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
         }
         else
         {
-           throw new ValidationException(validationResult.Errors.Select(e => e.ErrorMessage).ToList().First());
+            throw new ValidationException(validationResult.Errors.Select(e => e.ErrorMessage).ToList().First());
         }
 
         return response;
-        
+
     }
 }
