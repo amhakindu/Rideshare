@@ -17,19 +17,17 @@ namespace Rideshare.Application.Features.Commuters.Handlers
 		{
 			_userRepository = userRepository;
 		}
-
 		public async Task<BaseResponse<WeeklyCommuterCountDto>> Handle(GetWeeklyCommuterCountQuery request, CancellationToken cancellationToken)
 		{
 			var validator = new WeeklyCommuterCountRequestValidator();
 			var validationResult = await validator.ValidateAsync((request.Year, request.Month));
 
-			
 			if (!validationResult.IsValid)
-				{
-					throw new ValidationException(validationResult.Errors.Select(e => e.ErrorMessage).ToList().First());
-				}
-			
-		var commuters = await _userRepository.GetUsersByRoleAsync("Commuter", 1, (int)429496729);
+			{
+				throw new ValidationException(validationResult.Errors.Select(e => e.ErrorMessage).ToList().First());
+			}
+
+			var commuters = await _userRepository.GetUsersByRoleAsync("Commuter", 1, (int)429496729);
 			var weeklyCounts = new WeeklyCommuterCountDto
 			{
 				Year = request.Year,
@@ -38,14 +36,19 @@ namespace Rideshare.Application.Features.Commuters.Handlers
 			};
 
 			var firstDayOfMonth = new DateTime(request.Year, request.Month, 1);
+			var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+			var totalWeeks = (lastDayOfMonth.Day + (int)firstDayOfMonth.DayOfWeek - 1) / 7 + 1;
+
 			var currentDay = firstDayOfMonth;
 			var weekNumber = 1;
 
-			while (currentDay.Month == request.Month && weekNumber <= 4)
+			while (currentDay.Month == request.Month && currentDay <= lastDayOfMonth && weekNumber <= totalWeeks)
 			{
 				var startDate = currentDay;
-				var endDate = startDate.AddDays(6);
-				var count = commuters.PaginatedUsers.Count(u => u.CreatedAt >= startDate && u.CreatedAt <= endDate);
+				var endDate = currentDay.AddDays(6) < lastDayOfMonth ? currentDay.AddDays(6) : lastDayOfMonth;
+				Console.WriteLine($"\n\n\n\n\n\n {(startDate, endDate)}, \n\n\n\n\n\n\n\n");
+				
+				var count = commuters.PaginatedUsers.Count(u => u.CreatedAt >= startDate && u.CreatedAt <= endDate.AddDays(1));
 				weeklyCounts.WeeklyCounts.Add(weekNumber, count);
 				currentDay = currentDay.AddDays(7);
 				weekNumber++;
@@ -54,11 +57,12 @@ namespace Rideshare.Application.Features.Commuters.Handlers
 			var response = new BaseResponse<WeeklyCommuterCountDto>
 			{
 				Success = true,
-				Message = $"Weekly commuter count for {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(request.Month)} {request.Year} fetched Successfully",
+				Message = $"Weekly commuter count for {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(request.Month)} {request.Year} fetched successfully",
 				Value = weeklyCounts
 			};
 
 			return response;
 		}
+		
 	}
 }
