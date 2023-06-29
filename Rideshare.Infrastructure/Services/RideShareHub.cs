@@ -59,6 +59,17 @@ public class RideShareHub : Hub<IRideShareHubClient>
         }
     }
 
+    public async Task Drop(int rideRequestId)
+    {
+        var rideRequest = await _unitOfWork.RideRequestRepository.Get(rideRequestId);
+        var userId = rideRequest.UserId;
+        var connections = await _unitOfWork.ConnectionRepository.GetByUserId(userId);
+        foreach (var connection in connections)
+        {
+            await Clients.Client(connection.Id).OnDrop();
+        }
+    }
+
 
     public async override Task OnConnectedAsync()
     {

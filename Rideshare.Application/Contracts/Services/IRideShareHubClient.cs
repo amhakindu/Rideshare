@@ -12,4 +12,5 @@ public interface IRideShareHubClient
 {
     Task MatchFound(RideRequestDto rideRequestDto);
     Task Accepted(CommuterViewOfRideOfferDto commuterViewOfRideOfferDto);
+    Task OnDrop();
 }
