@@ -41,6 +41,7 @@ public class RideShareHub : Hub<IRideShareHubClient>
 
     public async Task AddPassenger(int rideRequestId)
     {
+        Console.WriteLine($"AddPassenger rideReuqestId {rideRequestId}");
         var id = _userAccessor.GetUserId();
         var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(id);
         var rideOffer = await _unitOfWork.RideOfferRepository.GetRideOfferWithDetail(driver.Id);
