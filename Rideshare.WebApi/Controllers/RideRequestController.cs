@@ -49,7 +49,7 @@ public class RideRequestController : BaseApiController
     }
 
     
-    [HttpGet("User/requests")]
+    [HttpGet("User/Requests")]
     [Authorize(Roles = "Commuter")]
     public async Task<IActionResult> GetUserRequests([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
@@ -60,7 +60,7 @@ public class RideRequestController : BaseApiController
     }
     
     
-    [HttpGet("all")]
+    [HttpGet("All")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
@@ -104,9 +104,9 @@ public class RideRequestController : BaseApiController
     }
 
     
-    [HttpPut("{id}")]
+    [HttpPut("{id}/Cancel")]
     [Authorize(Roles = "Commuter")]
-    public async Task<IActionResult> PutStatus([FromBody] UpdateRideRequestDto rideRequestDto,int id)
+    public async Task<IActionResult> PutStatus(int id)
     {
         var result = await _mediator.Send(new UpdateRideRequestStatusCommand{ Id = id ,UserId = _userAccessor.GetUserId()});
 
@@ -114,7 +114,7 @@ public class RideRequestController : BaseApiController
         return getResponse(status, result);
     }
 
-    [HttpGet("status/statstics")]
+    [HttpGet("Status/Statstics")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetStatStatus([FromQuery] RideRequestStatDto rideRequestStatDto)
     {
@@ -124,7 +124,7 @@ public class RideRequestController : BaseApiController
         return getResponse(status, result);
     }
 
-    [HttpGet("AllStatus/statstics")]
+    [HttpGet("AllStatus/Statstics")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAllStatStatus()
     {
@@ -134,7 +134,7 @@ public class RideRequestController : BaseApiController
         return getResponse(status, result);
     }
 
-    [HttpGet("statstics")]
+    [HttpGet("Statstics")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAllStat([FromQuery] RideRequestStatDto rideRequestStatDto)
     {
