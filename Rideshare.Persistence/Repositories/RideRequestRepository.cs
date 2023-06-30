@@ -256,6 +256,27 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
         return response;
 
     }
-
     
+
+    public async Task<Dictionary<string, int>> GetStatusStatistics()
+    {
+          return new Dictionary<string, int>(){
+            {"WAITING", await GetStatusNumber(Status.WAITING)},
+            {"ONROUTE", await GetStatusNumber(Status.ONROUTE)},
+            {"COMPLETED", await GetStatusNumber(Status.COMPLETED)},
+            {"CANCELLED", await GetStatusNumber(Status.CANCELLED)} 
+        };
+    }
+
+    public async Task<int> GetStatusNumber (Status status) {
+        var response = new PaginatedResponse<RideRequest>();
+        var query = _dbContext.Set<RideRequest>()
+            .AsNoTracking()
+            .Where(r => r.Status == status);
+           
+        var count = await query.CountAsync();
+        return count;
+    }
+
+
 }

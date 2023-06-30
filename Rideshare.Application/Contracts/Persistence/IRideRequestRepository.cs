@@ -19,5 +19,5 @@ public interface IRideRequestRepository : IGenericRepository<RideRequest>
 
     Task<List<GeographicalLocation>> GetPopularDestinationsOfCommuter(string UserId, int limit);
     Task<RideRequest?> GetRideRequestWithDetail(int riderequestId);
-
+    Task<Dictionary<string,int>> GetStatusStatistics();
 }

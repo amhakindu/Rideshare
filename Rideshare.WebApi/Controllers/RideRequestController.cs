@@ -116,9 +116,19 @@ public class RideRequestController : BaseApiController
 
     [HttpGet("status/statstics")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetAllStatStatus([FromQuery] RideRequestStatDto rideRequestStatDto)
+    public async Task<IActionResult> GetStatStatus([FromQuery] RideRequestStatDto rideRequestStatDto)
     {
         var result = await _mediator.Send(new GetRideRequestStatusStatsticsQuery{RideRequestStatDto = rideRequestStatDto});
+
+        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
+        return getResponse(status, result);
+    }
+
+    [HttpGet("AllStatus/statstics")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetAllStatStatus()
+    {
+        var result = await _mediator.Send(new GetRideRequestAllStatusStatsticsQuery{ });
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);
