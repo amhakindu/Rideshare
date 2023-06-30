@@ -45,7 +45,7 @@ public class CreateRateCommandHandler : IRequestHandler<CreateRateCommand, BaseR
 			double total, count;
 			total = driver.Rate[0];
 			count = driver.Rate[1];
-            double average = (double)total / count;  
+            double average = Convert.ToDouble(total) / count;  
 			driver.Rate[2] = average;
 			
 			if  (await _unitOfWork.DriverRepository.Update(driver) == 0)
@@ -55,7 +55,7 @@ public class CreateRateCommandHandler : IRequestHandler<CreateRateCommand, BaseR
 			{
 				Success = true,
 				Message = "Rate Creation Successful",
-				Value = request.RateDto.Id,
+				Value = 1,
 			};
 		}
 	}

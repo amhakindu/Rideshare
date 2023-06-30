@@ -35,9 +35,10 @@ namespace Rideshare.UnitTests.RateTest.Queries
 		 [Fact]
 		public async Task GetRateListValid()
 		{
-			var result = await _handler.Handle(new GetRateListQuery() { }, CancellationToken.None);
+			
+			var result = await _handler.Handle(new GetRateListQuery {PageNumber = 1, PageSize = 10 }, CancellationToken.None);
 			result.Success.ShouldBeTrue();
-			result.Value?.Count.ShouldBe(3);
+			result.Value.Paginated.Count.ShouldBe(3);
 
 		}
 	}
