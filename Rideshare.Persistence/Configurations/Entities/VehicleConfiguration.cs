@@ -15,7 +15,7 @@ namespace Rideshare.Persistence.Configurations.Entities
                     PlateNumber = "ABC123",
                     NumberOfSeats = 40,
                     Model = "Toyota Camry",
-                    Libre = "Libre 1",
+                    Libre = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100796/xsabqbbff2jc7kqc6efx.pdf",
                     DriverId = 1
                 },
                 new Vehicle
@@ -24,7 +24,7 @@ namespace Rideshare.Persistence.Configurations.Entities
                     PlateNumber = "XYZ789",
                     NumberOfSeats = 5,
                     Model = "Honda Civic",
-                    Libre = "Libre 2",
+                    Libre =  "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100780/m39jk106ug96qt7e13me.pdf",
                     DriverId = 2
                 },
                 new Vehicle
@@ -33,7 +33,7 @@ namespace Rideshare.Persistence.Configurations.Entities
                     PlateNumber = "DEF456",
                     NumberOfSeats = 7,
                     Model = "Ford Explorer",
-                    Libre = "Libre 3",
+                    Libre = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100768/jo9dzde295c0ebkjr7hz.pdf",
                     DriverId = 3
                 },
                 new Vehicle
@@ -42,7 +42,7 @@ namespace Rideshare.Persistence.Configurations.Entities
                     PlateNumber = "MNO789",
                     NumberOfSeats = 4,
                     Model = "Hyundai Elantra",
-                    Libre = "Libre 4",
+                    Libre =  "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100754/xp7cy2ltzynyrkwlufzp.pdf",
                     DriverId = 4
                 },
                 new Vehicle
@@ -51,7 +51,7 @@ namespace Rideshare.Persistence.Configurations.Entities
                     PlateNumber = "PQR012",
                     NumberOfSeats = 6,
                     Model = "Nissan Altima",
-                    Libre = "Libre 5",
+                    Libre =  "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100699/iofw5wmwav58y9pems5w.pdf",
                     DriverId = 5
                 }
             );
