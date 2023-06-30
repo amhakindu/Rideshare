@@ -25,8 +25,6 @@ public class GetRideRequestAllListQueryHandler : IRequestHandler<GetRideRequestA
     public async Task<BaseResponse<PaginatedResponseDto<RideRequestDto>>> Handle(GetRideRequestAllListQuery request, CancellationToken cancellationToken)
     {
         var response = new BaseResponse<PaginatedResponseDto<RideRequestDto>>();
-        
-
         var result = await _unitOfWork.RideRequestRepository.GetAllRequests(request.PageNumber, request.PageSize);
 
         
