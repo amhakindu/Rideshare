@@ -63,6 +63,7 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
             .AsNoTracking()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
+            .Include(r => r.User)
             .Include(rr => rr.Origin)
             .Include(rr => rr.Destination)
             .ToListAsync();
