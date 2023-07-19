@@ -1,10 +1,7 @@
-using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Rideshare.Application.Common.Dtos.Security;
-using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Responses;
-using Rideshare.Domain.Models;
+using Rideshare.Application.Contracts.Identity;
+using Rideshare.Application.Common.Dtos.Security;
 
 namespace Rideshare.Application.Features.Commuters.Queries;
 public class GetCommuterStatusQueryHandler : IRequestHandler<GetCommuterStatusQuery, BaseResponse<CommuterStatusDto>>
@@ -18,9 +15,9 @@ public class GetCommuterStatusQueryHandler : IRequestHandler<GetCommuterStatusQu
 
 	public async Task<BaseResponse<CommuterStatusDto>> Handle(GetCommuterStatusQuery request, CancellationToken cancellationToken)
 	{
-		var commuters = await _userRepository.GetUsersByRoleAsync("Commuter", 1, (int)429496729);
+		var commuters = await _userRepository.GetUsersByRoleAsync("Commuter", 1, int.MaxValue);
 		int ActiveCommuters = 0; int IdleCommuters = 0;
-		foreach (var commuter in commuters.Paginated)
+		foreach (var commuter in commuters.Value)
 		{
 			if (commuter.LastLogin >= DateTime.Now.AddDays(-30))
 			{

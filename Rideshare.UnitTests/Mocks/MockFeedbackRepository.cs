@@ -1,13 +1,8 @@
-﻿using AutoMapper;
+﻿
 using Moq;
-using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Responses;
 using Rideshare.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rideshare.UnitTests.Mocks
 {
@@ -43,7 +38,7 @@ namespace Rideshare.UnitTests.Mocks
                 .ToList();
 
                 response.Count = feedbacks.Count();
-                response.Paginated = result;
+                response.Value = result;
                 return response;
 
             }

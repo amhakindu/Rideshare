@@ -1,27 +1,22 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Rideshare.Application.Common.Dtos.Tests;
-using Rideshare.Application.Common.Dtos.Vehicles;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Features.Tests.Commands;
-using Rideshare.Application.Features.Tests.Queries;
-using Rideshare.Application.Features.Userss;
-using Rideshare.Application.Features.Vehicles.Commands;
-using Rideshare.Application.Features.Vehicles.Queries;
-using Rideshare.Application.Responses;
 using System.Net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Rideshare.Application.Features.User;
+using Rideshare.Application.Common.Dtos.Vehicles;
+using Rideshare.Application.Features.Vehicles.Queries;
+using Rideshare.Application.Features.Vehicles.Commands;
 
 namespace Rideshare.WebApi.Controllers;
 
 [ApiController]
 [Authorize]
-[Route("api/[controller]")]
+[Route("api/vehicles")]
 public class VehiclesController : BaseApiController
 {
     public VehiclesController(IMediator mediator, IUserAccessor userAccessor) : base(mediator, userAccessor)
-    {}
-    public IUnitOfWork _unitOfWork { get; set; }
+    {
+    }
     
     [HttpGet("{id}")]
     [Authorize(Roles = "Commuter,Driver,Admin")]
@@ -32,17 +27,8 @@ public class VehiclesController : BaseApiController
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse(status, result);
     }
-    [HttpGet("NumberOfVehicle")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetNumberOfVihcle([FromQuery] string option, [FromQuery] int year, [FromQuery] int month)
-    {
-        var result = await _mediator.Send(new GetNumberOfVehicleQuery { option = option, Year = year, Month = month });
 
-        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
-        return getResponse(status, result);
-    }
-
-    [HttpGet]
+    [HttpGet("all")]
     [Authorize(Roles = "Commuter,Driver,Admin")]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {

@@ -1,6 +1,7 @@
 
 using System.Threading.Tasks;
 using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Application.Responses;
 using Rideshare.Domain.Models;
 
 namespace Rideshare.Application.Contracts.Identity;
@@ -25,6 +26,7 @@ public interface IUserRepository
     Task<TokenDto?> RefreshToken(TokenDto tokenDto);
     Task<PaginatedResponse<ApplicationUser>> GetUsersByRoleAsync(string role,  int pageNumber = 1,
         int pageSize = 10);
-    Task<int> GetCommuterCount(DateTime date);
-
+    Task<double> GetLastWeekPercentageChange();
+    Task<int> GetCommuterCount();
+    Task<Dictionary<int, int>> GetCommuterStatistics(int? year, int? month);
 }

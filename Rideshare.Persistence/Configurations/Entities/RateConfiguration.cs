@@ -11,8 +11,15 @@ namespace Rideshare.Persistence.Configurations.Entities
 			Random random = new Random();
 			return random.Next(start, end + 1);
 		}
+		DateTime GetRandomDate(DateTime start, DateTime end, Random random)
+		{
+			var range = (end - start).Days;
+			return start.AddDays(random.Next(range));
+		}
 		public void Configure(EntityTypeBuilder<RateEntity> builder)
 		{
+			var random = new Random();
+			var startDate = new DateTime(2023, 1, 1);
 			var userIds = new List<string>(){
 				"d5eade8b-11a4-4e26-b7e6-123456789000",
 				"123a8b56-c7d9-4e0a-89bf-123456789001",
@@ -63,7 +70,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 8.9,
 					DriverId = 1,
 					Description = "Great service!",
-					DateCreated = new DateTime(2023, 01, 02)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -72,7 +79,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 6.4,
 					DriverId = 2,
 					Description = "Average ride experience.",
-					DateCreated = new DateTime(2023, 01, 04)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -81,7 +88,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 10.0,
 					DriverId = 1,
 					Description = "Excellent driver, highly recommended.",
-					DateCreated = new DateTime(2023, 01, 06)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -90,7 +97,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 5.6,
 					DriverId = 4,
 					Description = "Disappointing service, need improvements.",
-					DateCreated = new DateTime(2023, 01, 08)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -99,7 +106,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 9.4,
 					DriverId = 1,
 					Description = "Very friendly driver, enjoyed the ride.",
-					DateCreated = new DateTime(2023, 01, 10)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -108,7 +115,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 8.4,
 					DriverId = 3,
 					Description = "Smooth ride, no complaints.",
-					DateCreated = new DateTime(2023, 01, 12)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -117,7 +124,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 7.8,
 					DriverId = 2,
 					Description = "Could be better, but decent service.",
-					DateCreated = new DateTime(2023, 01, 14)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -126,7 +133,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 9.2,
 					DriverId = 1,
 					Description = "Professional driver, satisfied with the ride.",
-					DateCreated = new DateTime(2023, 01, 16)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -135,7 +142,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 6.7,
 					DriverId = 4,
 					Description = "Could improve punctuality.",
-					DateCreated = new DateTime(2023, 01, 18)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -144,7 +151,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 7.5,
 					DriverId = 3,
 					Description = "Decent ride overall.",
-					DateCreated = new DateTime(2023, 01, 20)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -153,7 +160,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 9.8,
 					DriverId = 2,
 					Description = "Highly professional driver, would ride again.",
-					DateCreated = new DateTime(2023, 01, 22)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -162,7 +169,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 5.1,
 					DriverId = 4,
 					Description = "Unsatisfactory service, needs improvement.",
-					DateCreated = new DateTime(2023, 01, 24)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -171,7 +178,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 9.7,
 					DriverId = 1,
 					Description = "Great ride experience!",
-					DateCreated = new DateTime(2023, 01, 26)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -180,7 +187,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 7.3,
 					DriverId = 3,
 					Description = "Average service, nothing extraordinary.",
-					DateCreated = new DateTime(2023, 01, 28)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -189,7 +196,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 8.1,
 					DriverId = 2,
 					Description = "Good ride, no complaints.",
-					DateCreated = new DateTime(2023, 01, 30)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -198,7 +205,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 6.9,
 					DriverId = 1,
 					Description = "Could improve cleanliness.",
-					DateCreated = new DateTime(2023, 02, 01)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -207,7 +214,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 9.3,
 					DriverId = 4,
 					Description = "Pleasant and comfortable ride.",
-					DateCreated = new DateTime(2023, 02, 03)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -216,7 +223,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 7.7,
 					DriverId = 3,
 					Description = "Satisfactory service, would recommend.",
-					DateCreated = new DateTime(2023, 02, 05)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -225,7 +232,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 9.9,
 					DriverId = 2,
 					Description = "Exceptional ride, exceeded expectations.",
-					DateCreated = new DateTime(2023, 02, 07)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -234,7 +241,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 4.8,
 					DriverId = 4,
 					Description = "Terrible experience, would not recommend.",
-					DateCreated = new DateTime(2023, 02, 09)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -243,7 +250,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 9.6,
 					DriverId = 1,
 					Description = "Excellent service, very satisfied.",
-					DateCreated = new DateTime(2023, 02, 11)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -252,7 +259,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 7.2,
 					DriverId = 3,
 					Description = "Overall, a good experience.",
-					DateCreated = new DateTime(2023, 02, 13)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -261,7 +268,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 8.5,
 					DriverId = 2,
 					Description = "Polite and friendly driver.",
-					DateCreated = new DateTime(2023, 02, 15)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -270,7 +277,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 7.0,
 					DriverId = 1,
 					Description = "Average ride, nothing remarkable.",
-					DateCreated = new DateTime(2023, 02, 17)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -279,7 +286,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 9.1,
 					DriverId = 4,
 					Description = "Efficient service, no issues.",
-					DateCreated = new DateTime(2023, 02, 19)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -288,7 +295,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 8.0,
 					DriverId = 3,
 					Description = "Reliable driver, smooth ride.",
-					DateCreated = new DateTime(2023, 02, 21)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -297,7 +304,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 9.5,
 					DriverId = 2,
 					Description = "Outstanding service, highly recommended.",
-					DateCreated = new DateTime(2023, 02, 23)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -306,7 +313,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 4.3,
 					DriverId = 4,
 					Description = "Worst ride ever, avoid this driver.",
-					DateCreated = new DateTime(2023, 02, 25)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -315,7 +322,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 9.9,
 					DriverId = 1,
 					Description = "Exceptional ride, best driver I've had.",
-					DateCreated = new DateTime(2023, 02, 27)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new RateEntity
 				{
@@ -324,7 +331,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Rate = 7.5,
 					DriverId = 3,
 					Description = "Decent service, no major complaints.",
-					DateCreated = new DateTime(2023, 02, 28)
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
 				}
 
 

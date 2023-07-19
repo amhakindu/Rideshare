@@ -1,17 +1,13 @@
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using NetTopologySuite.Geometries;
 using Rideshare.Domain.Common;
-using Rideshare.Domain.Entities;
 using Rideshare.Domain.Models;
-using Rideshare.Persistence.Configurations.Security;
+using Rideshare.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Rideshare.Persistence;
 
 public class RideshareDbContext: IdentityDbContext<ApplicationUser,ApplicationRole,string>
 {
-
-	public DbSet<TestEntity> TestEntities{ get; set; }
 	public DbSet<RideOffer> RideOffers { get; set; }
 	public DbSet<GeographicalLocation> Locations { get; set; }    
 	public DbSet<Vehicle> Vehicles { get; set; }

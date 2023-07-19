@@ -58,21 +58,14 @@ namespace Rideshare.UnitTests.Drivers
                 Address = "Shiro meda",
                 LicenseNumber = "343dld34",
                 License = _mockIMG,
-
-
-
             };
 
-            var command = new CreateDriverCommand { CreateDriverDto = createDriverDto };
+            var command = new CreateDriverCommand { CreateDriverDto = createDriverDto, UserId="asdf-1234-ghjk-5678" };
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
             result.Value.ShouldBeOfType<int>();
             (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(3);
-
-
-
-
         }
 
         [Fact]

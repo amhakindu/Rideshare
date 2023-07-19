@@ -38,7 +38,7 @@ namespace Rideshare.Application.Features.Rates.Handlers
 				throw new NotFoundException("Resource Not Found");
 			
 			// Check if the UserId in the request matches the UserId of the rate in the database
-            if (rate.UserId != request.RateDto.UserId)
+            if (rate.UserId != request.UserId)
                 throw new UnauthorizedAccessException("You are not authorized to update this rate.");
 
 

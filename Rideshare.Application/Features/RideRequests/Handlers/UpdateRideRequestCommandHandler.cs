@@ -4,7 +4,6 @@ using Rideshare.Application.Common.Dtos.RideRequests.Validators;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.RideRequests.Commands;
-using Rideshare.Application.Features.Tests.Commands;
 using Rideshare.Application.Responses;
 
 namespace Rideshare.Application.Features.RideRequests.Handlers;
@@ -27,7 +26,7 @@ public class UpdateRideRequestCommandHandler : IRequestHandler<UpdateRideRequest
     {
 
         var response = new BaseResponse<Unit>();
-        var validator = new UpdateRideRequestDtoValidator(_unitOfWork);
+        var validator = new UpdateRideRequestDtoValidator();
         var validationResult = await validator.ValidateAsync(request.RideRequestDto!);
 
         if(!await _unitOfWork.RideRequestRepository.Exists(request.RideRequestDto!.Id))

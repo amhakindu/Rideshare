@@ -1,5 +1,5 @@
-using System.Data;
 using FluentValidation;
+using Rideshare.Application.Common.Dtos.Common.Validators;
 
 namespace Rideshare.Application.Common.Dtos.RideOffers.Validators;
 

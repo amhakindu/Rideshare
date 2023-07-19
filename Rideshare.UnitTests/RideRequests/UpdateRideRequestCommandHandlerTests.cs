@@ -1,16 +1,15 @@
-using AutoMapper;
 using Moq;
-using NetTopologySuite.Geometries;
-using Rideshare.Application.Common.Dtos;
-using Rideshare.Application.Common.Dtos.RideRequests;
-using Rideshare.Application.Contracts.Persistence;
+using Xunit;
+using Shouldly;
+using AutoMapper;
+using Rideshare.UnitTests.Mocks;
+using Rideshare.Application.Profiles;
 using Rideshare.Application.Exceptions;
+using Rideshare.Application.Common.Dtos.Common;
+using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Features.RideRequests.Commands;
 using Rideshare.Application.Features.RideRequests.Handlers;
-using Rideshare.Application.Profiles;
-using Rideshare.UnitTests.Mocks;
-using Shouldly;
-using Xunit;
 
 namespace Rideshare.UnitTests.RideRequests;
 

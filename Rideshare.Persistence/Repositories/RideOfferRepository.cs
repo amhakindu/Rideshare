@@ -1,13 +1,11 @@
-using System.ComponentModel.Design.Serialization;
-using Microsoft.EntityFrameworkCore;
-using Rideshare.Application.Common.Dtos.Drivers;
-using Rideshare.Application.Common.Dtos.RideOffers;
-using Rideshare.Application.Contracts.Persistence;
-using static Rideshare.Application.Common.Constants.Utils;
-using Rideshare.Domain.Entities;
 using Rideshare.Domain.Common;
-using System.Globalization;
-using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Rideshare.Application.Responses;
+using Rideshare.Application.Common.Dtos.Drivers;
+using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Common.Dtos.RideOffers;
+using static Rideshare.Application.Common.Constants.Utils;
 
 namespace Rideshare.Persistence.Repositories;
 
@@ -91,7 +89,7 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
 			.Include(ro => ro.Destination)
 			.ToListAsync();
 		response.Count = await _dbContext.RideOffers.CountAsync();
-		response.Paginated = rideOffers;
+		response.Value = rideOffers;
 		return response;
 	}
 	
@@ -109,7 +107,7 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
 			.ToListAsync();
 
 		response.Count = await query.CountAsync();
-		response.Paginated = rideoffers;
+		response.Value = rideoffers;
 		return response;
 		
 	}
@@ -150,7 +148,6 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
 
 	public async Task<PaginatedResponse<RideOffer>> GetRideOffersOfDriver(int DriverID, int PageNumber=1, int PageSize=10)
 	{
-
 		var response = new PaginatedResponse<RideOffer>();
 		var query = _dbContext.Set<RideOffer>()
 			.AsNoTracking()
@@ -166,11 +163,9 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
 			.ToListAsync();
 
 		response.Count = await query.CountAsync();
-		response.Paginated = rideoffers;
+		response.Value = rideoffers;
 
-		return response;
-		
-		
+		return response;	
 	}
 
 	public async Task<IReadOnlyList<ModelAndCountDto>> NoTopModelOffers()
@@ -212,7 +207,7 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
 			.Where(rideoffer => rideoffer.EstimatedFare <= MaxCost)
 			.Where(rideoffer => rideoffer.Status == (status ?? rideoffer.Status));
 
-		Int64 count = await query.CountAsync();
+		int count = await query.CountAsync();
 		var rideoffers = await query.Skip((PageNumber - 1) * PageSize)
 			.Take(PageSize)
 			.Include(ro => ro.Driver)
@@ -222,7 +217,7 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
 			.ToListAsync();
 		
 		response.Count = await query.CountAsync();
-		response.Paginated = rideoffers;
+		response.Value = rideoffers;
 		return response;
 	}
 

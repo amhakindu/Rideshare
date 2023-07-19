@@ -1,14 +1,13 @@
-using AutoMapper;
 using MediatR;
-using Rideshare.Application.Common.Dtos.Pagination;
+using AutoMapper;
+using Rideshare.Application.Responses;
 using Rideshare.Application.Common.Dtos.Rates;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Rates.Queries;
-using Rideshare.Application.Responses;
-using Rideshare.Domain.Entities;
 
 namespace Rideshare.Application.Features.Rates.Handlers;
-public class GetRateListQueryHandler : IRequestHandler<GetRateListQuery, BaseResponse<PaginatedResponseDto<RateDto>>>
+
+public class GetRateListQueryHandler : IRequestHandler<GetRateListQuery, PaginatedResponse<RateDto>>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
@@ -19,23 +18,19 @@ public class GetRateListQueryHandler : IRequestHandler<GetRateListQuery, BaseRes
         _unitOfWork = work;
     }
 
-    public async Task<BaseResponse<PaginatedResponseDto<RateDto>>> Handle(GetRateListQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedResponse<RateDto>> Handle(GetRateListQuery request, CancellationToken cancellationToken)
     {
 
-        var response = new BaseResponse<PaginatedResponseDto<RateDto>>();
+        var response = new PaginatedResponse<RateDto>();
         var result = await _unitOfWork.RateRepository.GetAll(request.PageNumber, request.PageSize);
-
 
         response.Success = true;
         response.Message = "Fetch Succesful";
-        response.Value = new PaginatedResponseDto<RateDto>();
-        response.Value.Count = result.Count;
-        response.Value.PageNumber = request.PageNumber;
-        response.Value.PageSize = request.PageSize;
-        response.Value.Paginated = _mapper.Map<List<RateDto>>(result.Paginated);
+        response.Value = _mapper.Map<List<RateDto>>(result.Value);
+        response.Count = result.Count;
+        response.PageNumber = request.PageNumber;
+        response.PageSize = request.PageSize;
 
         return response;
-
-
     }
 }

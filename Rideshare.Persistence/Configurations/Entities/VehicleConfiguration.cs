@@ -16,7 +16,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 		{
 			var random = new Random();
 			var startDate = new DateTime(2023, 1, 1);
-			var endDate = new DateTime(2023, 6, 30);
+			var endDate = DateTime.Now;
 			builder.HasData(
 				new Vehicle
 				{

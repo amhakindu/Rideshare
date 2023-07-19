@@ -1,15 +1,12 @@
 using MediatR;
-using Rideshare.Application.Common.Dtos.Pagination;
-using Rideshare.Application.Common.Dtos.Rates;
 using Rideshare.Application.Responses;
+using Rideshare.Application.Features.Common;
+using Rideshare.Application.Common.Dtos.Rates;
 
-namespace Rideshare.Application.Features.Rates.Queries
+namespace Rideshare.Application.Features.Rates.Queries;
 
+public class GetRateListQuery : PaginatedQuery, IRequest<PaginatedResponse<RateDto>>
 {
-	public class GetRateListQuery : IRequest<BaseResponse<PaginatedResponseDto<RateDto>>>
-	{
-		public string UserId { get; set; }
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
-    }
+    public string UserId { get; set; }
 }
+

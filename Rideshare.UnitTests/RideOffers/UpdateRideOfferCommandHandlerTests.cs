@@ -8,11 +8,11 @@ using Rideshare.Domain.Entities;
 using Rideshare.Application.Profiles;
 using Rideshare.Application.Responses;
 using Rideshare.Application.Exceptions;
-using Rideshare.Application.Common.Dtos.RideOffers;
+using Rideshare.Application.Common.Dtos.Common;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Common.Dtos.RideOffers;
 using Rideshare.Application.Features.RideOffers.Commands;
 using Rideshare.Application.Features.testEntitys.CQRS.Handlers;
-using Rideshare.Application.Common.Dtos;
 
 namespace Rideshare.UnitTests.RideOffers;
 

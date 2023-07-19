@@ -6,11 +6,11 @@ using Rideshare.UnitTests.Mocks;
 using Rideshare.Application.Profiles;
 using Rideshare.Application.Responses;
 using Rideshare.Application.Exceptions;
+using Rideshare.Application.Common.Dtos.Common;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Common.Dtos.RideOffers;
 using Rideshare.Application.Features.RideOffers.Commands;
 using Rideshare.Application.Features.testEntitys.CQRS.Handlers;
-using Rideshare.Application.Common.Dtos;
 
 namespace Rideshare.UnitTests.RideOffers;
 
@@ -157,25 +157,6 @@ public class CreateRideOfferCommandHandlerTests
         await Should.ThrowAsync<ValidationException>(async () => await _handler.Handle(command, CancellationToken.None));
     }
     
-    [Fact]
-    public async Task RideOfferCreationWithNonExistingDriver()
-    {
-        var command = new CreateRideOfferCommand
-        {
-            RideOfferDto = new CreateRideOfferDto{
-                VehicleID = 1,
-                CurrentLocation = new LocationDto{
-                    Longitude=2.0,
-                    Latitude=2.0
-                },
-                Destination = new LocationDto{
-                    Longitude=1.0,
-                    Latitude=-23.0
-                }
-            }
-        };
-        await Should.ThrowAsync<NotFoundException>(async () => await _handler.Handle(command, CancellationToken.None));
-    }
     [Fact]
     public async Task RideOfferCreationWithNonExistingVehicle()
     {

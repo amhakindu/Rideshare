@@ -1,6 +1,6 @@
-
-using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Domain.Common;
+using Rideshare.Application.Common.Dtos.Common;
+using Rideshare.Application.Common.Dtos.Security;
 
 namespace Rideshare.Application.Common.Dtos.RideRequests;
 

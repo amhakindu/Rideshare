@@ -1,19 +1,17 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.SignalR;
-using NetTopologySuite.Geometries;
-using Rideshare.Application.Common.Dtos;
-using Rideshare.Application.Common.Dtos.RideOffers;
-using Rideshare.Application.Common.Dtos.RideRequests;
-using Rideshare.Application.Contracts.Infrastructure;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Contracts.Services;
-using Rideshare.Application.Features.Userss;
-using Rideshare.Domain.Common;
-using Rideshare.Domain.Entities;
 using Rideshare.Domain.Models;
+using Rideshare.Domain.Common;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Authorization;
+using Rideshare.Application.Features.User;
+using Rideshare.Application.Common.Dtos.Common;
+using Rideshare.Application.Contracts.Services;
+using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Common.Dtos.RideOffers;
+using Rideshare.Application.Contracts.Infrastructure;
 
 namespace Rideshare.Infrastructure.Services;
+
 [Authorize]
 public class RideShareHub : Hub<IRideShareHubClient>
 {

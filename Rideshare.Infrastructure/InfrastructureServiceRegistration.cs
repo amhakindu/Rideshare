@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Rideshare.Application.Contracts.Infrastructure;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Contracts.Services;
-using Rideshare.Application.Features.Userss;
+using Rideshare.Application.Features.User;
 using Rideshare.Infrastructure.Security;
 using Rideshare.Infrastructure.Services;
 

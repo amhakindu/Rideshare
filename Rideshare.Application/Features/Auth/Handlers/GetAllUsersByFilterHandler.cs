@@ -1,17 +1,13 @@
-using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Rideshare.Application.Common.Dtos.Security;
+using AutoMapper;
+using Rideshare.Application.Responses; 
 using Rideshare.Application.Contracts.Identity;
-using Rideshare.Application.Features.Auth.Commands;
+using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Features.Auth.Queries;
-using Rideshare.Application.Responses;
-using Rideshare.Domain.Models;
-using System.Linq;
 
 namespace Rideshare.Application.Features.Auth.Handlers
 {
-    public sealed class GetUsersByFilterQueryHandler : IRequestHandler<GetUsersByFilterQuery, BaseResponse<PaginatedUserList>>
+    public sealed class GetUsersByFilterQueryHandler : IRequestHandler<GetUsersByFilterQuery, PaginatedResponse<UserDtoForAdmin>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
@@ -22,12 +18,12 @@ namespace Rideshare.Application.Features.Auth.Handlers
             _mapper = mapper;
         }
 
-        public async Task<BaseResponse<PaginatedUserList>> Handle(GetUsersByFilterQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedResponse<UserDtoForAdmin>> Handle(GetUsersByFilterQuery request, CancellationToken cancellationToken)
         {
             var allApplicationUsers = await _userRepository.GetUsersAsync(request.PageNumber, request.PageSize);
 
             var usersWithRoles = new List<UserDtoForAdmin>();
-            foreach (var u in allApplicationUsers.Paginated)
+            foreach (var u in allApplicationUsers.Value)
             {
                 var user = new UserDtoForAdmin
                 {
@@ -75,19 +71,11 @@ namespace Rideshare.Application.Features.Auth.Handlers
                 filteredUsers = filteredUsers.Where(u => u.StatusByLogin.Equals(request.Status)).ToList();
             }
 
-            var paginatedResponse = new PaginatedUserList
-            {
-                PageNumber = request.PageNumber,
-                PageSize = request.PageSize,
-                Count = filteredUsers.Count(),
-                PaginatedUsers = filteredUsers.ToList()
-            };
-
-            var response = new BaseResponse<PaginatedUserList>
+            var response = new PaginatedResponse<UserDtoForAdmin>
             {
                 Success = true,
-                Message = "Fetched Successfully",
-                Value = paginatedResponse
+                Message = "Users Fetched Successfully",
+                Value = filteredUsers
             };
 
             return response;

@@ -16,7 +16,6 @@ public class UnitOfWork : IUnitOfWork
 		_configuration = configuration;
 	}
 
-	private ITestEntityRepository? _TestEntityRepository;
 	private IRideRequestRepository? _RideRequestRepository;
 	private IDriverRepository _DriverRepository;
 	private IRateRepository? _RateRepository;
@@ -24,15 +23,6 @@ public class UnitOfWork : IUnitOfWork
     private IVehicleRepository? _VehicleRepository;
 	private IConnectionRepository? _ConnectionRepository;	
 	
-	public ITestEntityRepository TestEntityRepository
-	{
-		get
-		{
-			if (_TestEntityRepository == null)
-				_TestEntityRepository = new TestEntityRepository(_context);
-			return _TestEntityRepository;
-		}
-	}
 	public IDriverRepository DriverRepository
 	{
 		get

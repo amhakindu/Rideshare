@@ -1,8 +1,8 @@
-using AutoMapper;
 using MediatR;
+using AutoMapper;
+using Rideshare.Application.Responses;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.RideRequests.Queries;
-using Rideshare.Application.Responses;
 
 namespace Rideshare.Application.Features.RideRequests.Handlers;
 
@@ -19,10 +19,10 @@ public class GetRideRequestByTimeQueryHandler : IRequestHandler<GetRideRequestBy
     }
     public async Task<BaseResponse<Dictionary<int, int>>> Handle(GetRideRequestByTimeQuery request, CancellationToken cancellationToken)
     {
-           var rideRequests = await _unitOfWork.RideRequestRepository.GetAllByGivenParameter(request.RideRequestStatDto!.type,request.RideRequestStatDto.year, request.RideRequestStatDto.month);
+           var history = await _unitOfWork.RideRequestRepository.GetEntityStatistics(request.Year, request.Month);
             return new BaseResponse<Dictionary<int, int>>{
                 Message = "Fetching Successful",
-                Value = rideRequests
+                Value = history
             };
     }
 }

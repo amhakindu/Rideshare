@@ -2,15 +2,11 @@ using MediatR;
 using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Responses;
 
-namespace Rideshare.Application.Features.Auth.Queries
+namespace Rideshare.Application.Features.Auth.Queries;
 
+public class GetUsersByRoleQuery : IRequest<PaginatedResponse<UserDtoForAdmin>>
 {
-    public class GetUsersByRoleQuery : IRequest<BaseResponse<PaginatedUserList>>
-    {
-        public string Role { get; set; }
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
-    }
-
-
+    public string Role { get; set; }
+    public int PageNumber { get; set; }
+    public int PageSize { get; set; }
 }

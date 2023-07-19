@@ -1,13 +1,10 @@
-
-using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Rideshare.Application.Common.Dtos.Security;
-using Rideshare.Application.Contracts.Identity;
-using Rideshare.Application.Features.Auth.Commands;
-using Rideshare.Application.Features.Auth.Queries;
-using Rideshare.Application.Responses;
+using AutoMapper;
 using Rideshare.Domain.Models;
+using Microsoft.AspNetCore.Identity;
+using Rideshare.Application.Responses;
+using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Application.Features.Auth.Queries;
 
 namespace Rideshare.Application.Features.Auth.Handlers;
 
@@ -29,7 +26,7 @@ public sealed class GetAllRolesQueryHandler : IRequestHandler<GetAllRolesQuery, 
 
         var response = new BaseResponse<List<RoleDto>>();
         response.Success = true;
-        response.Message = "Logged In Successfully";
+        response.Message = "Roles Fetching Successful";
         response.Value = allRoles;
         return response;
        

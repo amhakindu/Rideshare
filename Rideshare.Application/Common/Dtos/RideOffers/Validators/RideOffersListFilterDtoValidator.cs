@@ -3,9 +3,9 @@ using Rideshare.Domain.Common;
 
 namespace Rideshare.Application.Common.Dtos.RideOffers.Validators;
 
-public class SearchAndFilterDtoValidator: AbstractValidator<SearchAndFilterDto>
+public class RideOffersListFilterDtoValidator: AbstractValidator<RideOffersListFilterDto>
 {
-    public SearchAndFilterDtoValidator()
+    public RideOffersListFilterDtoValidator()
     {
         When(dto => dto.DriverName != null, ()=>{
             RuleFor(dto => dto.DriverName)

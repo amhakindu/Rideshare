@@ -1,5 +1,5 @@
 using FluentValidation;
-using Rideshare.Application.Contracts.Identity;
+using Rideshare.Application.Common.Dtos.Common.Validators;
 
 namespace Rideshare.Application.Common.Dtos.RideRequests.Validators;
 

@@ -1,14 +1,14 @@
-using AutoMapper;
 using Moq;
+using Xunit;
+using Shouldly;
+using AutoMapper;
+using Rideshare.UnitTests.Mocks;
+using Rideshare.Application.Profiles;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Common.Dtos.Rates;
 using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Rates.Commands;
 using Rideshare.Application.Features.Rates.Handlers;
-using Rideshare.Application.Profiles;
-using Rideshare.UnitTests.Mocks;
-using Shouldly;
-using Xunit;
 
 namespace Rideshare.UnitTests.RateTest
 {
@@ -38,10 +38,9 @@ namespace Rideshare.UnitTests.RateTest
 			{
 				Id = 2,
 				Rate = 3.7,
-				UserId = "2",
 				Description = "Description 2 Edited!"
 			};
-			await _handler.Handle(new UpdateRateCommand() { RateDto = rateDto }, CancellationToken.None);
+			await _handler.Handle(new UpdateRateCommand() { RateDto = rateDto, UserId="2"}, CancellationToken.None);
 			var rate = await _mockUnitOfWork.Object.RateRepository.Get(rateDto.Id);
 			rate.Description.ShouldBe(rateDto.Description);
 			rate.Rate.ShouldBe(rateDto.Rate);
@@ -56,13 +55,13 @@ namespace Rideshare.UnitTests.RateTest
 			{
 				Id = 3,
 				Rate = 3.7,
-				UserId = "2", //unauthorized user to update the rate.
 				Description = "Description 2 Edited!"
 			};
 			
 			UnauthorizedAccessException ex = await Should.ThrowAsync<UnauthorizedAccessException>(async () =>
 			{
-				await _handler.Handle(new UpdateRateCommand() { RateDto = rateDto }, CancellationToken.None);
+				//unauthorized user to update the rate.
+				await _handler.Handle(new UpdateRateCommand() { RateDto = rateDto, UserId="2" }, CancellationToken.None);
 			});
 			
 		}

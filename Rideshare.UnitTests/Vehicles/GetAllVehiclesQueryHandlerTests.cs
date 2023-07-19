@@ -37,7 +37,7 @@ public class GetAllVehiclesQueryHandlerTests
     [Fact]
     public async Task GetAllVehiclesValidTest()
     {
-        var request = new GetAllVehiclesQuery();
+        var request = new GetAllVehiclesQuery(){PageNumber=1, PageSize=10};
 
         var result = await _handler.Handle(request, CancellationToken.None);
 

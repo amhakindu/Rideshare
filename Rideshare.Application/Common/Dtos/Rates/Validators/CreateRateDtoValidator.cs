@@ -18,9 +18,6 @@ namespace Rideshare.Application.Common.Dtos.Rates.Validators
 				.NotEmpty().WithMessage("{PropertyName} cannot be empty.")
 				.Length(5, 400).WithMessage("{PropertyName} must be between 5 and 400 characters long.")
 				.Matches("^[A-Za-z0-9 ,.-]+$").WithMessage("{PropertyName} must only contain letters, numbers, spaces, commas, dots, or hyphens.");;
-			
-			RuleFor(p => p.UserId)
-				.NotEmpty().WithMessage("{PropertyName} cannot be empty.");
 
 			RuleFor(p => p.DriverId)
 				.NotEmpty().WithMessage("{PropertyName} cannot be empty.");

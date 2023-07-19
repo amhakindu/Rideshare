@@ -1,11 +1,9 @@
-using AutoMapper;
 using MediatR;
-using Rideshare.Application.Common.Dtos.RideRequests.Validators;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Exceptions;
-using Rideshare.Application.Features.RideRequests.Commands;
-using Rideshare.Application.Features.Tests.Commands;
+using AutoMapper;
 using Rideshare.Application.Responses;
+using Rideshare.Application.Exceptions;
+using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Features.RideRequests.Commands;
 
 namespace Rideshare.Application.Features.RideRequests.Handlers;
 

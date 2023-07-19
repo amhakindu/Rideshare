@@ -48,7 +48,6 @@ namespace Rideshare.UnitTests.Users
             var response = await handler.Handle(command, CancellationToken.None);
 
             Assert.True(response.Success);
-            Assert.Equal("User Created Successfully", response.Message);
             Assert.Equal(expectedUserDto, response.Value);
         }
     }

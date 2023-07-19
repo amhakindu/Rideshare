@@ -6,8 +6,15 @@ namespace Rideshare.Persistence.Configurations.Entities
 {
 	public class DriverConfiguration : IEntityTypeConfiguration<Driver>
 	{
+		DateTime GetRandomDate(DateTime start, DateTime end, Random random)
+		{
+			var range = (end - start).Days;
+			return start.AddDays(random.Next(range));
+		}
 		public void Configure(EntityTypeBuilder<Driver> builder)
 		{
+			var random = new Random();
+			var startDate = new DateTime(2023, 1, 1);
 			builder.HasData(
 				new Driver
 				{
@@ -17,7 +24,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = true,
 					Address = "Lafto",
 					LicenseNumber = "12345678",
-					License =  "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License =  "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new Driver
 				{
@@ -27,7 +35,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = false,
 					Address = "Arat kilo",
 					LicenseNumber = "87654321",
-					License =  "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License =  "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new Driver
 				{
@@ -37,7 +46,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = true,
 					Address = "Debrezeyit",
 					LicenseNumber = "98765432",
-					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new Driver
 				{
@@ -47,7 +57,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = false,
 					Address = "Nazrit",
 					LicenseNumber = "23456789",
-					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new Driver
 				{
@@ -57,7 +68,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = true,
 					Address = "Weraileu",
 					LicenseNumber = "98765432",
-					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				},
 				
 				
@@ -69,7 +81,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = true,
 					Address = "Merkato, Addis Ababa",
 					LicenseNumber = "GHI123456",
-					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new Driver
 				{
@@ -79,7 +92,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = false,
 					Address = "Kirkos Subcity, Woreda 04, Addis Ababa",
 					LicenseNumber = "JKL123456",
-					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new Driver
 				{
@@ -89,7 +103,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = true,
 					Address = "Arat Kilo, Addis Ababa",
 					LicenseNumber = "MNO123456",
-					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new Driver
 				{
@@ -99,7 +114,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = false,
 					Address = "Bole Subcity, Woreda 07, Addis Ababa",
 					LicenseNumber = "PQR123456",
-					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new Driver
 				{
@@ -109,7 +125,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = true,
 					Address = "Kazanchis, Addis Ababa",
 					LicenseNumber = "STU123456",
-					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new Driver
 				{
@@ -119,7 +136,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = false,
 					Address = "Bole Subcity, Woreda 03, Addis Ababa",
 					LicenseNumber = "VWX123456",
-					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new Driver
 				{
@@ -129,7 +147,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = true,
 					Address = "Bole Subcity, Woreda 03, Addis Ababa",
 					LicenseNumber = "YZA123456",
-					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new Driver
 				{
@@ -139,7 +158,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = false,
 					Address = "Bole Subcity, Woreda 03, Addis Ababa",
 					LicenseNumber = "BCD123456",
-					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new Driver
 				{
@@ -149,7 +169,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = true,
 					Address = "Bole Subcity, Woreda 03, Addis Ababa",
 					LicenseNumber = "EFG123456",
-					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				},
 				new Driver
 				{
@@ -159,7 +180,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Verified = false,
 					Address = "Megenagna, Addis Ababa",
 					LicenseNumber = "HIJ123456",
-					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png"
+					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
+					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
 				}
 			);
 		}

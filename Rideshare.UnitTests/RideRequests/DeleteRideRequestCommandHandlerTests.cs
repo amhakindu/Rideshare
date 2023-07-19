@@ -1,14 +1,13 @@
- using AutoMapper;
 using Moq;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Exceptions;
-using Rideshare.Application.Features.RideRequests.Commands;
-using Rideshare.Application.Features.RideRequests.Handlers;
-using Rideshare.Application.Features.Tests.Commands;
-using Rideshare.Application.Profiles;
-using Rideshare.UnitTests.Mocks;
-using Shouldly;
 using Xunit;
+using Shouldly;
+using AutoMapper;
+using Rideshare.UnitTests.Mocks;
+using Rideshare.Application.Profiles;
+using Rideshare.Application.Exceptions;
+using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Features.RideRequests.Handlers;
+using Rideshare.Application.Features.RideRequests.Commands;
 
 namespace Rideshare.UnitTests.RideRequests;
 
@@ -44,21 +43,6 @@ public class DeleteRideRequestCommandHandlerTests
        [Fact]
        public async Task DeleteRideRequestInvalid()
        {
-              
-                 await Should.ThrowAsync<NotFoundException>(async () =>
-    {
-           var result = await _handler.Handle(new DeleteRideRequestCommand() { Id = 30 }, CancellationToken.None);
-    });    
-       }
-
-       [Fact]
-       public async Task DeleteRideRequestInvalidTwo()
-       {
-              
-                 await Should.ThrowAsync<NotFoundException>(async () =>
-    {
-           var result = await _handler.Handle(new DeleteRideRequestCommand() { Id = 1 }, CancellationToken.None);
-           
-    });    
+              await Should.ThrowAsync<NotFoundException>(async () => await _handler.Handle(new DeleteRideRequestCommand() { Id = 30 }, CancellationToken.None));    
        }
 }

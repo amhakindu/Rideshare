@@ -1,7 +1,7 @@
+using Rideshare.Domain.Common;
+using Rideshare.Application.Responses;
 using Rideshare.Application.Common.Dtos.Drivers;
 using Rideshare.Application.Common.Dtos.RideOffers;
-using Rideshare.Application.Common.Dtos.Security;
-using Rideshare.Domain.Common;
 using Rideshare.Domain.Entities;
 
 namespace Rideshare.Application.Contracts.Persistence;

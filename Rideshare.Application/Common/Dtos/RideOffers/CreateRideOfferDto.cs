@@ -1,3 +1,5 @@
+using Rideshare.Application.Common.Dtos.Common;
+
 namespace Rideshare.Application.Common.Dtos.RideOffers;
 
 public class CreateRideOfferDto
