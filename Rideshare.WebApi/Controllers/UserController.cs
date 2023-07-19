@@ -1,27 +1,20 @@
-using System.Net;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using Rideshare.Application.Common.Dtos.RideRequests;
-using Rideshare.Application.Common.Dtos.Security;
-using Rideshare.Application.Common.Dtos.Tests;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Features.Auth.Commands;
-using Rideshare.Application.Features.Auth.Queries;
-using Rideshare.Application.Features.RideRequests.Queries;
-using Rideshare.Application.Features.Tests.Queries;
-using Rideshare.Application.Features.Userss;
 using Rideshare.Application.Responses;
-using Rideshare.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
+using Rideshare.Application.Features.User;
+using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Application.Features.Auth.Queries;
+using Rideshare.Application.Features.Auth.Commands;
 
 namespace Rideshare.WebApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/users")]
 [Authorize]
 public class UserController : BaseApiController
 {
-
     public UserController(IMediator mediator, IUserAccessor userAccessor) : base(mediator, userAccessor)
     {
     }
@@ -31,8 +24,6 @@ public class UserController : BaseApiController
     [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Login(LoginRequest loginRequest)
     {
-
-
         var result = await _mediator.Send(new LoginCommand { LoginRequest = loginRequest });
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
@@ -85,8 +76,6 @@ public class UserController : BaseApiController
         return getResponse<BaseResponse<UserDriverDto>>(status, result);
     }
 
-
-
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(string id, [FromForm] UserUpdatingDto userUpdatingDto)
@@ -123,33 +112,18 @@ public class UserController : BaseApiController
 
     public async Task<IActionResult> GetUserById(string id)
     {
-        Console.WriteLine(id);
-        Console.WriteLine("cha");
         var result = await _mediator.Send(new GetUserByIdQuery { UserId = id });
 
         var status = result.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
         return getResponse<BaseResponse<UserDto>>(status, result);
 
     }
-    [HttpGet("Top5Commuter")]
-    [ProducesResponseType(typeof( List<CommuterWithRideRequestCntDto>), StatusCodes.Status200OK)]
-
-    public async Task<IActionResult> GetTop5Commuter()
-    {
-        var result = await _mediator.Send(new GetTop5CommuterQuery { });
-
-        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
-        return getResponse(status, result);
-    }
 
     [HttpGet("all")]
-    [ProducesResponseType(typeof(PaginatedUserList), StatusCodes.Status200OK)]
-
+    [ProducesResponseType(typeof(PaginatedResponse<UserDtoForAdmin>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllUser([FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10)
     {
-
-
         var result = await _mediator.Send(new GetAllUsersQuery { PageNumber = pageNumber, PageSize = pageSize });
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
@@ -157,7 +131,7 @@ public class UserController : BaseApiController
     }
     [HttpGet("by-role")]
     [Authorize(Roles = "Admin")]
-    [ProducesResponseType(typeof(PaginatedUserList), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResponse<UserDtoForAdmin>), StatusCodes.Status200OK)]
 
     public async Task<IActionResult> GetUsersByRole([FromQuery] string role, [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10)
@@ -184,7 +158,7 @@ public class UserController : BaseApiController
     }
 
     [HttpGet("filter")]
-    [ProducesResponseType(typeof(PaginatedUserList), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResponse<UserDtoForAdmin>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUsersByFilter(
            [FromQuery] string? phoneNumber,
            [FromQuery] string? roleName,
@@ -195,10 +169,10 @@ public class UserController : BaseApiController
     {
         var query = new GetUsersByFilterQuery
         {
-            PhoneNumber = phoneNumber,
-            RoleName = roleName,
-            FullName = fullName,
-            Status = status,
+            PhoneNumber = phoneNumber ?? "",
+            RoleName = roleName ?? "",
+            FullName = fullName ?? "",
+            Status = status ?? "",
             PageNumber = pageNumber,
             PageSize = pageSize
         };
@@ -206,7 +180,7 @@ public class UserController : BaseApiController
         var result = await _mediator.Send(query);
 
         var statuss = result.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
-        return getResponse<BaseResponse<PaginatedUserList>>(statuss, result);
+        return getResponse<PaginatedResponse<UserDtoForAdmin>>(statuss, result);
     }
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(Double), StatusCodes.Status200OK)]
@@ -217,17 +191,6 @@ public class UserController : BaseApiController
 
         var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
         return getResponse<BaseResponse<Double>>(status, result);
-    }
-     [HttpGet("statstics/week")]
-     [Authorize(Roles ="Admin")]
-     [ProducesResponseType(typeof(CommuterCountDto), StatusCodes.Status200OK)]
-
-    public async Task<IActionResult> Handle()
-    {
-        var result = await _mediator.Send(new GetCommuterCountQuery {  });
-
-        var status = result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound;
-        return getResponse<BaseResponse<CommuterCountDto>>(status, result);
     }
 }
 

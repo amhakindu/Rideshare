@@ -1,19 +1,18 @@
 using AutoMapper;
-using NetTopologySuite.Geometries;
-using Rideshare.Application.Common.Dtos.RideRequests;
-using Rideshare.Application.Common.Dtos.Drivers;
-using Rideshare.Application.Common.Dtos.Security;
-using Rideshare.Application.Common.Dtos.Rates;
-using Rideshare.Application.Common.Dtos.Feedbacks;
-using Rideshare.Application.Common.Dtos.RideOffers;
-using Rideshare.Application.Common.Dtos.Tests;
-using Rideshare.Application.Common.Dtos.Vehicles;
-using Rideshare.Domain.Entities;
 using Rideshare.Domain.Models;
-using Rideshare.Application.Common.Dtos;
 using Rideshare.Domain.Common;
-using Rideshare.Application.Contracts.Infrastructure;
+using Rideshare.Domain.Entities;
+using NetTopologySuite.Geometries;
+using Rideshare.Application.Common.Dtos.Rates;
+using Rideshare.Application.Common.Dtos.Common;
+using Rideshare.Application.Common.Dtos.Drivers;
+using Rideshare.Application.Common.Dtos.Vehicles;
+using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Application.Common.Dtos.Feedbacks;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Common.Dtos.RideOffers;
+using Rideshare.Application.Common.Dtos.RideRequests;
+using Rideshare.Application.Contracts.Infrastructure;
 
 namespace Rideshare.Application.Profiles;
 
@@ -35,12 +34,6 @@ public class MappingProfile : Profile
         _driverResolver = new DriverResolver(unitOfWork);
         _availableSeatResolver = new AvailableSeatResolver(unitOfWork);
         
-        #region TestEntity Mappings
-
-        CreateMap<TestEntity, TestEntityDto>().ReverseMap();
-
-        #endregion TestEntity
-
         #region Vehicle Mappings
 
         CreateMap<Vehicle, VehicleDto>().ReverseMap();

@@ -1,19 +1,15 @@
 using Moq;
-using NetTopologySuite.Geometries;
-using Rideshare.Application.Common.Dtos.Security;
-using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Common;
-using Rideshare.Application.UnitTests.Mocks;
 using Rideshare.Domain.Entities;
-using Rideshare.Application.Exceptions;
+using NetTopologySuite.Geometries;
+using Rideshare.Application.Responses;
+using Rideshare.Application.UnitTests.Mocks;
+using Rideshare.Application.Contracts.Persistence;
 
 namespace Rideshare.UnitTests.Mocks;
 
 public class MockRideRequestRepository
 {
-
-
-
     public static Mock<IRideRequestRepository> GetRideRequestRepository()
     {
         var mockUserRepo = new MockUserRepository();
@@ -65,14 +61,13 @@ public class MockRideRequestRepository
 
         mockRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync((int pageNumber, int pageSize) =>
         {
-
             var response = new PaginatedResponse<RideRequest>();
             var result = rideRequests.AsQueryable().Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
 
             response.Count = rideRequests.Count();
-            response.Paginated = result;
+            response.Value = result;
             return response;
 
         }
@@ -112,6 +107,9 @@ public class MockRideRequestRepository
 
         mockRepo.Setup(r => r.Get(It.IsAny<int>())).ReturnsAsync((int id) =>
         {
+            return rideRequests.FirstOrDefault((r) => r.Id == id);
+        });
+        mockRepo.Setup(r => r.GetRideRequestWithDetail(It.IsAny<int>())).ReturnsAsync((int id) => {
             return rideRequests.FirstOrDefault((r) => r.Id == id);
         });
         return mockRepo;

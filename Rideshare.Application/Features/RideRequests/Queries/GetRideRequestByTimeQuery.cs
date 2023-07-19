@@ -1,10 +1,9 @@
 using MediatR;
-using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Responses;
+using Rideshare.Application.Features.Common;
 
 namespace Rideshare.Application.Features.RideRequests.Queries;
 
-public class GetRideRequestByTimeQuery : IRequest<BaseResponse<Dictionary<int,int>>>
+public class GetRideRequestByTimeQuery : TimeseriesQuery, IRequest<BaseResponse<Dictionary<int,int>>>
 { 
-    public RideRequestStatDto? RideRequestStatDto { get; set; }
 }

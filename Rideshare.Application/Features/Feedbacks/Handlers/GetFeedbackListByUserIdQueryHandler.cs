@@ -1,16 +1,11 @@
-﻿using AutoMapper;
-using MediatR;
-using Rideshare.Application.Common.Dtos.Feedbacks;
-using Rideshare.Application.Contracts.Identity;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Exceptions;
-using Rideshare.Application.Features.Feedbacks.Queries;
+﻿using MediatR;
+using AutoMapper;
 using Rideshare.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Rideshare.Application.Exceptions;
+using Rideshare.Application.Contracts.Identity;
+using Rideshare.Application.Common.Dtos.Feedbacks;
+using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Features.Feedbacks.Queries;
 
 namespace Rideshare.Application.Features.Feedbacks.Handlers
 {

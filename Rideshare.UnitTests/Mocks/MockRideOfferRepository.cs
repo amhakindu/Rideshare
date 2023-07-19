@@ -1,9 +1,9 @@
 using Moq;
-using NetTopologySuite.Geometries;
-using Rideshare.Application.Common.Dtos.Security;
-using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Common;
 using Rideshare.Domain.Entities;
+using NetTopologySuite.Geometries;
+using Rideshare.Application.Responses;
+using Rideshare.Application.Contracts.Persistence;
 
 namespace Rideshare.UnitTests.Mocks;
 
@@ -43,7 +43,7 @@ public class MockRideOfferRepository
             var response = new PaginatedResponse<RideOffer>();
             var query = (IReadOnlyList<RideOffer>)rideOffers.Where(rideoffer => rideoffer.Driver.Id == id);
 
-            response.Paginated =  query.ToList();
+            response.Value =  query.ToList();
             response.Count =query.Count();
 
             return response;            
@@ -53,12 +53,13 @@ public class MockRideOfferRepository
         {
 
             var response = new PaginatedResponse<RideOffer>();
-            var result = rideOffers.AsQueryable().Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
+            var result = rideOffers.AsQueryable()
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
 
             response.Count = rideOffers.Count();
-            response.Paginated = result;
+            response.Value = result;
             return response;
 
         }

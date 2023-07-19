@@ -1,25 +1,21 @@
-
-using AutoMapper;
 using MediatR;
+using AutoMapper;
 using Rideshare.Domain.Models;
-using Rideshare.Application.Features.Auth.Commands;
-using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Responses;
-using Rideshare.Application.Common.Dtos.Security;
-using System.Text;
-using Rideshare.Application.Contracts.Services;
-using Rideshare.Application.Common.Dtos.Security.Validators;
 using Rideshare.Application.Exceptions;
+using Rideshare.Application.Contracts.Services;
+using Rideshare.Application.Contracts.Identity;
+using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Application.Features.Auth.Commands;
+using Rideshare.Application.Common.Dtos.Security.Validators;
 
 namespace Rideshare.Application.Features.Auth.Handlers;
 
 public class CreateAdminUserCommandHanlder : IRequestHandler<CreateAdminUserCommand, BaseResponse<AdminUserDto>>
 {
     private readonly IUserRepository _userRepository;
-
     private readonly IMapper _mapper;
     private readonly IResourceManager _resourceManager;
-    private static Random random = new Random();
 
     public CreateAdminUserCommandHanlder(IUserRepository userRepository, IMapper mapper, IResourceManager resourceManager)
     {
@@ -62,7 +58,7 @@ public class CreateAdminUserCommandHanlder : IRequestHandler<CreateAdminUserComm
 
         var response = new BaseResponse<AdminUserDto>();
         response.Success = true;
-        response.Message = "User Created Successfully";
+        response.Message = "Admin Created Successfully";
         response.Value = userDto;
         return response;
     }

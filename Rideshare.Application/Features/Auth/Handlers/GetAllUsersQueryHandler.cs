@@ -11,7 +11,7 @@ using Rideshare.Domain.Models;
 
 namespace Rideshare.Application.Features.Auth.Handlers;
 
-public sealed class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, BaseResponse<PaginatedUserList>>
+public sealed class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, PaginatedResponse<UserDtoForAdmin>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
@@ -23,25 +23,21 @@ public sealed class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, 
         _mapper = mapper;
     }
 
-    public async Task<BaseResponse<PaginatedUserList>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedResponse<UserDtoForAdmin>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
         var allApplicationUsers = await _userRepository.GetUsersAsync(request.PageNumber,request.PageSize);
 
 
         var usersWithRoles = new List<UserDtoForAdmin>();
-        foreach (var u in allApplicationUsers.Paginated)
+        foreach (var u in allApplicationUsers.Value)
         {
             var user = new UserDtoForAdmin
             {
-
                 Id = u.Id,
                 FullName = u.FullName,
                 PhoneNumber = u.PhoneNumber,
                 Age = u.Age,
                 ProfilePicture = u.ProfilePicture
-                
-                
-
             };
             if (u.LastLogin.HasValue && (DateTime.Now - u.LastLogin.Value).TotalDays < 30)
             {
@@ -56,19 +52,14 @@ public sealed class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, 
             user.Roles.AddRange(roleDtos);
             usersWithRoles.Add(user);
         }
-
-        var paginatedResponse = new PaginatedUserList 
-        {
-            PageNumber = request.PageNumber,
-            PageSize = request.PageSize,
-            Count = allApplicationUsers.Count,
-            PaginatedUsers = usersWithRoles
+        
+        return new PaginatedResponse<UserDtoForAdmin>(){
+            Message= "Users Fetched Successfully",
+            Value= usersWithRoles,
+            Count= allApplicationUsers.Count,
+            PageNumber= request.PageNumber,
+            PageSize= request.PageSize
         };
-        var response = new BaseResponse<PaginatedUserList>();
-        response.Success = true;
-        response.Message = "Fetched In Successfully";
-        response.Value = paginatedResponse;
-        return response;
 
     }
 }

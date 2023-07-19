@@ -1,13 +1,10 @@
-using System.Collections.Generic;
 using MediatR;
 using Rideshare.Application.Responses;
 using Rideshare.Application.Common.Dtos.RideOffers;
-using Rideshare.Application.Common.Dtos.Pagination;
+using Rideshare.Application.Features.Common;
 
 namespace Rideshare.Application.Features.RideOffers.Queries;
 
-public class GetAllRideOffersQuery: IRequest<BaseResponse<PaginatedResponseDto<RideOfferDto>>>
+public class GetAllRideOffersQuery: PaginatedQuery, IRequest<PaginatedResponse<RideOfferListDto>>
 {
-    public int PageNumber { get; set; }
-    public int PageSize { get; set; }
 }

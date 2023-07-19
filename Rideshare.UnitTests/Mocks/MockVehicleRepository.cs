@@ -1,14 +1,9 @@
 ﻿using Moq;
-using Rideshare.Application.Common.Dtos.Security;
-using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using Rideshare.Application.Responses;
+using Rideshare.Application.Contracts.Persistence;
 namespace Rideshare.UnitTests.Mocks;
+
 public class MockVehicleRepository
 {
     public static Mock<IVehicleRepository> GetVehicleRepository()
@@ -45,7 +40,7 @@ public class MockVehicleRepository
             .ToList();
 
             response.Count = vehicles.Count();
-            response.Paginated = result;
+            response.Value = result;
             return response;
 
         }

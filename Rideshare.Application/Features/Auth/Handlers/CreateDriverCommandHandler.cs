@@ -1,17 +1,15 @@
-
-using AutoMapper;
 using MediatR;
+using AutoMapper;
 using Rideshare.Domain.Models;
-using Rideshare.Application.Features.Auth.Commands;
-using Rideshare.Application.Contracts.Identity;
-using Rideshare.Application.Responses;
-using Rideshare.Application.Common.Dtos.Security;
-using System.Text;
-using Rideshare.Application.Contracts.Services;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Common.Dtos.Drivers.Validators;
 using Rideshare.Domain.Entities;
+using Rideshare.Application.Responses;
 using Rideshare.Application.Exceptions;
+using Rideshare.Application.Contracts.Identity;
+using Rideshare.Application.Contracts.Services;
+using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Features.Auth.Commands;
+using Rideshare.Application.Common.Dtos.Drivers.Validators;
 using Rideshare.Application.Common.Dtos.Security.Validators;
 
 namespace Rideshare.Application.Features.Auth.Handlers;
@@ -19,11 +17,9 @@ namespace Rideshare.Application.Features.Auth.Handlers;
 public class CreateDriverCommandHandler : IRequestHandler<CreateDriverCommand, BaseResponse<UserDriverDto>>
 {
     private readonly IUserRepository _userRepository;
-    private readonly ISmsSender _smsSender;
     private readonly IMapper _mapper;
     private readonly IResourceManager _resourceManager;
     private readonly IUnitOfWork _unitOfWork;
-    private static Random random = new Random();
 
     public CreateDriverCommandHandler(IUserRepository userRepository, IMapper mapper, IResourceManager resourceManager, IUnitOfWork unitOfWork)
     {
@@ -31,15 +27,13 @@ public class CreateDriverCommandHandler : IRequestHandler<CreateDriverCommand, B
         _mapper = mapper;
         _resourceManager = resourceManager;
         _unitOfWork = unitOfWork;
-
     }
-
     public async Task<BaseResponse<UserDriverDto>> Handle(CreateDriverCommand request, CancellationToken cancellationToken)
     {
 
-         var userValidator = new DriverCreationDtoValidators();
+        var userValidator = new DriverCreationDtoValidators();
 
-         var validationResultForUser = await userValidator.ValidateAsync(request.DriverCreatingDto);
+        var validationResultForUser = await userValidator.ValidateAsync(request.DriverCreatingDto);
         if (!validationResultForUser.IsValid)
             throw new ValidationException(validationResultForUser.Errors.Select(q => q.ErrorMessage).ToList().First());
 
@@ -74,10 +68,6 @@ public class CreateDriverCommandHandler : IRequestHandler<CreateDriverCommand, B
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());
        
-
-
-
-
         var driver = _mapper.Map<Driver>(request.DriverCreatingDto.DriverDto);
 
         driver.UserId = user.Id;
@@ -98,12 +88,9 @@ public class CreateDriverCommandHandler : IRequestHandler<CreateDriverCommand, B
             StatusByLogin = userDto.StatusByLogin,
             DriverId = driver.Id,
             UserId = user.Id
-
-
-
         };
         response.Success = true;
-        response.Message = "Driver User Created Successfully";
+        response.Message = "Driver Created Successfully";
         response.Value = userDriverDto;
         return response;
     }

@@ -8,8 +8,15 @@ namespace Rideshare.Persistence.Configurations.Entities
 {
 	public class RideOfferConfiguration : IEntityTypeConfiguration<RideOffer>
 	{
+				DateTime GetRandomDate(DateTime start, DateTime end, Random random)
+		{
+			var range = (end - start).Days;
+			return start.AddDays(random.Next(range));
+		}
 		public void Configure(EntityTypeBuilder<RideOffer> builder)
 		{
+			var random = new Random();
+			var startDate = new DateTime(2023, 1, 1);
 			builder.HasData(
 				new RideOffer
 				{
@@ -21,7 +28,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 4,
 					EstimatedFare = 27.0,
-					DateCreated = new DateTime(2023, 1, 1),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(50)
 				},
 				new RideOffer
@@ -34,7 +41,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					AvailableSeats = 3,
 					EstimatedFare = 30.0,
-					DateCreated = new DateTime(2023, 1, 2),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(45)
 				},
 				new RideOffer
@@ -47,7 +54,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					AvailableSeats = 2,
 					EstimatedFare = 25.0,
-					DateCreated = new DateTime(2023, 1, 3),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(55)
 				},
 				// Continue adding 20 more RideOffer entries
@@ -61,7 +68,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					AvailableSeats = 3,
 					EstimatedFare = 32.0,
-					DateCreated = new DateTime(2023, 1, 4),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(40)
 				},
 				new RideOffer
@@ -74,7 +81,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 1,
 					EstimatedFare = 22.0,
-					DateCreated = new DateTime(2023, 1, 5),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(30)
 				},
 				
@@ -89,7 +96,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					AvailableSeats = 3,
 					EstimatedFare = 30.0,
-					DateCreated = new DateTime(2023, 1, 8),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(45)
 				},
 				new RideOffer
@@ -102,7 +109,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 2,
 					EstimatedFare = 26.0,
-					DateCreated = new DateTime(2023, 1, 9),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(55)
 				},
 				new RideOffer
@@ -115,7 +122,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					AvailableSeats = 4,
 					EstimatedFare = 27.0,
-					DateCreated = new DateTime(2023, 1, 10),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(40)
 				},
 				new RideOffer
@@ -128,7 +135,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					AvailableSeats = 3,
 					EstimatedFare = 32.0,
-					DateCreated = new DateTime(2023, 1, 11),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(30)
 				},
 				new RideOffer
@@ -141,7 +148,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					AvailableSeats = 2,
 					EstimatedFare = 24.0,
-					DateCreated = new DateTime(2023, 1, 12),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(50)
 				},
 				new RideOffer
@@ -154,7 +161,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 1,
 					EstimatedFare = 20.0,
-					DateCreated = new DateTime(2023, 1, 13),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(45)
 				},
 				new RideOffer
@@ -167,7 +174,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					AvailableSeats = 4,
 					EstimatedFare = 27.0,
-					DateCreated = new DateTime(2023, 1, 14),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(55)
 				},
 				new RideOffer
@@ -180,7 +187,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					AvailableSeats = 3,
 					EstimatedFare = 29.0,
-					DateCreated = new DateTime(2023, 1, 15),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(40)
 				},
 				
@@ -194,7 +201,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 1,
 					EstimatedFare = 23.0,
-					DateCreated = new DateTime(2023, 1, 17),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(50)
 				},
 				new RideOffer
@@ -207,7 +214,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					AvailableSeats = 4,
 					EstimatedFare = 28.0,
-					DateCreated = new DateTime(2023, 1, 18),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(45)
 				},
 				new RideOffer
@@ -220,7 +227,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					AvailableSeats = 3,
 					EstimatedFare = 30.0,
-					DateCreated = new DateTime(2023, 1, 19),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(55)
 				},
 				new RideOffer
@@ -233,7 +240,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					AvailableSeats = 2,
 					EstimatedFare = 25.0,
-					DateCreated = new DateTime(2023, 1, 20),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(40)
 				},
 				new RideOffer
@@ -246,7 +253,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 3,
 					EstimatedFare = 27.0,
-					DateCreated = new DateTime(2023, 1, 21),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(30)
 				},
 				new RideOffer
@@ -259,7 +266,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					AvailableSeats = 2,
 					EstimatedFare = 26.0,
-					DateCreated = new DateTime(2023, 1, 22),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(50)
 				},
 				new RideOffer
@@ -272,7 +279,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					AvailableSeats = 1,
 					EstimatedFare = 20.0,
-					DateCreated = new DateTime(2023, 1, 23),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(45)
 				},
 				new RideOffer
@@ -285,7 +292,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					AvailableSeats = 4,
 					EstimatedFare = 29.0,
-					DateCreated = new DateTime(2023, 1, 24),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(55)
 				},
 				new RideOffer
@@ -298,7 +305,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 3,
 					EstimatedFare = 27.0,
-					DateCreated = new DateTime(2023, 1, 25),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(40)
 				},
 			
@@ -313,7 +320,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					AvailableSeats = 4,
 					EstimatedFare = 30.0,
-					DateCreated = new DateTime(2023, 1, 28),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(45)
 				},
 				new RideOffer
@@ -326,7 +333,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 3,
 					EstimatedFare = 26.0,
-					DateCreated = new DateTime(2023, 1, 29),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(55)
 				},
 				new RideOffer
@@ -339,7 +346,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					AvailableSeats = 2,
 					EstimatedFare = 28.0,
-					DateCreated = new DateTime(2023, 1, 30),
+					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
 					EstimatedDuration = TimeSpan.FromMinutes(40)
 				}
 			);

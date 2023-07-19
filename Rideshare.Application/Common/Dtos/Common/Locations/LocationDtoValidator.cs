@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Rideshare.Application.Common.Dtos.RideOffers.Validators;
+namespace Rideshare.Application.Common.Dtos.Common.Validators;
 
 public class LocationDtoValidator: AbstractValidator<LocationDto>
 {

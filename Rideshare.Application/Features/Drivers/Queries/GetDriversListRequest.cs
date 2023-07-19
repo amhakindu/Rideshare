@@ -1,19 +1,11 @@
 ﻿using MediatR;
 using Rideshare.Application.Common.Dtos.Drivers;
-using Rideshare.Application.Common.Dtos.Pagination;
+using Rideshare.Application.Features.Common;
 using Rideshare.Application.Responses;
-using Rideshare.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rideshare.Application.Features.Drivers.Queries
 {
-    public class GetDriversListRequest : IRequest<BaseResponse<PaginatedResponseDto<DriverDetailDto>>>
+    public class GetDriversListRequest : PaginatedQuery, IRequest<PaginatedResponse<DriverDetailDto>>
     {
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
     }
 }

@@ -3,21 +3,21 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Rideshare.Application.Responses;
 using Microsoft.AspNetCore.Authorization;
-using Rideshare.Application.Features.Userss;
+using Rideshare.Application.Features.User;
 using Rideshare.Application.Features.Locations.Queries;
 
 namespace Rideshare.WebApi.Controllers;
 
 [ApiController]
 [Authorize]
-[Route("api/[controller]")]
+[Route("api/locations")]
 public class LocationsController : BaseApiController
 {
     public LocationsController(IMediator mediator, IUserAccessor userAccessor) : base(mediator, userAccessor)
     {
     }
 
-    [HttpGet("Popular")]
+    [HttpGet("popular")]
     [Authorize(Roles = "Commuter, Driver")]
     public async Task<IActionResult> GetPopularDestinations([FromQuery] int limit)
     {

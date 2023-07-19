@@ -19,7 +19,7 @@ namespace Rideshare.Application.Features.Drivers.Handlers
         {
             var response = new BaseResponse<Dictionary<int, int>>();
 
-            var statistics = await _unitOfWork.DriverRepository.GetDriversStatistics(request.TimeFrame.ToLower(), request.Year, request.Month);
+            var statistics = await _unitOfWork.DriverRepository.GetEntityStatistics(request.Year, request.Month);
 
             response.Success = true;
             response.Message = "Fetch Succesful";

@@ -34,7 +34,6 @@ namespace Rideshare.UnitTests.RateTest.Commands
 			_rateDto = new CreateRateDto
 			{
 				Rate = 2.4,
-				UserId = "1",
 				DriverId = 1,
 				Description = "Description 1",
 			};
@@ -61,7 +60,6 @@ namespace Rideshare.UnitTests.RateTest.Commands
 			var rateDto = new CreateRateDto()
 			{
 				Rate = 12.4, //Rate must be between 1 and 10.
-				UserId = "2",
 				DriverId = 1,
 				Description = "Description 1",
 
@@ -69,7 +67,7 @@ namespace Rideshare.UnitTests.RateTest.Commands
 
 			try
 			{
-				var result = await _handler.Handle(new CreateRateCommand() { RateDto = rateDto }, CancellationToken.None);
+				var result = await _handler.Handle(new CreateRateCommand() { RateDto = rateDto , UserId="2"}, CancellationToken.None);
 			}
 			catch (Exception ex)
 			{
@@ -87,8 +85,6 @@ namespace Rideshare.UnitTests.RateTest.Commands
 			{
 			var rateDto = new CreateRateDto
 			{
-				// Missing or null values for required properties
-				UserId = "3",
 				// DriverId is intentionally left as null
 				Rate = 12.4, //Invalid Rate value (>10).
 				Description = "Description 1"
@@ -96,7 +92,7 @@ namespace Rideshare.UnitTests.RateTest.Commands
 
 			try
 			{
-				await _handler.Handle(new CreateRateCommand { RateDto = rateDto }, CancellationToken.None);
+				await _handler.Handle(new CreateRateCommand { RateDto = rateDto, UserId="3"}, CancellationToken.None);
 			}
 			catch (ValidationException ex)
 			{

@@ -1,4 +1,4 @@
-namespace Rideshare.Application.Common.Dtos;
+namespace Rideshare.Application.Common.Dtos.Common;
 
 public class LocationDto
 {

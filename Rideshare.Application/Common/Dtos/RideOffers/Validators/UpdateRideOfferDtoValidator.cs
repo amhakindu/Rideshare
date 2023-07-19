@@ -1,5 +1,6 @@
 using FluentValidation;
 using NetTopologySuite.Geometries;
+using Rideshare.Application.Common.Dtos.Common.Validators;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Domain.Common;
 

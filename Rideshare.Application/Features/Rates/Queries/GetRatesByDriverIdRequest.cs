@@ -1,15 +1,12 @@
-using System;
 using MediatR;
-using Rideshare.Application.Common.Dtos;
-using Rideshare.Application.Common.Dtos.Rates;
 using Rideshare.Application.Responses;
+using Rideshare.Application.Features.Common;
+using Rideshare.Application.Common.Dtos.Rates;
 
 namespace Rideshare.Application.Features.Drivers.Queries
 {
-    public class GetRatesByDriverIdRequest : IRequest<BaseResponse<List<RateDto>>>
+    public class GetRatesByDriverIdRequest : PaginatedQuery, IRequest<BaseResponse<List<RateDto>>>
     {
         public int DriverId {get; set;}
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
     }
 }

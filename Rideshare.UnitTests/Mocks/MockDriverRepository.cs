@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Moq;
-using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Domain.Entities;
+using Rideshare.Application.Responses;
+using Rideshare.Application.UnitTests.Mocks;
 using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.UnitTests.Mocks;
-using Rideshare.Domain.Entities;
 
 namespace Rideshare.UnitTests.Mocks
 {
@@ -48,7 +45,11 @@ namespace Rideshare.UnitTests.Mocks
             };
 
             var mockRepo = new Mock<IDriverRepository>();
-
+            mockRepo.Setup(r => r.GetDriverByUserId(It.IsAny<string>())).ReturnsAsync((string userId) => {
+                if(userId != "asdf-1234-ghjk-5678")
+                    return new Driver(){Id=2};
+                return null;
+            });
             mockRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync((int pageNumber, int pageSize) => {
 
                 var response = new PaginatedResponse<Driver>();
@@ -57,9 +58,8 @@ namespace Rideshare.UnitTests.Mocks
                 .ToList();
 
                 response.Count = drivers.Count();
-                response.Paginated = result;
+                response.Value = result;
                 return response;
-
             }
                 );
             mockRepo.Setup(r => r.Get(It.IsAny<int>())).ReturnsAsync((int id) => drivers.FirstOrDefault(d => d.Id == id));
@@ -128,7 +128,7 @@ namespace Rideshare.UnitTests.Mocks
                     .ToList();
 
                 response.Count = drivers.Count;
-                response.Paginated = paginatedDrivers;
+                response.Value = paginatedDrivers;
 
 
                 return response;

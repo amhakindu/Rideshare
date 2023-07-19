@@ -1,8 +1,6 @@
 
-
-using Rideshare.Domain.Common;
-
 namespace Rideshare.Application.Common.Dtos.Security;
+
 public class UserDto
 {
 

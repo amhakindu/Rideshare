@@ -1,16 +1,9 @@
-using System.Globalization;
+using Rideshare.Domain.Common;
+using Rideshare.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Rideshare.Application.Responses;
 using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Domain.Common;
-using Rideshare.Domain.Entities;
 using static Rideshare.Application.Common.Constants.Utils;
-using Rideshare.Domain.Common;
-using Rideshare.Application.Common.Dtos.Security;
-using Rideshare.Application.Common.Dtos.RideRequests;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Domain.Common;
-using Rideshare.Domain.Entities;
-using Rideshare.Domain.Models;
 
 namespace Rideshare.Persistence.Repositories;
 
@@ -68,7 +61,7 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
             .Include(rr => rr.Destination)
             .ToListAsync();
         response.Count = await _dbContext.RideRequests.CountAsync();
-        response.Paginated = rideRequests;
+        response.Value = rideRequests;
         return response;
     }
     public async Task<Dictionary<string, int>> GetTop5Commuter()
@@ -210,20 +203,21 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
 
         var rideRequestQuery = _dbContext.Set<RideRequest>()
             .AsNoTracking()
-            .Include(rr => rr.Origin)
-            .Include(rr => rr.Destination)
-            .Include(rr => rr.User)
             .Where(item => (item.Status == (status ?? item.Status)))
             .Where(item => (item.User.PhoneNumber == (phoneNumber ?? item.User.PhoneNumber)))
             .Where(item => (item.CurrentFare <= (fare ?? item.CurrentFare)))
             .Where(item => (item.User.FullName == (name ?? item.User.FullName)));
         var count = await rideRequestQuery.CountAsync();
-        var rideRequests = await rideRequestQuery.Skip((PageNumber - 1) * PageSize)
+        var rideRequests = await rideRequestQuery
+            .Include(rr => rr.Origin)
+            .Include(rr => rr.Destination)
+            .Include(rr => rr.User)
+            .Skip((PageNumber - 1) * PageSize)
             .Skip((PageNumber - 1) * PageSize)
             .Take(PageSize)
             .ToListAsync();
 
-        response.Paginated = rideRequests;
+        response.Value = rideRequests;
         response.Count = count;
         return response;
 
@@ -250,10 +244,13 @@ public class RideRequestRepository : GenericRepository<RideRequest>, IRideReques
         var count = await query.CountAsync();
         var rideRequests = await query.Skip((PageNumber - 1) * PageSize)
             .Take(PageSize)
+            .Include(riderequest => riderequest.Origin)
+            .Include(riderequest => riderequest.Destination)
+            .Include(riderequest => riderequest.User)
             .ToListAsync();
 
         response.Count = count;
-        response.Paginated = rideRequests;
+        response.Value = rideRequests;
         return response;
 
     }

@@ -2,7 +2,7 @@ using Rideshare.Domain.Common;
 
 namespace Rideshare.Application.Common.Dtos.RideOffers;
 
-public class SearchAndFilterDto
+public class RideOffersListFilterDto
 {
     public string? DriverName { get; set; }
     public string? PhoneNumber { get; set; }

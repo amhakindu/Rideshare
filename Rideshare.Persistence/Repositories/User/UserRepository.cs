@@ -1,18 +1,19 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Security.Claims;
+using Rideshare.Domain.Models;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-
-using System.Security.Claims;
+using Rideshare.Application.Responses;
+using Microsoft.Extensions.Configuration;
 using Rideshare.Application.Contracts.Identity;
-using Rideshare.Domain.Models;
 using Rideshare.Application.Common.Dtos.Security;
+
 
 namespace Rideshare.Persistence.Repositories.User;
 
@@ -51,7 +52,7 @@ public class UserRepository : IUserRepository
           .ToList();
         var paginatedResponse = new PaginatedResponse<ApplicationUser>
         {
-            Paginated= filteredUsers,
+            Value= filteredUsers,
             Count = usersInRole.Count
 
         };
@@ -128,15 +129,15 @@ public class UserRepository : IUserRepository
     public async Task<PaginatedResponse<ApplicationUser>> GetUsersAsync(int pageNumber = 1,
         int pageSize = 10)
     {
-        var users = await _userManager.Users.ToListAsync();
-        var filteredUsers = users.
+        var count = await _userManager.Users.CountAsync();
+        var filteredUsers = _userManager.Users.
             Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
         var paginatedResponse = new PaginatedResponse<ApplicationUser>
         {
-            Paginated = filteredUsers,
-            Count = users.Count
+            Value = filteredUsers,
+            Count = count
         };
         return paginatedResponse;
 
@@ -271,21 +272,59 @@ public class UserRepository : IUserRepository
             throw new Exception(result.ToString());
         }
     }
-
-    public async Task<int> GetCommuterCount(DateTime date)
-    {
-        var role = "Commuter";
-
-        var usersInRole = await _userManager.GetUsersInRoleAsync(role);
-        var count = usersInRole.Count(u => u.CreatedAt.Date == date.Date);
-
-        return count;
+    public async Task<int> GetCommuterCount(){
+        var usersInRole = await _userManager.GetUsersInRoleAsync("Commuter");
+        return usersInRole.Count();
     }
 
-
-
-
-
-
+    public async Task<double> GetLastWeekPercentageChange(){
+        var usersInRole = await _userManager.GetUsersInRoleAsync("Commuter");
+        var totalCount = usersInRole.Count();
+        var beforeLastWeekCount = usersInRole.Count(u => u.CreatedAt.Day <= DateTime.Today.AddDays(-7).Day);
+        
+        if(beforeLastWeekCount == 0)
+            return 0;
+        return (totalCount - beforeLastWeekCount) * 100.0 / beforeLastWeekCount;
+    }
+    
+    public async Task<Dictionary<int, int>> GetCommuterStatistics(int? year, int? month){
+		var entities = await _userManager.GetUsersInRoleAsync("Commuter");
+		if(month != null && year != null){
+			// Weekly
+			var temp = entities.Where(entity => entity.CreatedAt.Year == year)
+				.Where(entity => entity.CreatedAt.Month == month)
+				.GroupBy(entity => entity.CreatedAt.Day / 7 + 1)
+				.ToDictionary(group => group.Key, group => group.Count());
+			for (int i = 1; i <= 5; i++)
+			{
+				if(!temp.ContainsKey(i))
+					temp.Add(i, 0);
+			}
+			return temp;
+		}else if(month == null && year == null){
+			// Yearly
+			var temp = entities
+				.GroupBy(entity => entity.CreatedAt.Year)
+				.ToDictionary(g => g.Key, g => g.Count());
+			for (int i = 2023; i <= DateTime.Now.Year; i++)
+			{
+				if(!temp.ContainsKey(i))
+					temp.Add(i, 0);
+			}
+			return temp;
+		}else{   
+			// Monthly
+			Dictionary<int, int> temp = entities
+				.Where(entity => entity.CreatedAt.Year == year)
+				.GroupBy(entity => entity.CreatedAt.Month)
+				.ToDictionary(g => g.Key, g => g.Count());
+			for (int i = 1; i < 13; i++)
+			{
+				if(!temp.ContainsKey(i))
+					temp.Add(i, 0);
+			}
+			return temp;
+		}
+	}
 }
 

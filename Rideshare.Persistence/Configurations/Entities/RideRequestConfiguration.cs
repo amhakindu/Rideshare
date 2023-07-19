@@ -23,7 +23,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 		{
 			var random = new Random();
 			var startDate = new DateTime(2023, 1, 1);
-			var endDate = new DateTime(2023, 6, 30);
+			var endDate = DateTime.Now;
 			
 			var userIds = new List<string>(){
 				"d5eade8b-11a4-4e26-b7e6-123456789000",

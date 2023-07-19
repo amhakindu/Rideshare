@@ -1,13 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using Rideshare.Application.Common.Dtos.Tests;
 using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rideshare.Application.Common.Dtos.Vehicles.Validators;
 public class CreateVehicleDtoValidator : AbstractValidator<CreateVehicleDto>

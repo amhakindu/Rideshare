@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Rideshare.Application.Contracts.Identity;
-using Rideshare.Application.Features.Userss;
+using Rideshare.Application.Features.User;
 
 namespace Rideshare.Infrastructure.Security;
 

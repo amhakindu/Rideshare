@@ -1,4 +1,4 @@
-namespace Rideshare.Application.Features.Userss;
+namespace Rideshare.Application.Features.User;
 
 public interface IUserAccessor
 {

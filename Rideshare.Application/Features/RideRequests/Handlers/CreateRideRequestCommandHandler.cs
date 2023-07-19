@@ -1,17 +1,15 @@
-using AutoMapper;
 using MediatR;
+using AutoMapper;
+using Rideshare.Domain.Entities;
+using Rideshare.Application.Responses;
+using Rideshare.Application.Exceptions;
+using Rideshare.Application.Contracts.Services;
+using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Common.Dtos.RideOffers;
 using Rideshare.Application.Common.Dtos.RideRequests;
-using Rideshare.Application.Common.Dtos.RideRequests.Validators;
 using Rideshare.Application.Contracts.Infrastructure;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Contracts.Services;
-using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.RideRequests.Commands;
-using Rideshare.Application.Responses;
-using Rideshare.Domain.Entities;
-using System.Net;
-using System;
+using Rideshare.Application.Common.Dtos.RideRequests.Validators;
 
 namespace Rideshare.Application.Features.Tests.Handlers;
 

@@ -1,18 +1,12 @@
-﻿using AutoMapper;
-using MediatR;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Exceptions;
-using Rideshare.Application.Features.Vehicles.Commands;
+﻿using MediatR;
+using AutoMapper;
 using Rideshare.Application.Responses;
-using Rideshare.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Rideshare.Application.Exceptions;
+using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Features.Vehicles.Commands;
 
 namespace Rideshare.Application.Features.Vehicles.Handlers;
+
 public class DeleteVehicleCommandHandler : IRequestHandler<DeleteVehicleCommand, BaseResponse<Unit>>
 {
     private readonly IMapper _mapper;

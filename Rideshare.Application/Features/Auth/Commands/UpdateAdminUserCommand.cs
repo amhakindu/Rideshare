@@ -1,7 +1,6 @@
 using MediatR;
-using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Responses;
-using Rideshare.Domain.Models;
+using Rideshare.Application.Common.Dtos.Security;
 
 namespace Rideshare.Application.Features.Auth.Commands;
 

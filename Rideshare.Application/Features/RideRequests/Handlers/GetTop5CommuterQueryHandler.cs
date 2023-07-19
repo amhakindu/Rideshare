@@ -1,16 +1,11 @@
-﻿using AutoMapper;
-using MediatR;
-using Rideshare.Application.Common.Dtos.RideRequests;
-using Rideshare.Application.Contracts.Identity;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Features.RideRequests.Queries;
+﻿using MediatR;
+using AutoMapper;
 using Rideshare.Application.Responses;
-using Rideshare.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Rideshare.Application.Contracts.Identity;
+using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Common.Dtos.RideRequests;
+using Rideshare.Application.Features.RideRequests.Queries;
 
 namespace Rideshare.Application.Features.RideRequests.Handlers
 {
@@ -31,21 +26,21 @@ namespace Rideshare.Application.Features.RideRequests.Handlers
         public async Task<BaseResponse<List<CommuterWithRideRequestCntDto>>> Handle(GetTop5CommuterQuery request, CancellationToken cancellationToken)
         {
             var top5Commuters = await _unitOfWork.RideRequestRepository.GetTop5Commuter();
-            var commuterTasks = top5Commuters.Select(async commuter =>
-                new CommuterWithRideRequestCntDto
-                {
-                    Commuter = await _userRepository.FindByIdAsync(commuter.Key),
-                    RideRequestCount = commuter.Value
-                }).ToList();
-
-            var commuterDtos = await Task.WhenAll(commuterTasks);
+            var commuterTasks = top5Commuters.Select( commuter => map(commuter).GetAwaiter().GetResult()).ToList();
 
             var response = new BaseResponse<List<CommuterWithRideRequestCntDto>>
             {
-                Value = commuterDtos.ToList(),
+                Value = commuterTasks
             };
 
             return response;
+        }
+        async Task<CommuterWithRideRequestCntDto> map(KeyValuePair<string, int> data){
+            return new CommuterWithRideRequestCntDto
+            {
+                Commuter = _mapper.Map<UserDtoForAdmin>(await _userRepository.FindByIdAsync(data.Key)),
+                RideRequestCount = data.Value
+            };
         }
     }
 }

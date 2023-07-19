@@ -7,6 +7,8 @@ namespace Rideshare.Application.Features.Rates.Commands
 	public class CreateRateCommand :  IRequest<BaseResponse<int>>
 	{
 		public CreateRateDto RateDto { get; set; }
+		public string UserId { get; set; }	
+		
 	}
 }
 

@@ -1,24 +1,12 @@
 using FluentValidation;
-using Rideshare.Application.Contracts.Identity;
-using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Common.Dtos.Common.Validators;
 
 namespace Rideshare.Application.Common.Dtos.RideRequests.Validators;
 
 public class UpdateRideRequestDtoValidator : AbstractValidator<UpdateRideRequestDto>
-{
-    private readonly IUnitOfWork _unitOfWork;
-    
-     public UpdateRideRequestDtoValidator(IUnitOfWork unitOfWork)
+{   
+     public UpdateRideRequestDtoValidator()
     {
-        
-        _unitOfWork = unitOfWork;
-
-        // RuleFor(p => p.Id)
-        // .MustAsync(async (id,token) => {
-        //     return await _unitOfWork.RideRequestRepository.Exists(id);
-            
-        // }).WithMessage("{PropertyName} does not exist"); 
-
         RuleFor(dto => dto.Origin)
             .NotNull().WithMessage("Current location is required")
             .SetValidator(new LocationDtoValidator());

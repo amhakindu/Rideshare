@@ -1,22 +1,15 @@
-﻿using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.SignalR;
-using Rideshare.Application.Common.Dtos.Vehicles.Validators;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Contracts.Services;
-using Rideshare.Application.Exceptions;
-using Rideshare.Application.Features.Vehicles.Commands;
-using Rideshare.Application.Responses;
+﻿using MediatR;
+using AutoMapper;
 using Rideshare.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
+using Rideshare.Application.Responses;
+using Rideshare.Application.Exceptions;
+using Rideshare.Application.Contracts.Services;
+using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Features.Vehicles.Commands;
+using Rideshare.Application.Common.Dtos.Vehicles.Validators;
 
 namespace Rideshare.Application.Features.Vehicles.Handlers;
+
 public class CreateVehicleCommandHandler : IRequestHandler<CreateVehicleCommand, BaseResponse<Nullable<int>>>
 {
     private readonly IMapper _mapper;

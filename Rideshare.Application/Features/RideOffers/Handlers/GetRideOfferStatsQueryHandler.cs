@@ -25,12 +25,7 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
 
         public async Task<BaseResponse<Dictionary<int, int>>> Handle(GetRideOfferStatsQuery command, CancellationToken cancellationToken)
         {
-            var validator = new RideOfferStatsDtoValidator();
-            var validationResult = await validator.ValidateAsync(command.StatsDto);
-            if (validationResult.IsValid == false)
-                throw new ValidationException(validationResult.Errors.Select(e => e.ErrorMessage).ToList().First());
-
-            var rideOfferStats = await _unitOfWork.RideOfferRepository.GetRideOfferStatistics(command.StatsDto.Year, command.StatsDto.Month, null);
+            var rideOfferStats = await _unitOfWork.RideOfferRepository.GetEntityStatistics(command.Year, command.Month);
 
             return new BaseResponse<Dictionary<int, int>>{
                 Success = true,

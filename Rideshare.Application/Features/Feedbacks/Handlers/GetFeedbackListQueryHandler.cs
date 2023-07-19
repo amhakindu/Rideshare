@@ -1,19 +1,13 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
+using AutoMapper;
+using Rideshare.Application.Responses;
 using Rideshare.Application.Common.Dtos.Feedbacks;
-using Rideshare.Application.Common.Dtos.Pagination;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Feedbacks.Queries;
-using Rideshare.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rideshare.Application.Features.Feedbacks.Handlers
 {
-    public class GetFeedbackListQueryHandler: IRequestHandler<GetFeedbackListQuery, BaseResponse<PaginatedResponseDto<FeedbackDto>>>
+    public class GetFeedbackListQueryHandler: IRequestHandler<GetFeedbackListQuery, PaginatedResponse<FeedbackDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -23,18 +17,18 @@ namespace Rideshare.Application.Features.Feedbacks.Handlers
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<BaseResponse<PaginatedResponseDto<FeedbackDto>>> Handle(GetFeedbackListQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedResponse<FeedbackDto>> Handle(GetFeedbackListQuery request, CancellationToken cancellationToken)
         {
-            var response = new BaseResponse<PaginatedResponseDto<FeedbackDto>>();
-
+            var response = new PaginatedResponse<FeedbackDto>();
 
             var result = await _unitOfWork.FeedbackRepository.GetAll(request.PageNumber, request.PageSize);
 
-            response.Value = new PaginatedResponseDto<FeedbackDto>();
             response.Success = true;
-            response.Value.Paginated = _mapper.Map<IReadOnlyList<FeedbackDto>>(result.Paginated);
-            response.Value.Count = result.Count;
-            response.Message = "feedback fetched succesfully.";
+            response.Message = "Feedbacks Fetched Succesfully.";
+            response.Value = _mapper.Map<IReadOnlyList<FeedbackDto>>(result.Value);
+            response.Count = result.Count;
+            response.PageNumber = request.PageNumber;
+            response.PageSize = request.PageSize;
             return response;
         }
     }

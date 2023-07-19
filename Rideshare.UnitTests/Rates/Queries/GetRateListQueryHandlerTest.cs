@@ -38,7 +38,7 @@ namespace Rideshare.UnitTests.RateTest.Queries
 			
 			var result = await _handler.Handle(new GetRateListQuery {PageNumber = 1, PageSize = 10 }, CancellationToken.None);
 			result.Success.ShouldBeTrue();
-			result.Value.Paginated.Count.ShouldBe(3);
+			result.Value.Count.ShouldBe(3);
 
 		}
 	}

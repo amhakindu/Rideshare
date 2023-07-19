@@ -1,11 +1,7 @@
-using System.Net;
 using MediatR;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using Rideshare.Application.Features.Userss;
-using Rideshare.Application.Responses;
-using Rideshare.Application.Features.RideOffers.Queries;
-using Rideshare.Application.Common.Dtos.Statistics;
-using Microsoft.AspNetCore.Authorization;
+using Rideshare.Application.Features.User;
 
 namespace Rideshare.WebApi.Controllers;
 

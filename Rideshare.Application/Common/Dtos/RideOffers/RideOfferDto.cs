@@ -1,7 +1,6 @@
-using NetTopologySuite.Geometries;
+using Rideshare.Application.Common.Dtos.Common;
 using Rideshare.Application.Common.Dtos.Drivers;
 using Rideshare.Application.Common.Dtos.Vehicles;
-using Rideshare.Domain.Common;
 
 namespace Rideshare.Application.Common.Dtos.RideOffers;
 
