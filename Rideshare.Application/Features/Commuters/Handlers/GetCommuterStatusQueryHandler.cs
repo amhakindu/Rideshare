@@ -17,17 +17,23 @@ public class GetCommuterStatusQueryHandler : IRequestHandler<GetCommuterStatusQu
 	{
 		var commuters = await _userRepository.GetUsersByRoleAsync("Commuter", 1, int.MaxValue);
 		int ActiveCommuters = 0; int IdleCommuters = 0;
-		foreach (var commuter in commuters.Value)
+		
+		if (commuters?.Value != null)
 		{
-			if (commuter.LastLogin >= DateTime.Now.AddDays(-30))
+			
+			foreach (var commuter in commuters.Value)
 			{
-				ActiveCommuters +=1;
-			}
-			else 
-			{
-				IdleCommuters += 1;
-			}
-		};
+				if (commuter.LastLogin >= DateTime.Now.AddDays(-30))
+				{
+					ActiveCommuters +=1;
+				}
+				else 
+				{
+					IdleCommuters += 1;
+				}
+			};
+		}
+		
 
 		var responseDto = new CommuterStatusDto
 		{

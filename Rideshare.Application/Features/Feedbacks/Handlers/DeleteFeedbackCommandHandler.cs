@@ -47,7 +47,7 @@ namespace Rideshare.Application.Features.Feedbacks.Handlers
 
             if (user == null)
             {
-                throw new NotFoundException($"User with ID {request.Id} does not exist");
+                throw new NotFoundException($"User with ID {feedback.UserId} does not exist");
             }
             var ops =  await _unitOfWork.FeedbackRepository.Delete(feedback);
             if (ops == 0)

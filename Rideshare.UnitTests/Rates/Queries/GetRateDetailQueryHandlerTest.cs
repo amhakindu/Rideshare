@@ -10,7 +10,7 @@ using Rideshare.UnitTests.Mocks;
 using Shouldly;
 using Xunit;
 
-namespace Rideshare.UnitTests.RateTest.Queries
+namespace Rideshare.UnitTests.Rates.Queries
 {
     public class GetRateDetailQueryHandlerTest
 	{
