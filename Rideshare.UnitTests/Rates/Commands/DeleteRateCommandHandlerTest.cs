@@ -9,7 +9,7 @@ using Rideshare.UnitTests.Mocks;
 using Rideshare.Application.Features.Rates.Commands;
 using Xunit;
 
-namespace Rideshare.UnitTests.RateTest.Commands
+namespace Rideshare.UnitTests.Rates.Commands
 {
 	public class DeleteRateCommandHandlerTest
 	{

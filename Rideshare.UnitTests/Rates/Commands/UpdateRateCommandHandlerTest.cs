@@ -10,7 +10,7 @@ using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Rates.Commands;
 using Rideshare.Application.Features.Rates.Handlers;
 
-namespace Rideshare.UnitTests.RateTest
+namespace Rideshare.UnitTests.Rates.Commands
 {
 	public class UpdateRateCommandHandlerTest
 	{

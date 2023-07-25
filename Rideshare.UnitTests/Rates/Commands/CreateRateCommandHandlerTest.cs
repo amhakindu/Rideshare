@@ -10,7 +10,7 @@ using Shouldly;
 using Xunit;
 using Rideshare.Application.Exceptions;
 
-namespace Rideshare.UnitTests.RateTest.Commands
+namespace Rideshare.UnitTests.Rates.Commands
 {
 	public class CreateRateCommandHandlerTest
 	{

@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Rideshare.UnitTests.FeedbackTest
+namespace Rideshare.UnitTests.Feedbacks
 {
     public class GetFeedbackListQueryHandlerTest
     {
