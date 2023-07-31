@@ -47,7 +47,8 @@ namespace Rideshare.UnitTests.Feedbacks
 			await _handler.Handle(new UpdateFeedbackCommand() { feedbackDto = feedBackDto }, CancellationToken.None);
 			var feedback = await _mockUnitOfWork.Object.FeedbackRepository.Get(feedBackDto.Id);
 			feedback.Title.ShouldBe(feedBackDto.Title);
-
+			feedback.Content.ShouldBe(feedBackDto.Content);
+			feedback.Rating.Equals(feedBackDto.Title);
 
 		}
 

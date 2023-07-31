@@ -2,6 +2,7 @@
 using Moq;
 using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Feedbacks.Commands;
 using Rideshare.Application.Features.Feedbacks.Handlers;
 using Rideshare.Application.Profiles;
@@ -30,7 +31,7 @@ namespace Rideshare.UnitTests.Feedbacks
 			_mockUnitOfWork = MockUnitOfWork.GetUnitOfWork();
 
 			var mapboxService = MockServices.GetMapboxService();
-            var _userRepositoryMock = new MockUserRepository();
+			var _userRepositoryMock = new MockUserRepository();
 
 			_mapper = new MapperConfiguration(c => { c.AddProfile(new MappingProfile(mapboxService.Object, _mockUnitOfWork.Object)); })
 			.CreateMapper();
@@ -58,14 +59,13 @@ namespace Rideshare.UnitTests.Feedbacks
 		{
 
 			var Id = 10;
-			try
-			{
-				var result = await _handler.Handle(new DeleteFeedbackCommand() { Id = Id }, CancellationToken.None);
-			}
-			catch (Exception ex) {
-				var feedbacks = await _mockUnitOfWork.Object.FeedbackRepository.GetAll(1, 10);
-				feedbacks.Count.ShouldBe(2);
-			}
+			var command = new DeleteFeedbackCommand { Id = Id };
+
+			await Should.ThrowAsync<NotFoundException>(async () =>
+				{
+					var result = await _handler.Handle(command, CancellationToken.None);
+				});
+				
 		}
 	}
 }
