@@ -24,7 +24,7 @@ namespace Rideshare.UnitTests.Commuters
 
 			var mapperMock = new Mock<IMapper>();
 
-			var handler = new GetCommuterStatusQueryHandler(userRepositoryMock.Object);
+			var handler = new GetCommuterStatusQueryHandler(userRepositoryMock.Object, mapperMock.Object);
 
 			var query = new GetCommuterStatusQuery();
 
@@ -78,7 +78,7 @@ namespace Rideshare.UnitTests.Commuters
 
 			// Assert
 			Assert.True(response.Success);
-			Assert.Equal("Commuters status count fetched Successfully!", response.Message);
+			Assert.Equal("Commuters status count fetched successfully!", response.Message);
 			Assert.Equal(expectedResponseDto.ActiveCommuters, response.Value.ActiveCommuters);
 			Assert.Equal(expectedResponseDto.IdleCommuters, response.Value.IdleCommuters);
 		}

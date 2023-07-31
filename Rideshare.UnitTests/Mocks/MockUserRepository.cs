@@ -108,17 +108,16 @@ namespace Rideshare.Application.UnitTests.Mocks
 				});
 			
 			Setup(repo => repo.GetCommuterStatistics(It.IsAny<int?>(), It.IsAny<int?>()))
-			    .ReturnsAsync((int? year, int? month) =>
+				.ReturnsAsync((int? year, int? month) =>
 				{
-					var entities = new List<ApplicationUser> {
-						new ApplicationUser { Id = "user1", CreatedAt = new DateTime(2022, 7, 1) },
-						new ApplicationUser { Id = "user2", CreatedAt = new DateTime(2023, 7, 1) },
-						new ApplicationUser { Id = "user3", CreatedAt = new DateTime(2023, 7, 5) },
-						new ApplicationUser { Id = "user4", CreatedAt = new DateTime(2023, 7, 10) },
-						new ApplicationUser { Id = "user5", CreatedAt = new DateTime(2023, 7, 16) },
-						new ApplicationUser { Id = "user6", CreatedAt = new DateTime(2023, 8, 1) }
+				var entities = new List<ApplicationUser> {
+					new ApplicationUser { Id = "user1", CreatedAt = new DateTime(2022, 7, 1) },
+					new ApplicationUser { Id = "user2", CreatedAt = new DateTime(2023, 7, 1) },
+					new ApplicationUser { Id = "user3", CreatedAt = new DateTime(2023, 7, 5) },
+					new ApplicationUser { Id = "user4", CreatedAt = new DateTime(2023, 7, 10) },
+					new ApplicationUser { Id = "user5", CreatedAt = new DateTime(2023, 7, 16) },
+					new ApplicationUser { Id = "user6", CreatedAt = new DateTime(2023, 8, 1) }
 				};
-				
 			
 				if(month != null && year != null){
 					// Weekly
@@ -155,7 +154,51 @@ namespace Rideshare.Application.UnitTests.Mocks
 							temp.Add(i, 0);
 					}
 				return temp;
-			}});
+				}});
+			
+			
+			Setup(repo => repo.GetCommuterStatusCountAsync())
+				.ReturnsAsync(() =>
+				{
+				var commuters = new List<ApplicationUser>
+					{
+						new ApplicationUser
+						{
+							Id = "user1",
+							FullName = "John Doe",
+							UserName = "johndoe",
+							Email = "john@example.com",
+							PhoneNumber = "1234567890",
+							LastLogin = DateTime.Now.AddDays(-15)
+						},
+						new ApplicationUser
+						{
+							Id = "user2",
+							FullName = "Jane Smith",
+							UserName = "janesmith",
+							Email = "jane@example.com",
+							PhoneNumber = "9876543210",
+							LastLogin = DateTime.Now.AddDays(-45)
+						}
+					};
+					
+				int activeCommuters = 0;
+				int idleCommuters = 0;
+
+				if (commuters?.Count() > 0)
+				{
+					var thirtyDaysAgo = DateTime.Now.AddDays(-30);
+					activeCommuters = commuters.Count(u => u.LastLogin >= thirtyDaysAgo);
+					idleCommuters = commuters.Count(u => u.LastLogin < thirtyDaysAgo);
+				}
+
+				return new CommuterStatusDto
+					{
+						ActiveCommuters = activeCommuters,
+						IdleCommuters = idleCommuters
+					};
+				});
+			
 		}
 		
 

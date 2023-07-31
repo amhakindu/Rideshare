@@ -20,16 +20,6 @@ public class GetCommutersCountStatisticsQueryValidator : AbstractValidator<GetCo
             .Must(BeValidYearAndMonthCombination)
             .WithMessage("If month is specified, year must also be specified.");
 
-        RuleFor(x => x.Year)
-            .Must(BeValidYearType)
-            .When(x => x.Year.HasValue)
-            .WithMessage("Year must be of type int.");
-
-        RuleFor(x => x.Month)
-            .Must(BeValidMonthType)
-            .When(x => x.Month.HasValue)
-            .WithMessage("Month must be of type int.");
-
 
     }
 
@@ -54,16 +44,6 @@ public class GetCommutersCountStatisticsQueryValidator : AbstractValidator<GetCo
     {
         // If month is specified, year must also be specified
         return !query.Month.HasValue || query.Year.HasValue;
-    }
-
-    private bool BeValidYearType(int? year)
-    {
-        return year.HasValue && year.Value.GetType() == typeof(int);
-    }
-
-    private bool BeValidMonthType(int? month)
-    {
-        return month.HasValue && month.Value.GetType() == typeof(int);
     }
 
 }
