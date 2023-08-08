@@ -27,17 +27,17 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(o =>
 {
-    o.AddPolicy("CorsPolicy",
-        builder => builder.AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
+	o.AddPolicy("CorsPolicy",
+		builder => builder.AllowAnyOrigin()
+		.AllowAnyMethod()
+		.AllowAnyHeader());
 });
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
+	app.UseDeveloperExceptionPage();
 }
 
 app.UseCors("CorsPolicy");
