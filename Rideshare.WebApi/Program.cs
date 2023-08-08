@@ -1,4 +1,5 @@
 using Rideshare.Persistence;
+using System.Reflection;
 using Rideshare.Application;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -70,6 +71,9 @@ void AddSwaggerDoc(IServiceCollection services)
                 Name = "Rideshare Backend Team"
             },
         });
+        // use the generated xml file
+        c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+
         c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
         c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
