@@ -18,7 +18,7 @@ public class VehiclesController : BaseApiController
     {
     }
     /// <summary>
-    /// Get Vehicle information by user ID.
+    /// Get Vehicle information by vehicle ID.
     /// </summary>
     /// <remarks> Retrieves information about a vehicle based on the associated ID.
     /// This endpoint is accessible to users with the "Driver" or "Admin" roles.
@@ -38,7 +38,7 @@ public class VehiclesController : BaseApiController
     ///    },
     ///    "errors": []
     /// }</remarks> 
-    /// <param name="userId">User's unique identifier associated with the Vehicle.</param>
+    /// <param name="vehicleId">Vehicle's unique identifier associated with the Vehicle.</param>
     /// <response code="200">Returns the vehicle's information.</response>
     /// <response code="404">Vehicle not found.</response>
     /// <returns>
@@ -114,8 +114,6 @@ public class VehiclesController : BaseApiController
 	/// <param name="createVehicleDto">Vehicle's information for registration.</param>
 	/// <response code="200">Vehicle information updated successfully.</response>
 	/// <response code="400">Bad request or invalid input data.</response>
-	/// <response code="401">Unauthorized access to update vehicle information.</response>
-	/// <response code="404">Vehicle not found.</response>
 	/// <returns>
 	/// Details of the newly registered vehicle.
 	/// </returns>ponse code="201">Returns the newly registered vehicle's details.
@@ -162,7 +160,7 @@ public class VehiclesController : BaseApiController
 	/// </summary>
 	/// <remarks>
 	/// Deletes a vehicle based on the unique identifier.
-	/// This endpoint is accessible to users with the "Driver" role.
+	/// This endpoint is accessible to users with the "Driver" and "Admin" role.
 	/// It allows users to delete their own vehicle profile.
 	/// </remarks>
 	/// <param name="id">Vehicle's unique identifier.</param>
@@ -174,7 +172,7 @@ public class VehiclesController : BaseApiController
 	/// </returns>
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Driver")]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _mediator.Send(new DeleteVehicleCommand { VehicleId = id });
