@@ -99,9 +99,12 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
 		var query = _dbContext.Set<RideOffer>()
 			.AsNoTracking();
 
-		var rideoffers = await query.Skip((pageNumber - 1) * pageSize)
+		var rideoffers = await query
+			.OrderBy(rideoffer => rideoffer.DateCreated)
+			.Skip((pageNumber - 1) * pageSize)
 			.Take(pageSize)
 			.Include(ro => ro.Driver)
+				.ThenInclude(driver => driver.User)
 			.Include(ro => ro.CurrentLocation)
 			.Include(ro => ro.Destination)
 			.ToListAsync();
