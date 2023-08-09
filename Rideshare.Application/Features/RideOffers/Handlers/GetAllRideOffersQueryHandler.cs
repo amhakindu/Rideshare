@@ -12,13 +12,11 @@ public class GetAllRideOffersQueryHandler: IRequestHandler<GetAllRideOffersQuery
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly IMapboxService _mapboxService;
-
-    public GetAllRideOffersQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IMapboxService mapboxService)
+    
+    public GetAllRideOffersQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _mapboxService = mapboxService;
     }
 
     public async Task<PaginatedResponse<RideOfferListDto>> Handle(GetAllRideOffersQuery command, CancellationToken cancellationToken)
@@ -34,6 +32,5 @@ public class GetAllRideOffersQueryHandler: IRequestHandler<GetAllRideOffersQuery
         response.PageSize = command.PageSize;
 
         return response;
-        
     }
 }
