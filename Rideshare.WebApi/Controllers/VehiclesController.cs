@@ -71,7 +71,22 @@ public class VehiclesController : BaseApiController
 	///	   "success": true,
 	///	   "message": "Vehicles Fetching Successful",	
 	///     "value": [	
-	///	          10 vehicles with details...
+	///	          {
+    ///                  "id": 2,
+    ///                  "plateNumber": "XYZ789",
+    ///                  "numberOfSeats": 5,
+    ///                  "model": "Honda Civic",
+    ///                  "libre": "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100780/m39jk106ug96qt7e13me.pdf",
+    ///                  "driverId": 2
+    ///                },
+    ///                {
+    ///                  "id": 3,
+    ///                   "plateNumber": "DEF456",
+    ///                  "numberOfSeats": 7,
+    ///                  "model": "Ford Explorer",
+    ///                  "libre": "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100768/jo9dzde295c0ebkjr7hz.pdf",
+    ///                  "driverId": 3
+    ///               }
 	///           ]
 	/// }</remarks>
 	/// <response code="200"> Returns the list of vehicles.</response>
@@ -97,6 +112,10 @@ public class VehiclesController : BaseApiController
 	/// It allows users to provide vehicle information for registration.
 	/// </remarks>
 	/// <param name="createVehicleDto">Vehicle's information for registration.</param>
+	/// <response code="200">Vehicle information updated successfully.</response>
+	/// <response code="400">Bad request or invalid input data.</response>
+	/// <response code="401">Unauthorized access to update vehicle information.</response>
+	/// <response code="404">Vehicle not found.</response>
 	/// <returns>
 	/// Details of the newly registered vehicle.
 	/// </returns>ponse code="201">Returns the newly registered vehicle's details.
