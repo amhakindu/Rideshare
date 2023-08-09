@@ -21,7 +21,7 @@ public class VehiclesController : BaseApiController
     /// Get Vehicle information by user ID.
     /// </summary>
     /// <remarks> Retrieves information about a vehicle based on the associated ID.
-    /// This endpoint is accessible to users with the "Vehicle" or "Admin" roles.
+    /// This endpoint is accessible to users with the "Driver" or "Admin" roles.
     ///
     /// Sample Response:
     /// {
@@ -93,7 +93,7 @@ public class VehiclesController : BaseApiController
 	/// Register a new vehicle.
 	/// </summary>
 	/// <remarks>Registers a new vehicle in the system.
-	/// This endpoint is accessible to users with the "Vehicle" role.
+	/// This endpoint is accessible to users with the "Driver" role.
 	/// It allows users to provide vehicle information for registration.
 	/// </remarks>
 	/// <param name="createVehicleDto">Vehicle's information for registration.</param>
@@ -116,7 +116,7 @@ public class VehiclesController : BaseApiController
 	/// </summary>
 	/// <remarks>
 	/// Updates the information of an existing vehicle.
-	/// This endpoint is accessible to users with the "Vehicle" role.
+	/// This endpoint is accessible to users with the "Driver" role.
 	/// Users can update their own vehicle profile information using this endpoint.
 	/// </remarks>
 	/// <param name="updateVehicleDto">Vehicle's updated information.</param>
@@ -143,7 +143,7 @@ public class VehiclesController : BaseApiController
 	/// </summary>
 	/// <remarks>
 	/// Deletes a vehicle based on the unique identifier.
-	/// This endpoint is accessible to users with the "Vehicle" role.
+	/// This endpoint is accessible to users with the "Driver" role.
 	/// It allows users to delete their own vehicle profile.
 	/// </remarks>
 	/// <param name="id">Vehicle's unique identifier.</param>
