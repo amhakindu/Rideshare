@@ -15,16 +15,18 @@ public class MockRideOfferRepository
         var rideOffers = new List<RideOffer>{
             new RideOffer{
                 Id = 1,
+                DriverId = 1,
                 Driver= new Driver(){Id=1},
-                Vehicle= new Vehicle(){Id=1},
+                VehicleId=1,
                 CurrentLocation = new GeographicalLocation(){Coordinate=new Point(38.7478, 8.9945){SRID=4326}},
                 Destination = new GeographicalLocation(){Coordinate=new Point(38.7668, 9.0004){SRID=4326}},
                 AvailableSeats = 2,
             },
             new RideOffer{
                 Id = 2,
-                Driver= new Driver(){Id=1},
-                Vehicle= new Vehicle(){Id=1},
+                DriverId=2,
+                Driver= new Driver(){Id=2},
+                VehicleId=2,
                 CurrentLocation = new GeographicalLocation(){Coordinate=new Point(38.7445, 9.0105){SRID=4326}},
                 Destination = new GeographicalLocation(){Coordinate=new Point(38.7667, 9.0106){SRID=4326}},
                 AvailableSeats = 2,
@@ -36,16 +38,17 @@ public class MockRideOfferRepository
         rideOfferRepo.Setup(repo => repo.Get(It.IsAny<int>())).ReturnsAsync((int id) => rideOffers.FirstOrDefault(o => o.Id == id));
         rideOfferRepo.Setup(r => r.GetActiveRideOffers()).ReturnsAsync(rideOffers.Where(rideoffer => rideoffer.Status == Status.WAITING || rideoffer.Status == Status.ONROUTE).ToList());
         rideOfferRepo.Setup(r => r.GetActiveRideOfferOfDriver(It.IsAny<int>())).ReturnsAsync((int Id) => {
-            var temp = rideOffers.Where(rideoffer => rideoffer.Driver.Id == Id).FirstOrDefault();
+            var temp = rideOffers.Where(rideoffer => rideoffer.DriverId == Id).FirstOrDefault();
             return temp;
         });
         rideOfferRepo.Setup(r => r.GetRideOffersOfDriver(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync((int id, int pageNumber, int pagesize) => {
             var response = new PaginatedResponse<RideOffer>();
-            var query = (IReadOnlyList<RideOffer>)rideOffers.Where(rideoffer => rideoffer.Driver.Id == id);
+            var query = (IReadOnlyList<RideOffer>)rideOffers.Where(rideoffer => rideoffer.DriverId == id).ToList();
 
-            response.Value =  query.ToList();
+            response.Value =  query;
+            response.PageNumber = pageNumber;
+            response.PageSize = pagesize;
             response.Count =query.Count();
-
             return response;            
         });
         rideOfferRepo.Setup(repo => repo.Exists(It.IsAny<int>())).ReturnsAsync((int id) => rideOffers.Exists(o => o.Id == id));

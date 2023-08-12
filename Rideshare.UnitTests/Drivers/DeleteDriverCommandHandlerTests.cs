@@ -1,13 +1,13 @@
-using AutoMapper;
 using Moq;
-using Rideshare.Application.Contracts.Persistence;
+using System;
+using Shouldly;
+using AutoMapper;
+using Rideshare.UnitTests.Mocks;
+using Rideshare.Application.Profiles;
 using Rideshare.Application.Exceptions;
+using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Drivers.Commands;
 using Rideshare.Application.Features.Drivers.Handlers;
-using Rideshare.Application.Profiles;
-using Rideshare.UnitTests.Mocks;
-using Shouldly;
-using System;
 using System.Security.Cryptography.X509Certificates;
 using Xunit;
 
@@ -43,7 +43,7 @@ namespace Rideshare.UnitTests.Drivers
             var result = await _handler.Handle(command, CancellationToken.None);
             
 
-            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(1);
+            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(2);
 
 
         }
@@ -59,7 +59,7 @@ public async Task DeleteDriverInValid()
         var result = await _handler.Handle(command, CancellationToken.None);
     });
 
-    (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(2);
+    (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(3);
 }
 
 

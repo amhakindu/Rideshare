@@ -65,7 +65,7 @@ namespace Rideshare.UnitTests.Drivers
             var result = await _handler.Handle(command, CancellationToken.None);
 
             result.Value.ShouldBeOfType<int>();
-            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(3);
+            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(4);
         }
 
         [Fact]
@@ -87,7 +87,7 @@ namespace Rideshare.UnitTests.Drivers
         var result = await _handler.Handle(command, CancellationToken.None);
     });
 
-            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(2);
+            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(3);
 
 
 
@@ -116,7 +116,7 @@ namespace Rideshare.UnitTests.Drivers
                 var result = await _handler.Handle(command, CancellationToken.None);
             });
 
-            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(2);
+            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(3);
 
 
 
@@ -143,7 +143,7 @@ namespace Rideshare.UnitTests.Drivers
                 var result = await _handler.Handle(command, CancellationToken.None);
             });
 
-            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(2);
+            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(3);
 
 
 
@@ -170,7 +170,7 @@ namespace Rideshare.UnitTests.Drivers
                 var result = await _handler.Handle(command, CancellationToken.None);
             });
 
-            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(2);
+            (await _mockUnitOfWork.Object.DriverRepository.GetAll(1, 10)).Count.ShouldBe(3);
 
 
 

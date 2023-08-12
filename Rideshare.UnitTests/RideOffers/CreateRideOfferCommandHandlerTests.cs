@@ -46,7 +46,8 @@ public class CreateRideOfferCommandHandlerTests
                     Longitude=38.7667,
                     Latitude=9.0106
                 },
-            }
+            },
+            UserId="user3"
         };
         var prevCount = MockRideOfferRepository.Count;
         var response = await _handler.Handle(command, CancellationToken.None);
@@ -55,6 +56,33 @@ public class CreateRideOfferCommandHandlerTests
         response.ShouldBeOfType<BaseResponse<int>>();
         response.Success.ShouldBeTrue();
         response.Value.ShouldBe(prevCount+1);
+    }
+    
+    [Fact]
+    public async Task RideOfferCreationWithExistingNonCompletedRideOfferTest()
+    {
+        var command = new CreateRideOfferCommand
+        {
+            RideOfferDto = new CreateRideOfferDto{
+                VehicleID = 1,
+                CurrentLocation = new LocationDto{
+                    Longitude=38.7445,
+                    Latitude=9.0105
+                },
+                Destination = new LocationDto{
+                    Longitude=38.7667,
+                    Latitude=9.0106
+                },
+            },
+            UserId="user1"
+        };
+        var prevCount = MockRideOfferRepository.Count;
+        var response = await _handler.Handle(command, CancellationToken.None);
+
+        response.ShouldNotBeNull();
+        response.ShouldBeOfType<BaseResponse<int>>();
+        response.Success.ShouldBeFalse();
+        response.Value.ShouldBe(0);
     }
     
     [Fact]
@@ -72,7 +100,8 @@ public class CreateRideOfferCommandHandlerTests
                     Longitude=1.0,
                     Latitude=2.0
                 },
-            }
+            },
+            UserId="user3"
         };
         await Should.ThrowAsync<ValidationException>(async () => await _handler.Handle(command, CancellationToken.None));
     }
@@ -92,7 +121,8 @@ public class CreateRideOfferCommandHandlerTests
                     Longitude=1.0,
                     Latitude=2.0
                 }
-            }
+            },
+            UserId="user3"
         };
         await Should.ThrowAsync<ValidationException>(async () => await _handler.Handle(command, CancellationToken.None));
     }
@@ -112,7 +142,8 @@ public class CreateRideOfferCommandHandlerTests
                     Longitude=1.0,
                     Latitude=-123.0
                 }
-            }
+            },
+            UserId="user3"
         };
         await Should.ThrowAsync<ValidationException>(async () => await _handler.Handle(command, CancellationToken.None));
     }
@@ -132,7 +163,8 @@ public class CreateRideOfferCommandHandlerTests
                     Longitude=198.0,
                     Latitude=-12.0
                 }
-            }
+            },
+            UserId="user3"
         };
         await Should.ThrowAsync<ValidationException>(async () => await _handler.Handle(command, CancellationToken.None));
     }
@@ -152,7 +184,8 @@ public class CreateRideOfferCommandHandlerTests
                     Longitude=1.0,
                     Latitude=2.0
                 }
-            }
+            },
+            UserId="user3"
         };
         await Should.ThrowAsync<ValidationException>(async () => await _handler.Handle(command, CancellationToken.None));
     }
@@ -172,7 +205,8 @@ public class CreateRideOfferCommandHandlerTests
                     Longitude=1.0,
                     Latitude=-23.0
                 }
-            }
+            },
+            UserId="user3"
         };
         await Should.ThrowAsync<NotFoundException>(async () => await _handler.Handle(command, CancellationToken.None));
     }
