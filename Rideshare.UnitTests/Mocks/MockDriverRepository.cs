@@ -41,14 +41,24 @@ namespace Rideshare.UnitTests.Mocks
                     Verified = false,
                     Address = "ShiroMeda",
                     Rate = new List<double> {3, 4, 1}
+                },
+                new Driver
+                {
+                    Id = 3,
+                    UserId = "user3",
+                    License = "asdfghjkl-qwertyuiop-zxcvbnm",
+                    LicenseNumber = "123456789",
+                    Experience = 10,
+                    Verified = true,
+                    Address = "New Mexico, Addis Ababa",
+                    Rate = new List<double> {4, 5, 1}
                 }
             };
 
             var mockRepo = new Mock<IDriverRepository>();
+            
             mockRepo.Setup(r => r.GetDriverByUserId(It.IsAny<string>())).ReturnsAsync((string userId) => {
-                if(userId != "asdf-1234-ghjk-5678")
-                    return new Driver(){Id=2};
-                return null;
+                return drivers.Where(driver => driver.UserId == userId).FirstOrDefault();
             });
             mockRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync((int pageNumber, int pageSize) => {
 

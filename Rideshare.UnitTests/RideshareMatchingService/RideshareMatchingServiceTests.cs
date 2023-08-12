@@ -1,15 +1,13 @@
-using System.Threading;
-using Xunit;
-using Rideshare.Application.Contracts.Infrastructure;
-using Rideshare.Infrastructure.Services;
-using Rideshare.UnitTests.Mocks;
 using Moq;
+using Xunit;
 using Shouldly;
+using Rideshare.UnitTests.Mocks;
 using Rideshare.Domain.Entities;
+using Rideshare.Infrastructure.Services;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Contracts.Infrastructure;
 
 namespace Rideshare.UnitTests.RideshareMatchingServices;
-
 
 public class RideshareMatchingServiceTests
 {

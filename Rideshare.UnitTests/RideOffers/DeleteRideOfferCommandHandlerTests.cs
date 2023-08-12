@@ -1,15 +1,15 @@
-using AutoMapper;
-using MediatR;
 using Moq;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Exceptions;
-using Rideshare.Application.Features.RideOffers.Commands;
-using Rideshare.Application.Features.testEntitys.CQRS.Handlers;
+using Xunit;
+using MediatR;
+using Shouldly;
+using AutoMapper;
+using Rideshare.UnitTests.Mocks;
 using Rideshare.Application.Profiles;
 using Rideshare.Application.Responses;
-using Rideshare.UnitTests.Mocks;
-using Shouldly;
-using Xunit;
+using Rideshare.Application.Exceptions;
+using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Features.RideOffers.Commands;
+using Rideshare.Application.Features.testEntitys.CQRS.Handlers;
 
 namespace Rideshare.UnitTests.RideOffers;
 
@@ -46,8 +46,8 @@ public class DeleteRideOfferCommandHandlerTests
     }
 
     [Fact]
-    public async Task invalidRideOfferDeletion(){
-        var command = new DeleteRideOfferCommand{RideOfferID=10};
+    public async Task InvalidRideOfferDeletionTest(){
+        var command = new DeleteRideOfferCommand{RideOfferID=1000};
         await Should.ThrowAsync<NotFoundException>(async () => await _handler.Handle(command, CancellationToken.None));
     }
 }

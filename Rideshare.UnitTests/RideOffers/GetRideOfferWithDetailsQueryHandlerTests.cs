@@ -1,16 +1,16 @@
 using System.Runtime.InteropServices;
-using AutoMapper;
 using Moq;
-using Rideshare.Application.Common.Dtos.RideOffers;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Exceptions;
-using Rideshare.Application.Features.Movies.CQRS.Handlers;
-using Rideshare.Application.Features.RideOffers.Queries;
+using Xunit;
+using Shouldly;
+using AutoMapper;
+using Rideshare.UnitTests.Mocks;
 using Rideshare.Application.Profiles;
 using Rideshare.Application.Responses;
-using Rideshare.UnitTests.Mocks;
-using Shouldly;
-using Xunit;
+using Rideshare.Application.Exceptions;
+using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Common.Dtos.RideOffers;
+using Rideshare.Application.Features.RideOffers.Queries;
+using Rideshare.Application.Features.Movies.CQRS.Handlers;
 
 namespace Rideshare.UnitTests.RideOffers;
 
