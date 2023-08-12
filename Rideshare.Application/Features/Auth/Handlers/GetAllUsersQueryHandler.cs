@@ -39,7 +39,7 @@ public sealed class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, 
                 Age = u.Age,
                 ProfilePicture = u.ProfilePicture
             };
-            if (u.LastLogin.HasValue && (DateTime.Now - u.LastLogin.Value).TotalDays < 30)
+            if (u.LastLogin.HasValue && (DateTime.UtcNow - u.LastLogin.Value).TotalDays < 30)
             {
                 user.StatusByLogin = "ACTIVE";
             }

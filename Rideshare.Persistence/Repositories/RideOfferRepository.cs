@@ -1,17 +1,18 @@
 using Rideshare.Domain.Common;
 using Rideshare.Domain.Entities;
+using NetTopologySuite.Geometries;
 using Microsoft.EntityFrameworkCore;
 using Rideshare.Application.Responses;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Common.Dtos.Drivers;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Common.Dtos.RideOffers;
-using static Rideshare.Application.Common.Constants.Utils;
 
 namespace Rideshare.Persistence.Repositories;
 
 public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepository
 {
-	private const double RADIUS_IN_METERS = 150.0;
+	private const double RADIUS_IN_KM = 0.015;
 	private readonly RideshareDbContext _dbContext;
 	public RideOfferRepository(RideshareDbContext dbContext) : base(dbContext)
 	{
@@ -115,38 +116,37 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
 		
 	}
 	public async Task<int> UpdateCurrentLocation(RideOffer rideoffer, GeographicalLocation location){
-		var locations = await _dbContext.Locations.ToListAsync();
-		var temp1 = locations.OrderBy(g => HaversineDistance(g.Coordinate, location.Coordinate))
-			.FirstOrDefault();
+		var temp1 = await _dbContext.Locations.OrderBy(g => RideshareDbContext.haversine_distance(g.Coordinate.X, g.Coordinate.Y, location.Coordinate.X, location.Coordinate.Y))
+			.Where(location => RideshareDbContext.haversine_distance(location.Coordinate.X, location.Coordinate.Y, location.Coordinate.X, location.Coordinate.Y) <= RADIUS_IN_KM)
+			.FirstOrDefaultAsync();
 		
-		if (temp1 != null && HaversineDistance(temp1.Coordinate, location.Coordinate) <= RADIUS_IN_METERS)
-			location = null;
-		if(location == null)
-			rideoffer.CurrentLocation = temp1;
-		else
-			rideoffer.CurrentLocation = location;
+		rideoffer.CurrentLocation = temp1 ?? location;
+
 		return await Update(rideoffer);
 	}
 	public async Task<int> Add(RideOffer entity)
 	{
-		var locations = await _dbContext.Locations.ToListAsync();
-		var temp1 = locations.OrderBy(g => HaversineDistance(g.Coordinate, entity.CurrentLocation.Coordinate))
-			.FirstOrDefault();
-		var temp2 = locations.OrderBy(g => HaversineDistance(g.Coordinate, entity.Destination.Coordinate))
-			.FirstOrDefault();
+		Point current= entity.CurrentLocation.Coordinate;
+		var temp1 = await _dbContext.Locations
+			.Where(location => RideshareDbContext.haversine_distance(location.Coordinate.X, location.Coordinate.Y, current.X, current.Y) <= RADIUS_IN_KM)
+			.OrderBy(g => RideshareDbContext.haversine_distance(g.Coordinate.X, g.Coordinate.Y, current.X, current.Y))
+			.FirstOrDefaultAsync();
+
+		var destination = entity.Destination.Coordinate;
+		var temp2 = await _dbContext.Locations
+			.Where(location => RideshareDbContext.haversine_distance(location.Coordinate.X, location.Coordinate.Y, destination.X, destination.Y) <= RADIUS_IN_KM)
+			.OrderBy(g => RideshareDbContext.haversine_distance(g.Coordinate.X, g.Coordinate.Y, destination.X, destination.Y))
+			.FirstOrDefaultAsync();
 		
-		if (temp1 != null && HaversineDistance(temp1.Coordinate,entity.CurrentLocation.Coordinate) <= RADIUS_IN_METERS)
-			entity.CurrentLocation = null;
-		if (temp2 != null && HaversineDistance(temp2.Coordinate, entity.Destination.Coordinate) <= RADIUS_IN_METERS)
-			entity.Destination = null;
+		if(temp1 != null && temp2 != null && temp1.Equals(temp2))
+			throw new ValidationException($"Failed to Create Rideoffer! Origin and Detination must be farther than {RADIUS_IN_KM} km");
+
+		entity.CurrentLocation = temp1 ?? entity.CurrentLocation;
+		entity.Destination = temp2 ?? entity.Destination;
 
 		await _dbContext.AddAsync(entity);
-		if(entity.CurrentLocation == null)
-			entity.CurrentLocation = temp1;
-		if(entity.Destination == null)
-			entity.Destination = temp2;
-		int id = await _dbContext.SaveChangesAsync();
-		return await Update(entity);
+
+		return await _dbContext.SaveChangesAsync();
 	}
 
 	public async Task<PaginatedResponse<RideOffer>> GetRideOffersOfDriver(int DriverID, int PageNumber=1, int PageSize=10)
@@ -245,7 +245,7 @@ public class RideOfferRepository : GenericRepository<RideOffer>, IRideOfferRepos
 				.Where(rideoffer => rideoffer.Status == (status ?? rideoffer.Status))
 				.GroupBy(rideoffer => rideoffer.DateCreated.Year)
 				.ToDictionaryAsync(g => g.Key, g => g.Count());
-			for (int i = 2023; i <= DateTime.Now.Year; i++)
+			for (int i = 2023; i <= DateTime.UtcNow.Year; i++)
 			{
 				if(!temp.ContainsKey(i))
 					temp.Add(i, 0);

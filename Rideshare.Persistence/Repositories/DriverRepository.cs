@@ -50,7 +50,7 @@ namespace Rideshare.Persistence.Repositories
         {
 
             List<int> count = new List<int>();
-            DateTime startDate = DateTime.Now.AddDays(-30);
+            DateTime startDate = DateTime.UtcNow.AddDays(-30);
             var all = _dbContext.Drivers.Include(driver => driver.User);
 
             var actives = all.Where(driver => driver.User.LastLogin >= startDate);

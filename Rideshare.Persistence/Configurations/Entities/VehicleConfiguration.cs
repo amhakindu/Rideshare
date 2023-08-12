@@ -15,8 +15,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 		public void Configure(EntityTypeBuilder<Vehicle> builder)
 		{
 			var random = new Random();
-			var startDate = new DateTime(2023, 1, 1);
-			var endDate = DateTime.Now;
+			var startDate = new DateTime(2023, 1, 1).ToUniversalTime();
+			var endDate = DateTime.UtcNow;
 			builder.HasData(
 				new Vehicle
 				{
@@ -26,7 +26,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Model = "Toyota Camry",
 					Libre = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100796/xsabqbbff2jc7kqc6efx.pdf",
 					DriverId = 1,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Vehicle
 				{
@@ -36,7 +37,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Model = "Honda Civic",
 					Libre =  "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100780/m39jk106ug96qt7e13me.pdf",
 					DriverId = 2,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Vehicle
 				{
@@ -46,7 +48,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Model = "Ford Explorer",
 					Libre = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100768/jo9dzde295c0ebkjr7hz.pdf",
 					DriverId = 3,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Vehicle
 				{
@@ -56,7 +59,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Model = "Hyundai Elantra",
 					Libre =  "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100754/xp7cy2ltzynyrkwlufzp.pdf",
 					DriverId = 4,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Vehicle
 				{
@@ -66,7 +70,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Model = "Nissan Altima",
 					Libre =  "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100699/iofw5wmwav58y9pems5w.pdf",
 					DriverId = 5,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				
 				// Add 10 more vehicles
@@ -80,7 +85,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Model = "BMW 3 Series",
 					Libre = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100796/xsabqbbff2jc7kqc6efx.pdf",
 					DriverId = 8,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Vehicle
 				{
@@ -90,7 +96,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Model = "Audi A4",
 					Libre = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100796/xsabqbbff2jc7kqc6efx.pdf",
 					DriverId = 9,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Vehicle
 				{
@@ -100,7 +107,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Model = "Mercedes-Benz C-Class",
 					Libre = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688100796/xsabqbbff2jc7kqc6efx.pdf",
 					DriverId = 10,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				}
 			);
 		}

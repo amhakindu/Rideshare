@@ -45,8 +45,16 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
                 throw new ValidationException("No Valid Address Found");
                 };
         
-            var value = await _unitOfWork.RideRequestRepository.Add(rideRequest);
-            if (value > 0)
+            int operations;
+            try{ 
+                operations = await _unitOfWork.RideRequestRepository.Add(rideRequest);
+            }catch(ValidationException exp){
+                return new BaseResponse<Dictionary<string, object>>{
+                    Success=false,
+                    Message=$"{exp.Message}"
+                };
+            }
+            if (operations > 0)
             {
                 var matchedRideOffer = await _matchingService.MatchWithRideoffer(rideRequest);
                 if(matchedRideOffer == null){
@@ -67,7 +75,7 @@ public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequest
             }
             else
             {
-                throw new InternalServerErrorException($"{value}Unable to create the ride request");
+                throw new InternalServerErrorException($"Unable to create the ride request");
             }
         }
         else

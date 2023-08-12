@@ -9,9 +9,6 @@ public class GeographicalLocation: BaseEntity
     
     public string Address { get; set; }
 
-    [NotMapped]
-    public object UserData { get; set; }
-
     public override bool Equals(object obj)
     {
         

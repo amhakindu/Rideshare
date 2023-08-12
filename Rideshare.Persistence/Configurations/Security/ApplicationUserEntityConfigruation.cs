@@ -44,7 +44,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "commuter1@gmail.com".ToUpperInvariant(),
 					FullName = "Jebesa Dejene",
 					PhoneNumber = "+251912334456",
-					CreatedAt = new DateTime(2022, 9, 1),
+					CreatedAt = new DateTime(2022, 9, 1).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				
@@ -57,7 +57,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "commuter2@gmail.com".ToUpperInvariant(),
 					FullName = "Abelras Mekonnen",
 					PhoneNumber = "+251922222222",
-					CreatedAt = new DateTime(2022, 5, 9),
+					CreatedAt = new DateTime(2022, 5, 9).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 
 				},
@@ -71,7 +71,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "commuter3@gmail.com".ToUpperInvariant(),
 					FullName = "Alemu kebede",
 					PhoneNumber = "+251933333334",
-					CreatedAt = new DateTime(2022, 12, 6),
+					CreatedAt = new DateTime(2022, 12, 6).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -83,7 +83,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "commuter4@gmail.com".ToUpperInvariant(),
 					FullName = "Gizaw Dagne",
 					PhoneNumber = "+251944444445",
-					CreatedAt = new DateTime(2023, 1, 2),
+					CreatedAt = new DateTime(2023, 1, 2).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				
@@ -96,7 +96,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "commuter5@gmail.com".ToUpperInvariant(),
 					FullName = "Amha Kindu",
 					PhoneNumber = "+251955555555",
-					CreatedAt = new DateTime(2023, 1, 2),
+					CreatedAt = new DateTime(2023, 1, 2).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 					
 				},
@@ -109,7 +109,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user1@gmail.com".ToUpperInvariant(),
 					FullName = "Abebe Kebede",
 					PhoneNumber = "+251911111101",
-					CreatedAt = new DateTime(2023, 1, 1),
+					CreatedAt = new DateTime(2023, 1, 1).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -121,7 +121,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user2@gmail.com".ToUpperInvariant(),
 					FullName = "Meron Tadesse",
 					PhoneNumber = "+251911111102",
-					CreatedAt = new DateTime(2023, 1, 8),
+					CreatedAt = new DateTime(2023, 1, 8).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -133,7 +133,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user3@gmail.com".ToUpperInvariant(),
 					FullName = "Tewodros Alemayehu",
 					PhoneNumber = "+251911111103",
-					CreatedAt = new DateTime(2023, 1, 15),
+					CreatedAt = new DateTime(2023, 1, 15).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -145,7 +145,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user4@gmail.com".ToUpperInvariant(),
 					FullName = "Zewdu Mengistu",
 					PhoneNumber = "+251911111104",
-					CreatedAt = new DateTime(2023, 1, 22),
+					CreatedAt = new DateTime(2023, 1, 22).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -157,7 +157,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user5@gmail.com".ToUpperInvariant(),
 					FullName = "Bruk Assefa",
 					PhoneNumber = "+251911111105",
-					CreatedAt = new DateTime(2023, 1, 29),
+					CreatedAt = new DateTime(2023, 1, 29).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -169,7 +169,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user6@gmail.com".ToUpperInvariant(),
 					FullName = "Ephrem Tekle",
 					PhoneNumber = "+251911111106",
-					CreatedAt = new DateTime(2023, 2, 5),
+					CreatedAt = new DateTime(2023, 2, 5).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -181,7 +181,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user7@gmail.com".ToUpperInvariant(),
 					FullName = "Yodit Gebremariam",
 					PhoneNumber = "+251911111107",
-					CreatedAt = new DateTime(2023, 2, 12),
+					CreatedAt = new DateTime(2023, 2, 12).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -193,7 +193,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user8@gmail.com".ToUpperInvariant(),
 					FullName = "Dawit Gizaw",
 					PhoneNumber = "+251911111108",
-					CreatedAt = new DateTime(2023, 2, 19),
+					CreatedAt = new DateTime(2023, 2, 19).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -205,7 +205,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user9@gmail.com".ToUpperInvariant(),
 					FullName = "Hirut Mengiste",
 					PhoneNumber = "+251911111109",
-					CreatedAt = new DateTime(2023, 2, 26),
+					CreatedAt = new DateTime(2023, 2, 26).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -217,7 +217,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user10@gmail.com".ToUpperInvariant(),
 					FullName = "Tigist Bekele",
 					PhoneNumber = "+251911111110",
-					CreatedAt = new DateTime(2023, 3, 5),
+					CreatedAt = new DateTime(2023, 3, 5).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -229,7 +229,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user11@gmail.com".ToUpperInvariant(),
 					FullName = "Abel Mekonen",
 					PhoneNumber = "+251911111111",
-					CreatedAt = new DateTime(2023, 3, 12),
+					CreatedAt = new DateTime(2023, 3, 12).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -241,7 +241,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user12@gmail.com".ToUpperInvariant(),
 					FullName = "Eden Hailu",
 					PhoneNumber = "+251911111112",
-					CreatedAt = new DateTime(2023, 3, 19),
+					CreatedAt = new DateTime(2023, 3, 19).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -253,7 +253,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user13@gmail.com".ToUpperInvariant(),
 					FullName = "Solomon Wondimu",
 					PhoneNumber = "+251911111113",
-					CreatedAt = new DateTime(2023, 3, 26),
+					CreatedAt = new DateTime(2023, 3, 26).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -265,7 +265,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user14@gmail.com".ToUpperInvariant(),
 					FullName = "Aster Gizaw",
 					PhoneNumber = "+251911111114",
-					CreatedAt = new DateTime(2023, 4, 2),
+					CreatedAt = new DateTime(2023, 4, 2).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -277,7 +277,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user15@gmail.com".ToUpperInvariant(),
 					FullName = "Daniel Kassa",
 					PhoneNumber = "+251911111115",
-					CreatedAt = new DateTime(2023, 4, 9),
+					CreatedAt = new DateTime(2023, 4, 9).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -289,7 +289,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user16@gmail.com".ToUpperInvariant(),
 					FullName = "Tsehay Tesfaye",
 					PhoneNumber = "+251911111116",
-					CreatedAt = new DateTime(2023, 4, 16),
+					CreatedAt = new DateTime(2023, 4, 16).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -301,7 +301,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user17@gmail.com".ToUpperInvariant(),
 					FullName = "Kidist Teklu",
 					PhoneNumber = "+251911111117",
-					CreatedAt = new DateTime(2023, 4, 23),
+					CreatedAt = new DateTime(2023, 4, 23).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -313,7 +313,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user18@gmail.com".ToUpperInvariant(),
 					FullName = "Yeshiwork Mamo",
 					PhoneNumber = "+251911111118",
-					CreatedAt = new DateTime(2023, 4, 30),
+					CreatedAt = new DateTime(2023, 4, 30).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -325,7 +325,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user19@gmail.com".ToUpperInvariant(),
 					FullName = "Genet Assefa",
 					PhoneNumber = "+251911111119",
-					CreatedAt = new DateTime(2023, 5, 7),
+					CreatedAt = new DateTime(2023, 5, 7).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -337,7 +337,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user20@gmail.com".ToUpperInvariant(),
 					FullName = "Eyerusalem Kebede",
 					PhoneNumber = "+251911111120",
-					CreatedAt = new DateTime(2023, 5, 14),
+					CreatedAt = new DateTime(2023, 5, 14).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -349,7 +349,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user21@gmail.com".ToUpperInvariant(),
 					FullName = "Abiy Mekonnen",
 					PhoneNumber = "+251911111121",
-					CreatedAt = new DateTime(2023, 5, 21),
+					CreatedAt = new DateTime(2023, 5, 21).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -361,7 +361,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user22@gmail.com".ToUpperInvariant(),
 					FullName = "Hiwot Girma",
 					PhoneNumber = "+251911111122",
-					CreatedAt = new DateTime(2023, 5, 28),
+					CreatedAt = new DateTime(2023, 5, 28).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -373,7 +373,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user23@gmail.com".ToUpperInvariant(),
 					FullName = "Fikadu Kebede",
 					PhoneNumber = "+251911111123",
-					CreatedAt = new DateTime(2023, 6, 4),
+					CreatedAt = new DateTime(2023, 6, 4).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -385,7 +385,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user24@gmail.com".ToUpperInvariant(),
 					FullName = "Belete Tadesse",
 					PhoneNumber = "+251911111124",
-					CreatedAt = new DateTime(2023, 6, 11),
+					CreatedAt = new DateTime(2023, 6, 11).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -397,7 +397,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user25@gmail.com".ToUpperInvariant(),
 					FullName = "Meskerem Alemu",
 					PhoneNumber = "+251911111125",
-					CreatedAt = new DateTime(2023, 6, 18),
+					CreatedAt = new DateTime(2023, 6, 18).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -409,7 +409,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user26@gmail.com".ToUpperInvariant(),
 					FullName = "Selamawit Mengistu",
 					PhoneNumber = "+251911111126",
-					CreatedAt = new DateTime(2023, 6, 25),
+					CreatedAt = new DateTime(2023, 6, 25).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -421,7 +421,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user27@gmail.com".ToUpperInvariant(),
 					FullName = "Hanna Gizaw",
 					PhoneNumber = "+251911111127",
-					CreatedAt = new DateTime(2023, 6, 30),
+					CreatedAt = new DateTime(2023, 6, 30).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -433,7 +433,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user28@gmail.com".ToUpperInvariant(),
 					FullName = "Biruk Yohannes",
 					PhoneNumber = "+251911111128",
-					CreatedAt = new DateTime(2023, 7, 7),
+					CreatedAt = new DateTime(2023, 7, 7).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -445,7 +445,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user29@gmail.com".ToUpperInvariant(),
 					FullName = "Meron Teshome",
 					PhoneNumber = "+251911111129",
-					CreatedAt = new DateTime(2023, 7, 14),
+					CreatedAt = new DateTime(2023, 7, 14).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -457,7 +457,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user30@gmail.com".ToUpperInvariant(),
 					FullName = "Mintesinot Alemayehu",
 					PhoneNumber = "+251911111130",
-					CreatedAt = new DateTime(2023, 7, 21),
+					CreatedAt = new DateTime(2023, 7, 21).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -469,7 +469,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user31@gmail.com".ToUpperInvariant(),
 					FullName = "Tadelech Getachew",
 					PhoneNumber = "+251911111131",
-					CreatedAt = new DateTime(2023, 7, 28),
+					CreatedAt = new DateTime(2023, 7, 28).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -481,7 +481,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user32@gmail.com".ToUpperInvariant(),
 					FullName = "Ephrem Tekle",
 					PhoneNumber = "+251911111132",
-					CreatedAt = new DateTime(2023, 8, 4),
+					CreatedAt = new DateTime(2023, 8, 4).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -493,7 +493,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user33@gmail.com".ToUpperInvariant(),
 					FullName = "Hana Solomon",
 					PhoneNumber = "+251911111133",
-					CreatedAt = new DateTime(2023, 8, 11),
+					CreatedAt = new DateTime(2023, 8, 11).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -505,7 +505,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user34@gmail.com".ToUpperInvariant(),
 					FullName = "Kalkidan Kebede",
 					PhoneNumber = "+251911111134",
-					CreatedAt = new DateTime(2023, 8, 18),
+					CreatedAt = new DateTime(2023, 8, 18).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -517,7 +517,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user35@gmail.com".ToUpperInvariant(),
 					FullName = "Zeritu Tsegaye",
 					PhoneNumber = "+251911111135",
-					CreatedAt = new DateTime(2023, 8, 25),
+					CreatedAt = new DateTime(2023, 8, 25).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -529,7 +529,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user36@gmail.com".ToUpperInvariant(),
 					FullName = "Yonas Mulugeta",
 					PhoneNumber = "+251911111136",
-					CreatedAt = new DateTime(2023, 9, 1),
+					CreatedAt = new DateTime(2023, 9, 1).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -541,7 +541,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user37@gmail.com".ToUpperInvariant(),
 					FullName = "Sosina Asfaw",
 					PhoneNumber = "+251911111137",
-					CreatedAt = new DateTime(2023, 9, 8),
+					CreatedAt = new DateTime(2023, 9, 8).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -553,7 +553,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user38@gmail.com".ToUpperInvariant(),
 					FullName = "Getahun Bekele",
 					PhoneNumber = "+251911111138",
-					CreatedAt = new DateTime(2023, 9, 15),
+					CreatedAt = new DateTime(2023, 9, 15).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -565,7 +565,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user39@gmail.com".ToUpperInvariant(),
 					FullName = "Mekdes Arega",
 					PhoneNumber = "+251911111139",
-					CreatedAt = new DateTime(2023, 9, 22),
+					CreatedAt = new DateTime(2023, 9, 22).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -577,7 +577,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "user40@gmail.com".ToUpperInvariant(),
 					FullName = "Befikadu Tilahun",
 					PhoneNumber = "+251911111140",
-					CreatedAt = new DateTime(2023, 9, 29),
+					CreatedAt = new DateTime(2023, 9, 29).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				}
 				// Add more commuter users here...
@@ -593,7 +593,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "driver1@gmail.com".ToUpperInvariant(),
 					FullName = "Siyum Anammo",
 					PhoneNumber = "+251933333333",
-					CreatedAt = new DateTime(2023, 2, 6),
+					CreatedAt = new DateTime(2023, 2, 6).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -605,7 +605,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "driver2@gmail.com".ToUpperInvariant(),
 					FullName = "Kalu Siyum",
 					PhoneNumber = "+251944444444",
-					CreatedAt = new DateTime(2023, 3, 16),
+					CreatedAt = new DateTime(2023, 3, 16).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				
@@ -618,7 +618,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "driver3@gmail.com".ToUpperInvariant(),
 					FullName = "Aster Nesu",
 					PhoneNumber = "+251955555556",
-					CreatedAt = new DateTime(2023, 3, 11),
+					CreatedAt = new DateTime(2023, 3, 11).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				
@@ -631,7 +631,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "driver4@gmail.com".ToUpperInvariant(),
 					FullName = "Melkamu Yibeltal",
 					PhoneNumber = "+251966666667",
-					CreatedAt = new DateTime(2023, 4, 1),
+					CreatedAt = new DateTime(2023, 4, 1).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				},
 				new ApplicationUser
@@ -643,7 +643,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 					NormalizedEmail = "driver5@gmail.com".ToUpperInvariant(),
 					FullName = "Nurilgn Beyene",
 					PhoneNumber = "+251933737377",
-					CreatedAt = new DateTime(2023, 5, 6),
+					CreatedAt = new DateTime(2023, 5, 6).ToUniversalTime(),
 					ProfilePicture = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688115133/mteobaov9ac170lti8a1.png"
 				}
 				

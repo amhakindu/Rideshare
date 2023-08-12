@@ -22,8 +22,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 		public void Configure(EntityTypeBuilder<RideRequest> builder)
 		{
 			var random = new Random();
-			var startDate = new DateTime(2023, 1, 1);
-			var endDate = DateTime.Now;
+			var startDate = new DateTime(2023, 1, 1).ToUniversalTime();
+			var endDate = DateTime.UtcNow;
 			
 			var userIds = new List<string>(){
 				"d5eade8b-11a4-4e26-b7e6-123456789000",
@@ -79,7 +79,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -92,7 +93,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					Accepted = true,
 					MatchedRideId = 1,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -105,7 +107,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -118,7 +121,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					Accepted = true,
 					MatchedRideId = 2,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -131,7 +135,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -144,7 +149,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -157,7 +163,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					Accepted = true,
 					MatchedRideId = 3,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -170,7 +177,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -183,7 +191,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					Accepted = true,
 					MatchedRideId = 4,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -196,7 +205,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -209,7 +219,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -222,7 +233,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					Accepted = true,
 					MatchedRideId = 5,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -235,7 +247,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -248,7 +261,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					Accepted = true,
 					MatchedRideId = 3,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -261,7 +275,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					Accepted = true,
 					MatchedRideId = 1,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -274,7 +289,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -287,7 +303,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -300,7 +317,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					Accepted = true,
 					MatchedRideId = 8,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -313,7 +331,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					Accepted = true,
 					MatchedRideId = 9,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -326,7 +345,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -339,7 +359,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -352,7 +373,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					Accepted = true,
 					MatchedRideId = 10,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -365,7 +387,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -378,7 +401,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					Accepted = true,
 					MatchedRideId = 11,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -391,7 +415,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					Accepted = true,
 					MatchedRideId = 12,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -404,7 +429,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -417,7 +443,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -430,7 +457,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					Accepted = true,
 					MatchedRideId = 13,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -443,7 +471,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					Accepted = true,
 					MatchedRideId = 14,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new RideRequest
 				{
@@ -456,7 +485,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					Accepted = false,
 					MatchedRideId = null,
-					DateCreated = GetRandomDate(startDate, endDate, random)
+					DateCreated = GetRandomDate(startDate, endDate, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				}
 			);
 		}

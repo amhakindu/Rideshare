@@ -19,7 +19,7 @@ public class RideshareMatchingService : IRideshareMatchingService
         _mapboxService = mapboxService;
         _radius = radius;
     }
-    public static double HaversineDistance(Point origin, Point dest)
+    private static double HaversineDistance(Point origin, Point dest)
     {
         const double r = 6378100; // meters
                 
@@ -30,7 +30,7 @@ public class RideshareMatchingService : IRideshareMatchingService
         Console.WriteLine(d);
         return d;
     }
-    public static double ToRadians(double degrees)
+    private static double ToRadians(double degrees)
     {
         return degrees * Math.PI / 180;
     }
