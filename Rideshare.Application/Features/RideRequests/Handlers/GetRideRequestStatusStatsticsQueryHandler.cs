@@ -10,12 +10,10 @@ public class GetRideRequestStatusStatsticsQueryHandler : IRequestHandler<GetRide
 {
 
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
 
-    public GetRideRequestStatusStatsticsQueryHandler(IUnitOfWork unitOfWork,IMapper mapper)
+    public GetRideRequestStatusStatsticsQueryHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
     }
 
     public async Task<BaseResponse<Dictionary<string, Dictionary<int, int>>>> Handle(GetRideRequestStatusStatsticsQuery request, CancellationToken cancellationToken)

@@ -4,7 +4,7 @@ using Rideshare.Application.Responses;
 
 namespace Rideshare.Application.Features.RideOffers.Queries
 {
-    public class GetNoTopModelRideOffferQuery: IRequest<BaseResponse<IReadOnlyList<ModelAndCountDto>>>
+    public class GetNoTopModelRideOfferQuery: IRequest<BaseResponse<IReadOnlyList<ModelAndCountDto>>>
     {
 
     }

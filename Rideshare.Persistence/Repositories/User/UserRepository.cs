@@ -1,14 +1,6 @@
-using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Security.Claims;
 using Rideshare.Domain.Models;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using Rideshare.Application.Responses;
 using Microsoft.Extensions.Configuration;
 using Rideshare.Application.Contracts.Identity;
@@ -306,7 +298,7 @@ public class UserRepository : IUserRepository
 			var temp = entities
 				.GroupBy(entity => entity.CreatedAt.Year)
 				.ToDictionary(g => g.Key, g => g.Count());
-			for (int i = 2023; i <= DateTime.Now.Year; i++)
+			for (int i = 2023; i <= DateTime.UtcNow.Year; i++)
 			{
 				if(!temp.ContainsKey(i))
 					temp.Add(i, 0);
@@ -327,7 +319,7 @@ public class UserRepository : IUserRepository
 		}
 	}
 	
-	public async Task<CommuterStatusDto> GetCommuterStatusCountAsync()
+	public async Task<StatusDto> GetCommuterStatusCountAsync()
 	{
 		var commuters = await _userManager.GetUsersInRoleAsync("Commuter");
 		int activeCommuters = 0;
@@ -340,10 +332,10 @@ public class UserRepository : IUserRepository
 			idleCommuters = commuters.Count(u => u.LastLogin < thirtyDaysAgo);
 		}
 
-		return new CommuterStatusDto
+		return new StatusDto
 		{
-			ActiveCommuters = activeCommuters,
-			IdleCommuters = idleCommuters
+			Active = activeCommuters,
+			Idle = idleCommuters
 		};
 	}
 		

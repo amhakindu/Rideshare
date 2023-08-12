@@ -55,23 +55,13 @@ public class CreateDriverCommandHandler : IRequestHandler<CreateDriverCommand, B
         {
             applicationUser.ProfilePicture = (await _resourceManager.UploadImage(request.DriverCreatingDto.Profilepicture)).AbsoluteUri;
         }
-
-        var user = await _userRepository.CreateUserAsync(applicationUser, applicationRoles);
-
-        var validator = new CreateDriverDtoValidator();
-
-       
-
-        var validationResult = await validator.ValidateAsync(request.DriverCreatingDto.DriverDto);
-
-
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors.Select(q => q.ErrorMessage).ToList().First());
        
         var driver = _mapper.Map<Driver>(request.DriverCreatingDto.DriverDto);
+        driver.License = (await _resourceManager.UploadImage(request.DriverCreatingDto.DriverDto.License)).AbsoluteUri;
+        
+        var user = await _userRepository.CreateUserAsync(applicationUser, applicationRoles);
 
         driver.UserId = user.Id;
-        driver.License = (await _resourceManager.UploadImage(request.DriverCreatingDto.DriverDto.License)).AbsoluteUri;
 
         if (await _unitOfWork.DriverRepository.Add(driver) == 0)
             throw new InternalServerErrorException("Database Error: Unable To Save");

@@ -11,12 +11,10 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
     public class GetCountForEachStatusQueryHandler: IRequestHandler<GetCountForEachStatusQuery, BaseResponse<Dictionary<string, int>>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public GetCountForEachStatusQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetCountForEachStatusQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
         public async Task<BaseResponse<Dictionary<string, int>>> Handle(GetCountForEachStatusQuery query, CancellationToken cancellationToken)
         {

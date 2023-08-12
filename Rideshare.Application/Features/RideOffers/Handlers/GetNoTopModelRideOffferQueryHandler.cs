@@ -1,28 +1,20 @@
-﻿using AutoMapper;
-using MediatR;
-using Rideshare.Application.Common.Dtos.RideOffers;
-using Rideshare.Application.Contracts.Persistence;
-using Rideshare.Application.Features.RideOffers.Queries;
+﻿using MediatR;
 using Rideshare.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Common.Dtos.RideOffers;
+using Rideshare.Application.Features.RideOffers.Queries;
 
 namespace Rideshare.Application.Features.RideOffers.Handlers
 {
-    public class GetNoTopModelRideOffferQueryHandler : IRequestHandler<GetNoTopModelRideOffferQuery, BaseResponse<IReadOnlyList<ModelAndCountDto>>>
+    public class GetNoTopModelRideOfferQueryHandler : IRequestHandler<GetNoTopModelRideOfferQuery, BaseResponse<IReadOnlyList<ModelAndCountDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public GetNoTopModelRideOffferQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetNoTopModelRideOfferQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
-        public async Task<BaseResponse<IReadOnlyList<ModelAndCountDto>>> Handle(GetNoTopModelRideOffferQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<IReadOnlyList<ModelAndCountDto>>> Handle(GetNoTopModelRideOfferQuery request, CancellationToken cancellationToken)
         {
             var response = new BaseResponse<IReadOnlyList<ModelAndCountDto>>();
             var result = await _unitOfWork.RideOfferRepository.NoTopModelOffers();

@@ -32,15 +32,15 @@ public class JwtService : IJwtService
             _configuration["JwtSettings:Issuer"],
             _configuration["JwtSettings:Audience"],
             await GetClaims(user),
-            expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["JwtSettings:ExpirationTimeInMinutes"])),
+            expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["JwtSettings:ExpirationTimeInMinutes"])),
             signingCredentials: GetSigningCredentials());
 
         var accessToken = new JwtSecurityTokenHandler().WriteToken(jwtOptions);
         var refreshToken = GenerateRefreshToken();
 
         user.RefreshToken = refreshToken;
-        user.RefreshTokenExpiryTime = DateTime.Now.AddDays(28);
-        user.LastLogin = DateTime.Now;
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(28);
+        user.LastLogin = DateTime.UtcNow;
         await _userManager.UpdateAsync(user);
 
         return new TokenDto(accessToken, refreshToken);
@@ -51,7 +51,7 @@ public class JwtService : IJwtService
         var principal = GetPrincipalFromExpiredToken(tokenDto.AccessToken);
         var user = await _userManager.FindByNameAsync(principal.Identity?.Name ?? "");
         if (user == null || user.RefreshToken != tokenDto.RefreshToken ||
-            user.RefreshTokenExpiryTime <= DateTime.Now)
+            user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             return null;
         return await GenerateToken(user);
     }

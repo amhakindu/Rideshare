@@ -5,7 +5,7 @@ using Rideshare.Application.Common.Dtos.Security;
 using AutoMapper;
 
 namespace Rideshare.Application.Features.Commuters.Queries;
-public class GetCommuterStatusQueryHandler : IRequestHandler<GetCommuterStatusQuery, BaseResponse<CommuterStatusDto>>
+public class GetCommuterStatusQueryHandler : IRequestHandler<GetCommuterStatusQuery, BaseResponse<StatusDto>>
 {
 	private readonly IUserRepository _userRepository;
 	private readonly IMapper _mapper;
@@ -18,13 +18,13 @@ public class GetCommuterStatusQueryHandler : IRequestHandler<GetCommuterStatusQu
 
 	}
 
-	public async Task<BaseResponse<CommuterStatusDto>> Handle(GetCommuterStatusQuery request, CancellationToken cancellationToken)
+	public async Task<BaseResponse<StatusDto>> Handle(GetCommuterStatusQuery request, CancellationToken cancellationToken)
 	{
 
 		
 		var commuterStatus = await _userRepository.GetCommuterStatusCountAsync();
 
-		var response = new BaseResponse<CommuterStatusDto>
+		var response = new BaseResponse<StatusDto>
 		{
 			Success = true,
 			Message = "Commuters status count fetched successfully!",

@@ -27,13 +27,6 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
             if(!await _unitOfWork.VehicleRepository.Exists(command.RideOfferDto.VehicleID))
                 throw new NotFoundException($"Vehicle with ID {command.RideOfferDto.VehicleID} does not exist");
             var driver = await _unitOfWork.DriverRepository.GetDriverByUserId(command.UserId);
-            if(driver == null){
-                return new BaseResponse<int>(){
-                    Success=false,
-                    Message="Only A Driver Can Create A RideOffer",
-                    Value = 0
-                };
-            }
 
             if(await _unitOfWork.RideOfferRepository.GetActiveRideOfferOfDriver(driver.Id) != null){
                 return new BaseResponse<int>(){

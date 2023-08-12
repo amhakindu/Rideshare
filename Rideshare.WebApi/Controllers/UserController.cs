@@ -212,9 +212,9 @@ public class UserController : BaseApiController
 	}
 
 	/// <summary>
-	/// Retrieve details of the currently logged-in user.
+	/// Retrieve details of the currently authenticated user.
 	/// </summary>
-	/// <remarks> Fetches and returns the details of the currently authenticated user. This endpoint aids in tasks such as profile viewing and user settings adjustments for the logged-in user.
+	/// <remarks> Fetches and returns the details of the currently authenticated user. This endpoint aids in tasks such as profile viewing and user settings adjustments for the authenticated user.
 	///
 	/// Sample Response:
 	/// {
@@ -235,7 +235,7 @@ public class UserController : BaseApiController
 	///	},
 	///	"errors": []
 	/// </remarks>
-	/// <response code="200">Successfully retrieved the logged-in user's details.</response>
+	/// <response code="200">Successfully retrieved the authenticated user's details.</response>
 	/// <response code="400">Failed to retrieve the user details due to server error or unauthorized request.</response>
 	[HttpGet()]
 	[ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]

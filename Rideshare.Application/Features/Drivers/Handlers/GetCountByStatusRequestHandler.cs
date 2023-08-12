@@ -1,12 +1,13 @@
 using System;
 using MediatR;
+using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Drivers.Queries;
 using Rideshare.Application.Responses;
 
 namespace Rideshare.Application.Features.Drivers.Handlers
 {
-    public class GetCountByStatusRequestHandler : IRequestHandler<GetCountByStatusRequest, BaseResponse<List<int>>>
+    public class GetCountByStatusRequestHandler : IRequestHandler<GetCountByStatusRequest, BaseResponse<StatusDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         public GetCountByStatusRequestHandler(IUnitOfWork unitOfWork)
@@ -14,15 +15,15 @@ namespace Rideshare.Application.Features.Drivers.Handlers
             _unitOfWork = unitOfWork;
             
         }
-        public async Task<BaseResponse<List<int>>> Handle(GetCountByStatusRequest request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<StatusDto>> Handle(GetCountByStatusRequest request, CancellationToken cancellationToken)
         {
-            var response = new BaseResponse<List<int>>();
+            var response = new BaseResponse<StatusDto>();
 
             var counts = await _unitOfWork.DriverRepository.GetCountByStatus();
 
             response.Success = true;
             response.Message = "Fetch Succesful";
-            response.Value = counts;
+            response.Value = new StatusDto() { Active= counts[0], Idle= counts[1]};
             return response;
         }
     }
