@@ -16,7 +16,6 @@ public class SearchAndFilterQueryHandler: IRequestHandler<SearchAndFilterQuery, 
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly IMapboxService _mapboxService;
 
     public SearchAndFilterQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {

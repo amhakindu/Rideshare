@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Rideshare.Application.Contracts.Identity;
 using Microsoft.AspNetCore.Http;
+using Rideshare.Application.Common.Dtos.Drivers.Validators;
 
 namespace Rideshare.Application.Common.Dtos.Security.Validators
 {
@@ -26,8 +27,9 @@ namespace Rideshare.Application.Common.Dtos.Security.Validators
                 .NotEmpty().WithMessage("PhoneNumber is required.")
                 .Matches(@"^\+251\d{9}$")
             .WithMessage("PhoneNumber should start with '+251' and be followed by 9 digits.");
-            ;
 
+            RuleFor(entity => entity.DriverDto)
+                .SetValidator(new CreateDriverDtoValidator());
            
             RuleFor(entity => entity.FullName)
                 .NotEmpty().WithMessage("FullName is required.");

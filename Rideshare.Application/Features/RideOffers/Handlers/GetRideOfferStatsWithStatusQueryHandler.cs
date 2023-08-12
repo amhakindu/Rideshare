@@ -12,13 +12,10 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
     public class GetRideOfferStatsWithStatusQueryHandler: IRequestHandler<GetRideOfferStatsWithStatusQuery, BaseResponse<Dictionary<string, Dictionary<int, int>>>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly IMapboxService _mapboxService;
 
-        public GetRideOfferStatsWithStatusQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetRideOfferStatsWithStatusQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         public async Task<BaseResponse<Dictionary<string, Dictionary<int, int>>>> Handle(GetRideOfferStatsWithStatusQuery command, CancellationToken cancellationToken)

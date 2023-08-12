@@ -13,32 +13,29 @@ public class GetRideOffersOfDriverQueryHandler: IRequestHandler<GetRideOffersOfD
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly IMapboxService _mapboxService;
 
-    public GetRideOffersOfDriverQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IMapboxService mapboxService)
+    public GetRideOffersOfDriverQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _mapboxService = mapboxService;
     }
 
     public async Task<PaginatedResponse<RideOfferListDto>> Handle(GetRideOffersOfDriverQuery command, CancellationToken cancellationToken)
     {
 
         var response = new PaginatedResponse<RideOfferListDto>();
-        int driverId;
+        int driverId = 0;
         if(command.Id.GetType() == " ".GetType()){
             var driver = await _unitOfWork.DriverRepository.GetDriverByUserId((string)command.Id);
-            if (driver == null)
-                throw new NotFoundException($"User is not a driver");
-            driverId = driver.Id;
+            if (driver != null)
+                driverId = driver.Id;
         }else{
-            driverId = (int)command.Id;
+            if(await _unitOfWork.DriverRepository.Exists((int)command.Id))
+                driverId = (int)command.Id;
         }
         
         var result = await _unitOfWork.RideOfferRepository.GetRideOffersOfDriver(driverId, command.PageNumber, command.PageSize);
         
-
         response.Success = true;
         response.Message = "RideOffers Fetching Successful";
         response.Value = _mapper.Map<IReadOnlyList<RideOfferListDto>>(result.Value);

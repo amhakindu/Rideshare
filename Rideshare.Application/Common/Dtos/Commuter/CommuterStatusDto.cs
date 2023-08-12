@@ -1,8 +1,8 @@
 namespace Rideshare.Application.Common.Dtos.Security
 {
-    public class CommuterStatusDto
+    public class StatusDto
     {
-        public int ActiveCommuters { get; set; }
-        public int IdleCommuters { get; set; }
+        public int Active { get; set; }
+        public int Idle { get; set; }
     }
 }

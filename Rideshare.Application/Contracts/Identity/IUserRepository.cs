@@ -29,5 +29,5 @@ public interface IUserRepository
 	Task<double> GetLastWeekPercentageChange();
 	Task<int> GetCommuterCount();
 	Task<Dictionary<int, int>> GetCommuterStatistics(int? year, int? month);
-    Task<CommuterStatusDto> GetCommuterStatusCountAsync(); 
+    Task<StatusDto> GetCommuterStatusCountAsync(); 
 }
