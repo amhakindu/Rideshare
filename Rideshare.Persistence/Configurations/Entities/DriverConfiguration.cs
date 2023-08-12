@@ -14,7 +14,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 		public void Configure(EntityTypeBuilder<Driver> builder)
 		{
 			var random = new Random();
-			var startDate = new DateTime(2023, 1, 1);
+			var startDate = new DateTime(2023, 1, 1).ToUniversalTime();
 			builder.HasData(
 				new Driver
 				{
@@ -25,7 +25,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Lafto",
 					LicenseNumber = "12345678",
 					License =  "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Driver
 				{
@@ -36,7 +37,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Arat kilo",
 					LicenseNumber = "87654321",
 					License =  "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Driver
 				{
@@ -47,7 +49,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Debrezeyit",
 					LicenseNumber = "98765432",
 					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Driver
 				{
@@ -58,7 +61,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Nazrit",
 					LicenseNumber = "23456789",
 					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Driver
 				{
@@ -69,7 +73,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Weraileu",
 					LicenseNumber = "98765432",
 					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				
 				
@@ -82,7 +87,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Merkato, Addis Ababa",
 					LicenseNumber = "GHI123456",
 					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Driver
 				{
@@ -93,7 +99,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Kirkos Subcity, Woreda 04, Addis Ababa",
 					LicenseNumber = "JKL123456",
 					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Driver
 				{
@@ -104,7 +111,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Arat Kilo, Addis Ababa",
 					LicenseNumber = "MNO123456",
 					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Driver
 				{
@@ -115,7 +123,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Bole Subcity, Woreda 07, Addis Ababa",
 					LicenseNumber = "PQR123456",
 					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Driver
 				{
@@ -126,7 +135,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Kazanchis, Addis Ababa",
 					LicenseNumber = "STU123456",
 					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Driver
 				{
@@ -137,7 +147,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Bole Subcity, Woreda 03, Addis Ababa",
 					LicenseNumber = "VWX123456",
 					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Driver
 				{
@@ -148,7 +159,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Bole Subcity, Woreda 03, Addis Ababa",
 					LicenseNumber = "YZA123456",
 					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Driver
 				{
@@ -159,7 +171,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Bole Subcity, Woreda 03, Addis Ababa",
 					LicenseNumber = "BCD123456",
 					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Driver
 				{
@@ -170,7 +183,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Bole Subcity, Woreda 03, Addis Ababa",
 					LicenseNumber = "EFG123456",
 					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Driver
 				{
@@ -181,7 +195,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Address = "Megenagna, Addis Ababa",
 					LicenseNumber = "HIJ123456",
 					License = "http://res.cloudinary.com/dqy2ctugs/raw/upload/v1688116035/sax8xmpkspofh7s9iai5.png",
-					DateCreated= GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated= GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				}
 			);
 		}

@@ -16,7 +16,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 		public void Configure(EntityTypeBuilder<RideOffer> builder)
 		{
 			var random = new Random();
-			var startDate = new DateTime(2023, 1, 1);
+			var startDate = new DateTime(2023, 1, 1).ToUniversalTime();
 			builder.HasData(
 				new RideOffer
 				{
@@ -28,7 +28,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 4,
 					EstimatedFare = 27.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(50)
 				},
 				new RideOffer
@@ -41,7 +42,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					AvailableSeats = 3,
 					EstimatedFare = 30.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(45)
 				},
 				new RideOffer
@@ -54,7 +56,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					AvailableSeats = 2,
 					EstimatedFare = 25.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(55)
 				},
 				// Continue adding 20 more RideOffer entries
@@ -68,7 +71,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					AvailableSeats = 3,
 					EstimatedFare = 32.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(40)
 				},
 				new RideOffer
@@ -81,7 +85,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 1,
 					EstimatedFare = 22.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(30)
 				},
 				
@@ -96,7 +101,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					AvailableSeats = 3,
 					EstimatedFare = 30.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(45)
 				},
 				new RideOffer
@@ -109,7 +115,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 2,
 					EstimatedFare = 26.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(55)
 				},
 				new RideOffer
@@ -122,7 +129,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					AvailableSeats = 4,
 					EstimatedFare = 27.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(40)
 				},
 				new RideOffer
@@ -135,7 +143,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					AvailableSeats = 3,
 					EstimatedFare = 32.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(30)
 				},
 				new RideOffer
@@ -148,7 +157,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					AvailableSeats = 2,
 					EstimatedFare = 24.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(50)
 				},
 				new RideOffer
@@ -161,7 +171,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 1,
 					EstimatedFare = 20.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(45)
 				},
 				new RideOffer
@@ -174,7 +185,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					AvailableSeats = 4,
 					EstimatedFare = 27.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(55)
 				},
 				new RideOffer
@@ -187,7 +199,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					AvailableSeats = 3,
 					EstimatedFare = 29.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(40)
 				},
 				
@@ -201,7 +214,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 1,
 					EstimatedFare = 23.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(50)
 				},
 				new RideOffer
@@ -214,7 +228,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					AvailableSeats = 4,
 					EstimatedFare = 28.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(45)
 				},
 				new RideOffer
@@ -227,7 +242,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					AvailableSeats = 3,
 					EstimatedFare = 30.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(55)
 				},
 				new RideOffer
@@ -240,7 +256,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					AvailableSeats = 2,
 					EstimatedFare = 25.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(40)
 				},
 				new RideOffer
@@ -253,7 +270,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 3,
 					EstimatedFare = 27.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(30)
 				},
 				new RideOffer
@@ -266,7 +284,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					AvailableSeats = 2,
 					EstimatedFare = 26.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(50)
 				},
 				new RideOffer
@@ -279,7 +298,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.CANCELLED,
 					AvailableSeats = 1,
 					EstimatedFare = 20.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(45)
 				},
 				new RideOffer
@@ -292,7 +312,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					AvailableSeats = 4,
 					EstimatedFare = 29.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(55)
 				},
 				new RideOffer
@@ -305,7 +326,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 3,
 					EstimatedFare = 27.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(40)
 				},
 			
@@ -320,7 +342,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.ONROUTE,
 					AvailableSeats = 4,
 					EstimatedFare = 30.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(45)
 				},
 				new RideOffer
@@ -333,7 +356,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.WAITING,
 					AvailableSeats = 3,
 					EstimatedFare = 26.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(55)
 				},
 				new RideOffer
@@ -346,7 +370,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Status = Status.COMPLETED,
 					AvailableSeats = 2,
 					EstimatedFare = 28.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random),
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random),
 					EstimatedDuration = TimeSpan.FromMinutes(40)
 				}
 			);

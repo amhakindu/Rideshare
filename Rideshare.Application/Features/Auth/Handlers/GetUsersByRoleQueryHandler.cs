@@ -35,7 +35,7 @@ public sealed class GetUsersByRoleQueryHandler : IRequestHandler<GetUsersByRoleQ
                 Age = u.Age
 
             };
-             if (u.LastLogin.HasValue && (DateTime.Now - u.LastLogin.Value).TotalDays < 30)
+             if (u.LastLogin.HasValue && (DateTime.UtcNow - u.LastLogin.Value).TotalDays < 30)
             {
                 user.StatusByLogin = "ACTIVE";
             }

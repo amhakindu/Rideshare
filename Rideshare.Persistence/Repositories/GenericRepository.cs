@@ -41,11 +41,12 @@ namespace Rideshare.Persistence.Repositories;
     public async Task<PaginatedResponse<T>> GetAll(int pageNumber=1, int pageSize=10)
     {
         var query = _dbContext.Set<T>().AsNoTracking();
+        var temp = await query.CountAsync();
         var response = new PaginatedResponse<T>(){
             Value = await query.Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync(),
-            Count = await query.CountAsync()
+            Count = temp
         };
         return response;
         
@@ -53,7 +54,7 @@ namespace Rideshare.Persistence.Repositories;
 
     public async Task<int> Update(T entity)
     {
-        _dbContext.Entry(entity).State = EntityState.Modified;
+        _dbContext.Update(entity);
         return await _dbContext.SaveChangesAsync();
     }
     public async Task<int> Count(){
@@ -90,7 +91,7 @@ namespace Rideshare.Persistence.Repositories;
 			var temp = await entities
 				.GroupBy(entity => entity.DateCreated.Year)
 				.ToDictionaryAsync(g => g.Key, g => g.Count());
-			for (int i = 2023; i <= DateTime.Now.Year; i++)
+			for (int i = 2023; i <= DateTime.UtcNow.Year; i++)
 			{
 				if(!temp.ContainsKey(i))
 					temp.Add(i, 0);

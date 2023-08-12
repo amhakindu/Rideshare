@@ -51,7 +51,15 @@ namespace Rideshare.Application.Features.testEntitys.CQRS.Handlers
                 };
             }
 
-            var dbOperations = await _unitOfWork.RideOfferRepository.Add(rideOffer);
+            int dbOperations = 0; 
+            try{
+                dbOperations = await _unitOfWork.RideOfferRepository.Add(rideOffer);
+            }catch(ValidationException exception){
+                return new BaseResponse<int>{
+                    Success=false,
+                    Message=$"{exception.Message}"
+                };
+            }
 
             if (dbOperations == 0)
                 throw new InternalServerErrorException("Unable to Save to Database");

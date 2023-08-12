@@ -14,7 +14,7 @@ namespace Rideshare.Persistence.Configurations.Entities
 		public void Configure(EntityTypeBuilder<Feedback> builder)
 		{
 			var random = new Random();
-			var startDate = new DateTime(2023, 1, 1);
+			var startDate = new DateTime(2023, 1, 1).ToUniversalTime();
 			builder.HasData(
 				new Feedback
 				{
@@ -23,7 +23,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "Great Experience",
 					Content = "I had a great experience using the Rideshare system. The app was easy to use and the rides were reliable.",
 					Rating = 4.5,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Feedback
 				{
@@ -32,7 +33,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "Smooth Transactions",
 					Content = "I appreciate the smooth transactions provided by the Rideshare system. The payment process was seamless.",
 					Rating = 4.0,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Feedback
 				{
@@ -41,7 +43,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "Efficient Service",
 					Content = "The Rideshare system provides efficient service with quick response times. I highly recommend it.",
 					Rating = 4.8,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Feedback
 				{
@@ -50,7 +53,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "Improvement Needed",
 					Content = "Although the Rideshare system is convenient, there is room for improvement in terms of driver availability.",
 					Rating = 3.2,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 			   
 				new Feedback
@@ -60,7 +64,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "Reliable Transportation",
 					Content = "I rely on the Rideshare system for my daily commute. It has been a reliable mode of transportation for me.",
 					Rating = 4.7,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Feedback
 				{
@@ -69,7 +74,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "Efficient and Reliable",
 					Content = "I have been using the rideshare service for several months now, and I must say it is incredibly efficient and reliable. The drivers always arrive on time and take the shortest routes to my destination. I appreciate the convenience and peace of mind that comes with using this service. The app is user-friendly, making it easy to book rides and track the driver's location. Overall, I am highly satisfied with the level of service provided by this rideshare company.",
 					Rating = 4.7,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Feedback
 				{
@@ -78,7 +84,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "Prompt and Courteous",
 					Content = "I have had the pleasure of riding with some of the most courteous and professional drivers through this rideshare service. They always arrive promptly and greet me with a smile. They maintain a clean and comfortable vehicle, ensuring a pleasant experience throughout the ride. The drivers also follow traffic rules and drive responsibly, making me feel safe and secure. I would highly recommend this rideshare service to anyone looking for prompt and courteous transportation.",
 					Rating = 4.8,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Feedback
 				{
@@ -87,7 +94,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "Smooth Navigation",
 					Content = "The navigation system of the app is remarkably smooth and accurate. It provides real-time updates on traffic conditions and suggests alternative routes to avoid congestion. I have never faced any issues with the app's navigation, and it has helped me reach my destination without any hassle. The turn-by-turn directions are clear and concise, ensuring I never miss a turn. I truly appreciate the effort put into developing such a reliable and user-friendly navigation system.",
 					Rating = 4.5,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Feedback
 				{
@@ -96,7 +104,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "Great Customer Support",
 					Content = "I recently had a query regarding my ride, and I reached out to the customer support team of this rideshare service. I must say, they provided excellent assistance and resolved my issue promptly. The support team was friendly, patient, and attentive to my concerns. They went above and beyond to ensure my satisfaction and restored my faith in their commitment to customer service. I am extremely pleased with the level of support I received and would like to express my gratitude to the entire customer support team.",
 					Rating = 4.3,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Feedback
 				{
@@ -105,7 +114,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "Affordable and Convenient",
 					Content = "This rideshare service has become my go-to option for transportation due to its affordability and convenience. The fares are competitively priced, making it an economical choice for daily commuting and occasional trips. The availability of rides is impressive, and I never had to wait too long for a driver to arrive. The convenience of booking rides through the app and the ease of payment add to the overall experience. I highly recommend this rideshare service to anyone looking for an affordable and convenient mode of transportation.",
 					Rating = 4.6,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Feedback
 				{
@@ -114,7 +124,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "Exceptional Service",
 					Content = "I have been consistently impressed with the exceptional service provided by this rideshare company. The drivers are professional, punctual, and always go the extra mile to ensure a comfortable and enjoyable ride. The vehicles are clean and well-maintained, adding to the overall experience. The customer support team is responsive and addresses any concerns promptly. I highly recommend this rideshare service to anyone looking for a top-notch transportation option.",
 					Rating = 4.9,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Feedback
 				{
@@ -123,7 +134,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "Reliable and Safe",
 					Content = "Reliability and safety are the top priorities for me when it comes to choosing a rideshare service, and this company exceeds my expectations on both fronts. The drivers are reliable, arriving on time and taking the most efficient routes to my destination. They prioritize safety by adhering to traffic rules and maintaining a smooth driving experience. I feel confident and secure during every ride. I appreciate the commitment to providing a reliable and safe transportation service.",
 					Rating = 4.7,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Feedback
 				{
@@ -132,7 +144,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "User-Friendly App",
 					Content = "The user experience offered by the app of this rideshare service is remarkable. The interface is intuitive and easy to navigate, allowing me to book rides seamlessly. I can track the driver's location in real-time and receive notifications about the ride status. The app also provides clear fare estimates, ensuring transparency in pricing. It has truly simplified my transportation needs and enhanced my overall experience. I highly recommend using this user-friendly app for hassle-free rides.",
 					Rating = 4.5,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Feedback
 				{
@@ -141,7 +154,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "Excellent Driver Behavior",
 					Content = "I want to express my appreciation for the excellent behavior displayed by the drivers of this rideshare service. They are polite, courteous, and maintain a high level of professionalism. They create a pleasant and welcoming atmosphere during the ride, making me feel valued as a customer. Their friendly demeanor and engaging conversations add a personal touch to the service. I am grateful for the positive experiences I've had with the drivers and highly recommend this rideshare service.",
 					Rating = 4.6,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 				},
 				new Feedback
 				{
@@ -150,7 +164,8 @@ namespace Rideshare.Persistence.Configurations.Entities
 					Title = "Convenient Payment Options",
 					Content = "The variety of payment options offered by this rideshare service has made my life so much easier. I can choose to pay with cash or through the app using various digital payment methods. This flexibility ensures that I always have a convenient way to pay for my rides. The app securely stores my payment details, eliminating the need to carry cash. I appreciate the effort put into providing convenient and secure payment options, making the entire ride experience hassle-free.",
 					Rating = 4.4,
-					DateCreated = GetRandomDate(startDate, DateTime.Now, random)
+					DateCreated = GetRandomDate(startDate, DateTime.UtcNow, random),
+					LastModifiedDate= GetRandomDate(startDate, DateTime.UtcNow, random)
 					
 				}
 			);
