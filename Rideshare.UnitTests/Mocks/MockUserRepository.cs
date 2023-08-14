@@ -259,6 +259,36 @@ namespace Rideshare.Application.UnitTests.Mocks
 		
 		
 		
+        // Helper method to retrieve all users
+        private List<ApplicationUser> GetAllUsers()
+        {
+            // Simulate database query logic to retrieve all users
+            return new List<ApplicationUser>
+            {
+                new ApplicationUser
+                {
+                    Id = "user1",
+                    FullName = "John Doe",
+                    UserName = "johndoe",
+                    Email = "john@example.com",
+                    PhoneNumber = "1234567890",
+                    PasswordHash = HashPassword("password1"),
+                    LastLogin = DateTime.Now.AddDays(-32),
+                
+                },
+                new ApplicationUser
+                {
+                    Id = "user2",
+                    FullName = "Jane Smith",
+                    UserName = "janesmith",
+                    Email = "jane@example.com",
+                    PhoneNumber = "9876543210",
+                    PasswordHash = HashPassword("password2"),
+                    LastLogin = DateTime.Now.AddDays(-2)
+                }
+                // Add more user objects as needed for testing different scenarios
+            };
+        }
 
 		// Helper method to simulate password hashing
 		private string HashPassword(string password)

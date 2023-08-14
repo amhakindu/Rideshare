@@ -34,6 +34,7 @@ namespace Rideshare.UnitTests.Drivers
             _handler = new GetDriverRequestHandler(_mapper, _mockUnitOfWork.Object);
         }
 
+
         [Fact]
         public async void  GetDriverRequestValid(){
 
@@ -44,13 +45,6 @@ namespace Rideshare.UnitTests.Drivers
             result.Value.ShouldNotBe(null);
             result.Value.ShouldBeOfType<DriverDetailDto>();
             
-
-
-
-
-
-    
-
         }
 
 

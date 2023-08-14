@@ -12,7 +12,6 @@ using Rideshare.Application.Profiles;
 using Rideshare.Application.UnitTests.Mocks;
 using Rideshare.UnitTests.Mocks;
 using Shouldly;
-using System;
 using Xunit;
 
 namespace Rideshare.UnitTests.Drivers

@@ -60,7 +60,8 @@ namespace Rideshare.UnitTests.Mocks
             mockRepo.Setup(r => r.GetDriverByUserId(It.IsAny<string>())).ReturnsAsync((string userId) => {
                 return drivers.Where(driver => driver.UserId == userId).FirstOrDefault();
             });
-            mockRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync((int pageNumber, int pageSize) => {
+            mockRepo.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync((int pageNumber, int pageSize) =>
+            {
 
                 var response = new PaginatedResponse<Driver>();
                 var result = drivers.AsQueryable().Skip((pageNumber - 1) * pageSize)
@@ -143,6 +144,77 @@ namespace Rideshare.UnitTests.Mocks
 
                 return response;
             });
+
+
+            mockRepo.Setup(r => r.GetCountByStatus()).ReturnsAsync(() =>
+            {
+
+                var total = drivers.Count;
+
+                var count = drivers.Select(driver =>
+                {
+                    var user = _userRepository.Object.FindByIdAsync(driver.UserId).Result;
+                    driver.User = user;
+                    return driver;
+                }).Count(driver => driver.User.LastLogin >= DateTime.Now.AddDays(-30));
+
+                var statusCount = new List<int> { count, total - count };
+
+                return statusCount;
+
+
+
+            });
+
+            mockRepo.Setup(r => r.GetEntityStatistics(It.IsAny<int?>(), It.IsAny<int?>())).ReturnsAsync(
+
+                (int? year, int? month) =>
+                {
+
+                    if (month != null && year != null)
+                    {
+                        // Weekly
+                        var temp = drivers.Where(entity => entity.DateCreated.Year == year)
+                            .Where(entity => entity.DateCreated.Month == month)
+                            .GroupBy(entity => entity.DateCreated.Day / 7 + 1)
+                            .ToDictionary(group => group.Key, group => group.Count());
+                        for (int i = 1; i <= 5; i++)
+                        {
+                            if (!temp.ContainsKey(i))
+                                temp.Add(i, 0);
+                        }
+                        return temp;
+                    }
+                    else if (month == null && year == null)
+                    {
+                        // Yearly
+                        var temp = drivers
+                            .GroupBy(entity => entity.DateCreated.Year)
+                            .ToDictionary(g => g.Key, g => g.Count());
+                        for (int i = 2023; i <= DateTime.Now.Year; i++)
+                        {
+                            if (!temp.ContainsKey(i))
+                                temp.Add(i, 0);
+                        }
+                        return temp;
+                    }
+                    else
+                    {
+                        // Monthly
+                        Dictionary<int, int> temp = drivers
+                            .Where(entity => entity.DateCreated.Year == year)
+                            .GroupBy(entity => entity.DateCreated.Month)
+                            .ToDictionary(g => g.Key, g => g.Count());
+                        for (int i = 1; i < 13; i++)
+                        {
+                            if (!temp.ContainsKey(i))
+                                temp.Add(i, 0);
+                        }
+                        return temp;
+                    }
+                }
+
+            );
 
             return mockRepo;
         }

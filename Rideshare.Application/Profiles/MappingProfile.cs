@@ -47,6 +47,7 @@ public class MappingProfile : Profile
         CreateMap<Driver, DriverDetailDto>().ReverseMap();
         CreateMap<Driver, CreateDriverDto>().ReverseMap();
         CreateMap<Driver, UpdateDriverDto>().ReverseMap();
+        CreateMap<Driver, ApproveDriverDto>().ReverseMap();
         #endregion Driver Mappings
 
 
