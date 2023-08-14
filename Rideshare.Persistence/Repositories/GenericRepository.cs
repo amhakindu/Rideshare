@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Rideshare.Application.Responses;
 using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Contracts.Persistence;
+using System.ComponentModel.DataAnnotations;
 
 namespace Rideshare.Persistence.Repositories;
 
@@ -97,7 +98,12 @@ namespace Rideshare.Persistence.Repositories;
 					temp.Add(i, 0);
 			}
 			return temp;
-		}else{   
+		}
+        else if (year == null && month != null){
+
+            throw new ValidationException("year must be stated if month is stated");
+        }
+        else{   
 			// Monthly
 			Dictionary<int, int> temp = await entities
 				.Where(entity => entity.DateCreated.Year == year)

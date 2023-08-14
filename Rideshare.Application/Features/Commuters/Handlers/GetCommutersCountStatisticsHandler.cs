@@ -24,11 +24,8 @@ public class GetCommutersCountStatisticsHandler : IRequestHandler<GetCommutersCo
 	public async Task<BaseResponse<Dictionary<int, int>>> Handle(GetCommutersCountStatisticsQuery request, CancellationToken cancellationToken)
 	{
 		
-		var validator = new GetCommutersCountStatisticsQueryValidator();
-		var validationResult = await validator.ValidateAsync(request);
 		
-		if (!validationResult.IsValid)
-			throw new ValidationException(validationResult.Errors.Select(e => e.ErrorMessage).ToList().First());			
+					
 		
 		var history = await _userRepository.GetCommuterStatistics(request.Year, request.Month);
 		return new BaseResponse<Dictionary<int, int>>

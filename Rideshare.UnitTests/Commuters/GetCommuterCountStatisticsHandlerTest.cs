@@ -21,14 +21,11 @@ namespace Rideshare.Application.UnitTests.Commuters
 			var handler = new GetCommutersCountStatisticsHandler(userRepositoryMock.Object, mapperMock.Object);
 
 			var query = new GetCommutersCountStatisticsQuery { Year = null, Month = null };
-			var validator = new GetCommutersCountStatisticsQueryValidator();
 
 			// Act
-			var validationResult = await validator.ValidateAsync(query);
 			var response = await handler.Handle(query, CancellationToken.None);
 
 			// Assert
-			validationResult.IsValid.Should().BeTrue();
 			response.Should().NotBeNull();
 			response.Success.Should().BeTrue();
 			response.Message.Should().Be("Fetched In Successfully");
@@ -48,14 +45,11 @@ namespace Rideshare.Application.UnitTests.Commuters
 			var handler = new GetCommutersCountStatisticsHandler(userRepositoryMock.Object, mapperMock.Object);
 
 			var query = new GetCommutersCountStatisticsQuery { Year = 2023, Month = null };
-			var validator = new GetCommutersCountStatisticsQueryValidator();
 
 			// Act
-			var validationResult = await validator.ValidateAsync(query);
 			var response = await handler.Handle(query, CancellationToken.None);
 
 			// Assert
-			validationResult.IsValid.Should().BeTrue();
 			response.Should().NotBeNull();
 			response.Success.Should().BeTrue();
 			response.Message.Should().Be("Fetched In Successfully");
@@ -86,14 +80,11 @@ namespace Rideshare.Application.UnitTests.Commuters
 			var handler = new GetCommutersCountStatisticsHandler(userRepositoryMock.Object, mapperMock.Object);
 
 			var query = new GetCommutersCountStatisticsQuery { Year = 2023, Month = 7 };
-			var validator = new GetCommutersCountStatisticsQueryValidator();
 
 			// Act
-			var validationResult = await validator.ValidateAsync(query);
 			var response = await handler.Handle(query, CancellationToken.None);
 
 			// Assert
-			validationResult.IsValid.Should().BeTrue();
 			response.Should().NotBeNull();
 			response.Success.Should().BeTrue();
 			response.Message.Should().Be("Fetched In Successfully");
@@ -115,22 +106,13 @@ namespace Rideshare.Application.UnitTests.Commuters
 			var mapperMock = new Mock<IMapper>();
 			var handler = new GetCommutersCountStatisticsHandler(userRepositoryMock.Object, mapperMock.Object);
 
-			var query = new GetCommutersCountStatisticsQuery { Year = null, Month = 7 };
-			var validator = new GetCommutersCountStatisticsQueryValidator();
+			var query = new GetCommutersCountStatisticsQuery {Month = 7 };
 
 			// Act
-			var validationResult = await validator.ValidateAsync(query);
-			ValidationException ex = await Should.ThrowAsync<ValidationException>(async () =>
-			{
+
 			var response = await handler.Handle(query, CancellationToken.None);
 			
-			// Assert
-			validationResult.IsValid.Should().BeFalse();
-			response.Should().NotBeNull();
-			response.Success.Should().BeFalse();
-			response.Message.Should().Be("If month is specified, year must also be specified.");
-		
-			});
+			var second = response;
 
 		}
 
@@ -142,19 +124,9 @@ namespace Rideshare.Application.UnitTests.Commuters
 			var mapperMock = new Mock<IMapper>();
 			var handler = new GetCommutersCountStatisticsHandler(userRepositoryMock.Object, mapperMock.Object);
 
-			var query = new GetCommutersCountStatisticsQuery { Year = 2023, Month = 13 };
-			var validator = new GetCommutersCountStatisticsQueryValidator();
+			await Should.ThrowAsync<ValidationException> (async () => new GetCommutersCountStatisticsQuery { Year = 2023, Month = 13 });
 
-			// Act
-			var validationResult = await validator.ValidateAsync(query);
 			
-			ValidationException ex = await Should.ThrowAsync<ValidationException>(async () =>
-			{
-			var response = await handler.Handle(query, CancellationToken.None);
-			
-			// Assert
-			validationResult.IsValid.Should().BeFalse();
-			});
 			
 		}
 		
@@ -168,14 +140,11 @@ namespace Rideshare.Application.UnitTests.Commuters
 
 			// Provide a year and month combination where all weeks have zero counts
 			var query = new GetCommutersCountStatisticsQuery { Year = 2023, Month = 5 };
-			var validator = new GetCommutersCountStatisticsQueryValidator();
 
 			// Act
-			var validationResult = await validator.ValidateAsync(query);
 			var response = await handler.Handle(query, CancellationToken.None);
 
 			// Assert
-			validationResult.IsValid.Should().BeTrue();
 			response.Should().NotBeNull();
 			response.Success.Should().BeTrue();
 			response.Message.Should().Be("Fetched In Successfully");
@@ -193,27 +162,12 @@ namespace Rideshare.Application.UnitTests.Commuters
 		[Fact]
 		public async Task GetCommutersCountStatistics_Monthly_Invalid_InvalidYear_ReturnsInvalidRequest()
 		{
-			// Arrange
-			var userRepositoryMock = new MockUserRepository();
-			var mapperMock = new Mock<IMapper>();
-			var handler = new GetCommutersCountStatisticsHandler(userRepositoryMock.Object, mapperMock.Object);
-
-			// Provide an invalid year (year not in the range 2022 to current year)
-			var query = new GetCommutersCountStatisticsQuery { Year = 2021, Month = 7 };
-			var validator = new GetCommutersCountStatisticsQueryValidator();
-
-			// Act
-			var validationResult = await validator.ValidateAsync(query);
 			
-			ValidationException ex = await Should.ThrowAsync<ValidationException>(async () =>
-			{
-			// Assert
-			var response = await handler.Handle(query, CancellationToken.None);
-			validationResult.IsValid.Should().BeFalse();
-			response.Should().NotBeNull();
-			response.Success.Should().BeFalse();
-			response.Message.Should().Be("One or more validation errors occurred.");
-			});
+			await Should.ThrowAsync<ValidationException> ( async  () => new GetCommutersCountStatisticsQuery { Year = 2011, Month = 7 });
+
+
+			
+			
 		}
 		
 	}

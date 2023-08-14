@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Application.Common.Dtos.Statistics;
 using Rideshare.Application.Contracts.Identity;
 using Rideshare.Domain.Models;
 
@@ -192,10 +193,10 @@ namespace Rideshare.Application.UnitTests.Mocks
 					idleCommuters = commuters.Count(u => u.LastLogin < thirtyDaysAgo);
 				}
 
-				return new CommuterStatusDto
+				return new StatusDto
 					{
-						ActiveCommuters = activeCommuters,
-						IdleCommuters = idleCommuters
+						Active= activeCommuters,
+						Idle = idleCommuters
 					};
 				});
 			
@@ -229,35 +230,7 @@ namespace Rideshare.Application.UnitTests.Mocks
 			return GetAllUsers().FirstOrDefault(u => u.PhoneNumber == phoneNumber);
 		}
 
-		// Helper method to retrieve all users
-		private List<ApplicationUser> GetAllUsers()
-		{
-			// Simulate database query logic to retrieve all users
-			return new List<ApplicationUser>
-			{
-				new ApplicationUser
-				{
-					Id = "user1",
-					FullName = "John Doe",
-					UserName = "johndoe",
-					Email = "john@example.com",
-					PhoneNumber = "1234567890",
-					PasswordHash = HashPassword("password1")
-				},
-				new ApplicationUser
-				{
-					Id = "user2",
-					FullName = "Jane Smith",
-					UserName = "janesmith",
-					Email = "jane@example.com",
-					PhoneNumber = "9876543210",
-					PasswordHash = HashPassword("password2")
-				}
-				// Add more user objects as needed for testing different scenarios
-			};
-		}
-		
-		
+	
 		
         // Helper method to retrieve all users
         private List<ApplicationUser> GetAllUsers()
@@ -285,6 +258,16 @@ namespace Rideshare.Application.UnitTests.Mocks
                     PhoneNumber = "9876543210",
                     PasswordHash = HashPassword("password2"),
                     LastLogin = DateTime.Now.AddDays(-2)
+                },
+				new ApplicationUser
+                {
+                    Id = "user3",
+                    FullName = "Jane Schmidt",
+                    UserName = "janeschmidt",
+                    Email = "janeschmidt@example.com",
+                    PhoneNumber = "9866543210",
+                    PasswordHash = HashPassword("password3"),
+                    LastLogin = DateTime.Now.AddDays(-34)
                 }
                 // Add more user objects as needed for testing different scenarios
             };

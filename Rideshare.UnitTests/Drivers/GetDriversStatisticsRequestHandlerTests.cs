@@ -1,5 +1,6 @@
 using System;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Drivers.Handlers;
 using Rideshare.Application.Features.Drivers.Queries;
 using Rideshare.UnitTests.Mocks;
@@ -48,6 +49,19 @@ namespace Rideshare.UnitTests.Drivers
             result.Value.Count.ShouldBe(5);
             
         }
+
+        [Fact]
+        public async void GetDriverStatisticsWeeklyInvalidMonth()
+        {
+            await Should.ThrowAsync<ValidationException> ( async () => new GetDriversStatisticsRequest{ Year =  DateTime.Now.Year , Month = 13 }); }
+        
+        [Fact]
+        public async void GetDriverStaticsWeeklyInvalidYearOne(){
+            await Should.ThrowAsync<ValidationException> ( async () => new GetDriversStatisticsRequest{ Year = 1999 , Month = 6 }); 
+            
+        }
+
+        
 
 
         [Fact]

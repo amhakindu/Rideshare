@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Rideshare.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -5,7 +6,7 @@ using Rideshare.Application.Responses;
 using Microsoft.Extensions.Configuration;
 using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Common.Dtos.Security;
-
+using Rideshare.Application.Common.Dtos.Statistics;
 
 namespace Rideshare.Persistence.Repositories.User;
 
@@ -304,7 +305,11 @@ public class UserRepository : IUserRepository
 					temp.Add(i, 0);
 			}
 			return temp;
-		}else{   
+		}
+		else if (year == null && month != null){
+			throw new ValidationException("year must be stated if month is stated");
+		}
+		else{   
 			// Monthly
 			Dictionary<int, int> temp = entities
 				.Where(entity => entity.CreatedAt.Year == year)

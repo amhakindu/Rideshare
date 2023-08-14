@@ -55,6 +55,8 @@ namespace Rideshare.UnitTests.Mocks
                 }
             };
 
+            
+
             var mockRepo = new Mock<IDriverRepository>();
             
             mockRepo.Setup(r => r.GetDriverByUserId(It.IsAny<string>())).ReturnsAsync((string userId) => {
@@ -150,15 +152,16 @@ namespace Rideshare.UnitTests.Mocks
             {
 
                 var total = drivers.Count;
+                var actives = 0;
 
-                var count = drivers.Select(driver =>
-                {
-                    var user = _userRepository.Object.FindByIdAsync(driver.UserId).Result;
-                    driver.User = user;
-                    return driver;
-                }).Count(driver => driver.User.LastLogin >= DateTime.Now.AddDays(-30));
-
-                var statusCount = new List<int> { count, total - count };
+                foreach(var driver in drivers){
+                    var user =_userRepository.Object.FindByIdAsync(driver.UserId).Result;
+                    if (user.LastLogin > DateTime.Now.AddDays(-30)){
+                        actives += 1;
+                    }
+                }
+                
+                var statusCount = new List<int>{actives, total - actives};
 
                 return statusCount;
 

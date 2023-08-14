@@ -1,6 +1,6 @@
 
-using System.Threading.Tasks;
 using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Application.Common.Dtos.Statistics;
 using Rideshare.Application.Responses;
 using Rideshare.Domain.Models;
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Moq;
 using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Application.Common.Dtos.Statistics;
 using Rideshare.Application.Contracts.Identity;
 using Rideshare.Application.Features.Commuters.Queries;
 using Rideshare.Application.Responses;
@@ -60,13 +61,13 @@ namespace Rideshare.UnitTests.Commuters
 				Count = commuters.Count
 			});
 
-			var expectedResponseDto = new CommuterStatusDto
+			var expectedResponseDto = new StatusDto
 			{
-				ActiveCommuters = 1,
-				IdleCommuters = 1
+				Active = 1,
+				Idle = 1
 			};
 
-			var expectedResponse = new BaseResponse<CommuterStatusDto>
+			var expectedResponse = new BaseResponse<StatusDto>
 			{
 				Success = true,
 				Message = "Commuters status count fetched Successfully!",
@@ -79,8 +80,8 @@ namespace Rideshare.UnitTests.Commuters
 			// Assert
 			Assert.True(response.Success);
 			Assert.Equal("Commuters status count fetched successfully!", response.Message);
-			Assert.Equal(expectedResponseDto.ActiveCommuters, response.Value.ActiveCommuters);
-			Assert.Equal(expectedResponseDto.IdleCommuters, response.Value.IdleCommuters);
+			Assert.Equal(expectedResponseDto.Active, response.Value.Active);
+			Assert.Equal(expectedResponseDto.Idle, response.Value.Idle);
 		}
 	}
 }

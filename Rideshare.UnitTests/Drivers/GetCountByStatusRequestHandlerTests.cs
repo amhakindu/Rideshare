@@ -1,4 +1,5 @@
 using System;
+using Rideshare.Application.Common.Dtos.Statistics;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Drivers.Handlers;
 using Rideshare.Application.Features.Drivers.Queries;
@@ -26,15 +27,15 @@ namespace Rideshare.UnitTests.Drivers
         [Fact]
         public async void GetCountByStatusRequestValid()
         {
-            var expected = new List<int>{1, 1};
+            var expected = new StatusDto{Active = 1, Idle = 2};
             var request = new GetCountByStatusRequest();
 
             var result = await _handler.Handle(request, CancellationToken.None);
 
-            result.Value.ShouldBeOfType<List<int>>();
-            result.Value.Count.ShouldBe(2);
+            result.Value.ShouldBeOfType<StatusDto>();
             result.Success.ShouldBe(true);
-            result.Value.ShouldBe(expected);
+            result.Value.Active.ShouldBe(expected.Active);
+            result.Value.Idle.ShouldBe(expected.Idle);
 
         }
         

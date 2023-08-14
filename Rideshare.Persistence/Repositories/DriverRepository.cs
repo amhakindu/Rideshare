@@ -26,11 +26,11 @@ namespace Rideshare.Persistence.Repositories
             var response = new PaginatedResponse<Driver>();
             var driversQuery = _dbContext.Drivers.Include(driver => driver.User);
             var count = await driversQuery.CountAsync();
-            var drivers = await driversQuery.Skip((pageNumber - 1) * pageSize)
+            var result = await driversQuery.Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
             response.Count = count;
-            response.Value = drivers;
+            response.Value = result;
             return response;
         }
 
