@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Rideshare.Application.Responses;
 using Rideshare.Application.Common.Dtos.Security;
 using Rideshare.Application.Contracts.Persistence;
-using System.ComponentModel.DataAnnotations;
+using Rideshare.Application.Exceptions;
 
 namespace Rideshare.Persistence.Repositories;
 
