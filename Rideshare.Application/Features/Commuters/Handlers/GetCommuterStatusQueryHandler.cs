@@ -1,8 +1,8 @@
 using MediatR;
 using Rideshare.Application.Responses;
 using Rideshare.Application.Contracts.Identity;
-using Rideshare.Application.Common.Dtos.Security;
 using AutoMapper;
+using Rideshare.Application.Common.Dtos.Statistics;
 
 namespace Rideshare.Application.Features.Commuters.Queries;
 public class GetCommuterStatusQueryHandler : IRequestHandler<GetCommuterStatusQuery, BaseResponse<StatusDto>>

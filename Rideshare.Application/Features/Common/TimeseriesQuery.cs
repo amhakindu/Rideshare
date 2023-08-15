@@ -12,7 +12,7 @@ public class TimeseriesQuery
         get { return _year; }
         set
         {
-            if (value.HasValue && (value < 2000 || value > 2100))
+            if (value.HasValue && (value < 2020 || value > 2100))
                 throw new ValidationException("Year must be after 2020.");
             _year = value;
         }

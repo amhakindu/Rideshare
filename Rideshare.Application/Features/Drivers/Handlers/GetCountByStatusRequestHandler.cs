@@ -1,6 +1,7 @@
 using System;
 using MediatR;
 using Rideshare.Application.Common.Dtos.Security;
+using Rideshare.Application.Common.Dtos.Statistics;
 using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Features.Drivers.Queries;
 using Rideshare.Application.Responses;

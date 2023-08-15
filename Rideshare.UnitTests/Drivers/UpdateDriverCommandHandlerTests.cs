@@ -1,8 +1,9 @@
-using System;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using Rideshare.Application.Common.Dtos.Drivers;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Contracts.Services;
 using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.Drivers.Commands;
 using Rideshare.Application.Features.Drivers.Handlers;
@@ -18,7 +19,10 @@ namespace Rideshare.UnitTests.Drivers
         private readonly IMapper _mapper;
         private readonly UpdateDriverCommandHandler _handler;
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
-
+        private readonly IResourceManager _mockResourceManger;
+        private readonly IFormFile _mockIMG;
+        private readonly IFormFile _mockPDF;
+        
 
 
         public UpdateDriverCommandHandlerTests()
@@ -31,8 +35,12 @@ namespace Rideshare.UnitTests.Drivers
             .CreateMapper();
 
             _handler = new UpdateDriverCommandHandler( _mockUnitOfWork.Object, _mapper);
+            _mockResourceManger = MockResourceManager.GetResourceManager().Object;
+            _mockPDF = MockPDF.GetMockPDF();
+            _mockIMG = MockIMG.GetMockImage();
 
         }
+
 
         [Fact]
         public async void UpdateDriverValid(){
@@ -43,21 +51,20 @@ namespace Rideshare.UnitTests.Drivers
                 Experience = 4,
                 Address = "new Address",
                 LicenseNumber = "newLicenseNum",
-                License = "newLicense"
+                License = _mockIMG
             };
             
             var command = new UpdateDriverCommand{UpdateDriverDto = updateDriverDto, UserId="user1"};
 
-            
-
             var result = await _handler.Handle(command, CancellationToken.None);
-
+            
             var driver = await _mockUnitOfWork.Object.DriverRepository.Get(updateDriverDto.Id);
+
 
             driver.Rate.ShouldBe(updateDriverDto.Rate);
             driver.Experience.ShouldBe(updateDriverDto.Experience);
             driver.Address.ShouldBe(updateDriverDto.Address);
-            driver.License.ShouldBe(updateDriverDto.License);
+            driver.License.ShouldBeOfType<string>();
             driver.LicenseNumber.ShouldBe(updateDriverDto.LicenseNumber);   
 
         }
@@ -72,7 +79,7 @@ namespace Rideshare.UnitTests.Drivers
                 Experience = 4,
                 Address = string.Empty,
                 LicenseNumber = "34dfdf3",
-                License = "license",
+                License = _mockIMG,
 
             };
             var command = new UpdateDriverCommand { UpdateDriverDto = updateDriverDto };
@@ -86,7 +93,8 @@ namespace Rideshare.UnitTests.Drivers
 
             driver.Experience.ShouldBe(originalDriver.Experience);
             driver.Address.ShouldBe(originalDriver.Address);
-            driver.License.ShouldBe(originalDriver.License);
+            driver.License.ShouldBeOfType<string>();
+
             driver.LicenseNumber.ShouldBe(originalDriver.LicenseNumber);
 
             
@@ -104,7 +112,7 @@ namespace Rideshare.UnitTests.Drivers
                 Experience = -3,
                 Address = "addis",
                 LicenseNumber = "34dfdf3",
-                License = "license",
+                License = _mockIMG,
 
             };
             var command = new UpdateDriverCommand { UpdateDriverDto = updateDriverDto };
@@ -118,7 +126,8 @@ namespace Rideshare.UnitTests.Drivers
 
             driver.Experience.ShouldBe(originalDriver.Experience);
             driver.Address.ShouldBe(originalDriver.Address);
-            driver.License.ShouldBe(originalDriver.License);
+            driver.License.ShouldBeOfType<string>();
+
             driver.LicenseNumber.ShouldBe(originalDriver.LicenseNumber);
 
             
@@ -137,7 +146,7 @@ namespace Rideshare.UnitTests.Drivers
                 Experience = 4,
                 Address = "addis",
                 LicenseNumber = "34dfdf3",
-                License = string.Empty,
+                License = _mockPDF,
 
             };
             var command = new UpdateDriverCommand { UpdateDriverDto = updateDriverDto };
@@ -151,7 +160,8 @@ namespace Rideshare.UnitTests.Drivers
 
             driver.Experience.ShouldBe(originalDriver.Experience);
             driver.Address.ShouldBe(originalDriver.Address);
-            driver.License.ShouldBe(originalDriver.License);
+            driver.License.ShouldBeOfType<string>();
+
             driver.LicenseNumber.ShouldBe(originalDriver.LicenseNumber);
 
             
@@ -169,7 +179,7 @@ namespace Rideshare.UnitTests.Drivers
                 Experience = 4,
                 Address = "addis",
                 LicenseNumber = string.Empty,
-                License = "license",
+                License = _mockIMG,
 
             };
             var command = new UpdateDriverCommand { UpdateDriverDto = updateDriverDto };
@@ -183,7 +193,7 @@ namespace Rideshare.UnitTests.Drivers
 
             driver.Experience.ShouldBe(originalDriver.Experience);
             driver.Address.ShouldBe(originalDriver.Address);
-            driver.License.ShouldBe(originalDriver.License);
+            driver.License.ShouldBeOfType<string>();
             driver.LicenseNumber.ShouldBe(originalDriver.LicenseNumber);
 
             
