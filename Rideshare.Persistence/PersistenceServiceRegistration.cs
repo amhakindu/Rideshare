@@ -14,12 +14,11 @@ public static class PersistenceServiceRegistration
     public static IServiceCollection ConfigurePersistenceService(this IServiceCollection services, IConfiguration configuration)
     {
         string connectionString = configuration.GetConnectionString("RideshareConnectionString");
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
+        dataSourceBuilder.UseNetTopologySuite();
+        var dataSourceBuild = dataSourceBuilder.Build();
         services.AddDbContext<RideshareDbContext>(opt => {
-            var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
-            dataSourceBuilder.UseNetTopologySuite();
-            var dataSource = dataSourceBuilder.Build();
-
-            opt.UseNpgsql(dataSource, o => o.UseNetTopologySuite()
+            opt.UseNpgsql(dataSourceBuild, o => o.UseNetTopologySuite()
             .EnableRetryOnFailure());
         });            
 
