@@ -11,7 +11,7 @@ using Rideshare.Application.Contracts.Infrastructure;
 using Rideshare.Application.Features.RideRequests.Commands;
 using Rideshare.Application.Common.Dtos.RideRequests.Validators;
 
-namespace Rideshare.Application.Features.Tests.Handlers;
+namespace Rideshare.Application.Features.RideRequests.Handlers;
 
 public class CreateRideRequestCommandHandler : IRequestHandler<CreateRideRequestCommand, BaseResponse<Dictionary<string, object>>>
 {
