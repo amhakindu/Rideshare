@@ -5,8 +5,6 @@ using Rideshare.Application.Contracts.Persistence;
 using Rideshare.Application.Exceptions;
 using Rideshare.Application.Features.RideRequests.Queries;
 using Rideshare.Application.Responses;
-using Rideshare.Domain.Entities;
-
 namespace Rideshare.Application.Features.RideRequests.Handlers;
 
 public class GetRideRequestQueryHandler : IRequestHandler<GetRideRequestQuery, BaseResponse<RideRequestDto>>
