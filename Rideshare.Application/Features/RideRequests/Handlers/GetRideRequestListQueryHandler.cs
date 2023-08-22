@@ -22,9 +22,8 @@ public class GetRideRequestListQueryHandler : IRequestHandler<GetRideRequestList
     { 
 
         var response = new PaginatedResponse<RideRequestDto>();
-
-        var result = await _unitOfWork.RideRequestRepository.SearchByGivenParameter(request.PageNumber, request.PageSize, request.RideRequestsListFilterDto!.status, request.RideRequestsListFilterDto.fare, request.RideRequestsListFilterDto.name!, request.RideRequestsListFilterDto.phoneNumber!);
- 
+        var result = await _unitOfWork.RideRequestRepository.SearchByGivenParameter(request.PageNumber, request.PageSize, request.RideRequestsListFilterDto!.status, request.RideRequestsListFilterDto.fare, request.RideRequestsListFilterDto.name, request.RideRequestsListFilterDto.phoneNumber);
+       
         response.Message = "Fetch Successful";
         response.Value = _mapper.Map<IReadOnlyList<RideRequestDto>>(result.Value);
         response.Count = result.Count;

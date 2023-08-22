@@ -5,6 +5,8 @@ using NetTopologySuite.Geometries;
 using Rideshare.Application.Responses;
 using Rideshare.Application.UnitTests.Mocks;
 using Rideshare.Application.Contracts.Persistence;
+using Rideshare.Application.Common.Dtos.RideRequests;
+using Rideshare.Domain.Models;
 
 namespace Rideshare.UnitTests.Mocks;
 
@@ -23,7 +25,11 @@ public class MockRideRequestRepository
                 CurrentFare = 60,
                 Status =  0,
                 NumberOfSeats = 2,
-                UserId = "user1"
+                UserId = "user1",
+                User = new ApplicationUser(){
+                PhoneNumber = "",
+                FullName = ""
+                }
             },
             new ()
             {
@@ -33,7 +39,11 @@ public class MockRideRequestRepository
                 CurrentFare = 70,
                 Status =  0,
                 NumberOfSeats = 1,
-                UserId = "user1"
+                UserId = "user1",
+                User = new ApplicationUser(){
+                PhoneNumber = "",
+                FullName = ""
+                }
             },
 
             new ()
@@ -44,7 +54,12 @@ public class MockRideRequestRepository
                 CurrentFare = 70,
                 Status =  0,
                 NumberOfSeats = 1,
-                UserId = "user1"
+                UserId = "user1",
+                User = new ApplicationUser(){
+                PhoneNumber = "",
+                FullName = ""
+                }
+                
             },
             new ()
             {
@@ -54,7 +69,11 @@ public class MockRideRequestRepository
                 CurrentFare = 70,
                 Status =  0,
                 NumberOfSeats = 1,
-                UserId = "user1"
+                UserId = "user1",
+                 User = new ApplicationUser(){
+                PhoneNumber = "",
+                FullName = ""
+                }
             },
         };
         var mockRepo = new Mock<IRideRequestRepository>();
@@ -112,6 +131,24 @@ public class MockRideRequestRepository
         mockRepo.Setup(r => r.GetRideRequestWithDetail(It.IsAny<int>())).ReturnsAsync((int id) => {
             return rideRequests.FirstOrDefault((r) => r.Id == id);
         });
+        
+
+
+        mockRepo.Setup(r => r.SearchByGivenParameter(It.IsAny<int>(),It.IsAny<int>(),It.IsAny<Status>(),It.IsAny<double>(),It.IsAny<string>(),It.IsAny<string>())).ReturnsAsync((int PageNumber, int PageSize, Status? status, double? fare, string? name, string? phoneNumber) => {
+            
+            var response = new PaginatedResponse<RideRequest>();
+            var result = rideRequests.AsQueryable().Skip((PageNumber - 1) * PageSize)
+            .Where(item => (item.Status == (status ?? item.Status)))
+            .Where(item => (item.User.PhoneNumber == (phoneNumber ?? item.User.PhoneNumber)))
+            .Where(item => (item.CurrentFare <= (fare ?? item.CurrentFare)))
+            .Where(item => (item.User.FullName == (name ?? item.User.FullName)))
+            .Take(PageSize)
+            .ToList();
+            response.Count = rideRequests.Count();
+            response.Value = result;
+            return response;
+        });
+
         return mockRepo;
     }
 }

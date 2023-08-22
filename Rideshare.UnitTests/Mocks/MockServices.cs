@@ -1,12 +1,20 @@
 using System.Net;
 using Moq;
 using NetTopologySuite.Geometries;
+using Rideshare.Application.Common.Dtos.RideRequests;
 using Rideshare.Application.Contracts.Infrastructure;
+using Rideshare.Application.Contracts.Services;
 
 namespace Rideshare.UnitTests.Mocks;
 
 public class MockServices
 {
+    public static Mock<IRideShareHubService> GetHubService(){
+        var mockHubService = new Mock<IRideShareHubService>();
+        mockHubService.Setup(hubService => hubService.MatchFound(It.IsAny<string>(), It.IsAny<RideRequestDto>()));
+        return mockHubService;
+    }
+    
     public static Mock<IMapboxService> GetMapboxService(){
         var shortestPaths = new Dictionary<string, List<Point>>();
         double[][] coordinates = new double[][]
